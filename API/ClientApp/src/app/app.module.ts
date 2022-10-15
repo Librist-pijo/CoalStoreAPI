@@ -5,14 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { Connection } from './models/Connection';
 import { DatabaseService } from './services/database.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NavComponent } from './layout/nav/nav.component';
+import { HomeComponent } from './layout/home/home.component';
+import { FooterComponent } from './layout/footer/footer.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavComponent,
+    FooterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [
     Connection, 
