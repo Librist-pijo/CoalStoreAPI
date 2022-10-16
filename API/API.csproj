@@ -17,7 +17,6 @@
     <Folder Include="Controllers\Interfaces\" />
     <Folder Include="Repositories\Interfaces\" />
     <Folder Include="Repositories\Factories\" />
-    <Folder Include="Repositories\Models\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Validators\Interfaces\" />
   </ItemGroup>
