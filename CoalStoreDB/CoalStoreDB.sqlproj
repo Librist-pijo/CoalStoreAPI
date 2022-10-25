@@ -59,6 +59,10 @@
     <Folder Include="Tables" />
     <Folder Include="Stored Procedures" />
     <Folder Include="Stored Procedures\Customers" />
+    <Folder Include="Stored Procedures\Categories" />
+    <Folder Include="Stored Procedures\Invoices" />
+    <Folder Include="Stored Procedures\Orders" />
+    <Folder Include="Stored Procedures\Products" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Categories.sql" />
@@ -72,6 +76,27 @@
     <Build Include="Stored Procedures\Customers\spDeleteCustomer.sql" />
     <Build Include="Stored Procedures\Customers\spGetCustomers.sql" />
     <Build Include="Stored Procedures\Customers\spUpdateCustomer.sql" />
+    <Build Include="Stored Procedures\Customers\spGetCustomerByLogin.sql" />
+    <Build Include="Stored Procedures\Categories\spCreateCategory.sql" />
+    <Build Include="Stored Procedures\Categories\spDeleteCategory.sql" />
+    <Build Include="Stored Procedures\Categories\spGetCategories.sql" />
+    <Build Include="Stored Procedures\Categories\spGetCategoryByName.sql" />
+    <Build Include="Stored Procedures\Categories\spUpdateCategory.sql" />
+    <Build Include="Stored Procedures\Invoices\spCreateInvoice.sql" />
+    <Build Include="Stored Procedures\Invoices\spDeleteInvoice.sql" />
+    <Build Include="Stored Procedures\Invoices\spGetInvoices.sql" />
+    <Build Include="Stored Procedures\Invoices\spGetInvoiceById.sql" />
+    <Build Include="Stored Procedures\Invoices\spUpdateInvoice.sql" />
+    <Build Include="Stored Procedures\Products\spCreateProduct.sql" />
+    <Build Include="Stored Procedures\Products\spDeleteProduct.sql" />
+    <Build Include="Stored Procedures\Products\spGetProducts.sql" />
+    <Build Include="Stored Procedures\Products\spGetProductByName.sql" />
+    <Build Include="Stored Procedures\Products\spUpdateProduct.sql" />
+    <Build Include="Stored Procedures\Orders\spCreateOrder.sql" />
+    <Build Include="Stored Procedures\Orders\spDeleteOrder.sql" />
+    <Build Include="Stored Procedures\Orders\spGetOrders.sql" />
+    <Build Include="Stored Procedures\Orders\spGetOrderById.sql" />
+    <Build Include="Stored Procedures\Orders\spUpdateOrder.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CoalStoreDB.refactorlog" />

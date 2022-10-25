@@ -10,3 +10,7 @@
     [PostCode] NVARCHAR(255) NULL, 
     PRIMARY KEY ([Id])
 )
+
+GO
+
+CREATE INDEX [IX_Customers_Login] ON [dbo].[Customers] ([Login])
