@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{72635368-8774-4794-bb9c-1396c83e05ae}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -57,6 +57,8 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Stored Procedures" />
+    <Folder Include="Stored Procedures\Customers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Categories.sql" />
@@ -66,6 +68,10 @@
     <Build Include="Tables\Customers.sql" />
     <Build Include="Tables\OrdersProducts.sql" />
     <Build Include="Tables\ProductsCategories.sql" />
+    <Build Include="Stored Procedures\Customers\spCreateCustomer.sql" />
+    <Build Include="Stored Procedures\Customers\spDeleteCustomer.sql" />
+    <Build Include="Stored Procedures\Customers\spGetCustomers.sql" />
+    <Build Include="Stored Procedures\Customers\spUpdateCustomer.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CoalStoreDB.refactorlog" />
