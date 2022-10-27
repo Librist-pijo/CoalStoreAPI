@@ -1,11 +1,14 @@
-var builder = WebApplication.CreateBuilder(args);
+using DataLibrary.DataAccess;
+using DataLibrary.DataAccess.Interfaces;
 
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IDataAccess, SqlDataAccess>();
 
 var app = builder.Build();
 

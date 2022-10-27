@@ -15,10 +15,13 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Interfaces\" />
-    <Folder Include="Repositories\Interfaces\" />
     <Folder Include="Repositories\Factories\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Validators\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataLibrary\DataLibrary.csproj" />
   </ItemGroup>
 
 </Project>
