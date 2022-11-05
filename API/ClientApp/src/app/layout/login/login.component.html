@@ -1,3 +1,241 @@
-<div class="container-fluid p-0">
-
+<div class="container-fluid p-0 card-body">
+    <div class="col-6">
+        <div class="row registration-form p-4">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+                <h4>Zaloguj si�</h4>
+            </div>
+            <form action="login-user" (submit)="login($event)">
+                <div class="col-12 d-flex justify-content-center align-items-center mt-4">
+                    <dx-text-box
+                        mode="email"
+                        placeholder="..."
+                        label="E-mail"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="loginDTO.email"
+                        width="70%">
+                        <dx-validator>
+                            <dxi-validation-rule
+                              type="required"
+                              message="Adres e-mail jest wymagany"
+                            ></dxi-validation-rule>
+                            <dxi-validation-rule
+                              type="email"
+                              message="Adres e-mail jest nieprawid�owy"
+                            ></dxi-validation-rule>
+                            <dxi-validation-rule
+                              type="async"
+                              message="Email is already registered"
+                              [validationCallback]="asyncValidation"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                    <dx-text-box
+                        mode="password"
+                        placeholder="..."
+                        label="Has�o"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="loginDTO.password"
+                        width="70%">
+                        <dx-validator>
+                            <dxi-validation-rule
+                                type="required"
+                                message="Has�o jest wymagane"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center mt-4">
+                    <dx-button id="login-btn"
+                        stylingMode="outlined"
+                        text="Zaloguj"
+                        type="default"
+                        width="30%"
+                        [useSubmitBehavior]="true"
+                    >
+                  </dx-button>
+                </div>
+            </form>
+        </div>
+        <div class="row d-flex justify-content-center my-4">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+                lub
+            </div>
+        </div>
+        <div class="row registration-form p-2">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+                <h4>Utwórz konto</h4>
+            </div>
+            <form action="register-user" (submit)="register($event)">
+                <div class="col-12 d-flex justify-content-between align-items-center mt-4">
+                    <dx-text-box
+                        placeholder="..."
+                        label="Imię"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="registerDTO.firstname"
+                        width="49%">
+                        <dx-validator>
+                            <dxi-validation-rule
+                                type="required"
+                                message="Imię jest wymagane"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                    <dx-text-box
+                        placeholder="..."
+                        label="Nazwisko"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="registerDTO.lastname"
+                        width="49%">
+                        <dx-validator>
+                            <dxi-validation-rule
+                                type="required"
+                                message="Nazwisko jest wymagane"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                    <dx-text-box
+                        mode="email"
+                        placeholder="..."
+                        label="Email"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="registerDTO.email"
+                        width="49%">
+                        <dx-validator>
+                            <dxi-validation-rule
+                              type="required"
+                              message="Adres e-mail jest wymagany"
+                            ></dxi-validation-rule>
+                            <dxi-validation-rule
+                              type="email"
+                              message="Adres e-mail jest nieprawid�owy"
+                            ></dxi-validation-rule>
+                            <dxi-validation-rule
+                              type="async"
+                              message="Istnieje konto w systemie dla podanego adresu e-mail"
+                              [validationCallback]="asyncValidation"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                    <dx-date-box
+                        placeholder="..."
+                        label="Data urodzenia"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="registerDTO.birthdate"
+                        width="49%"
+                        type="date"
+                        [max]="now"
+                        displayFormat="dd.MM.yyyy">
+                        <dx-validator>
+                            <dxi-validation-rule
+                                type="required"
+                                message="Data urodzenia jest wymagana"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-date-box>
+                </div>
+                <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                    <dx-text-box
+                        [(value)]="registerDTO.addressLine1"
+                        placeholder="..."
+                        label="Adres"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        width="78%"
+                        >
+                    </dx-text-box>
+                    <dx-text-box
+                        [(value)]="registerDTO.postCode"
+                        placeholder="..."
+                        label="Kod pocztowy"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        width="20%"
+                        mask="00-000"
+                        [useMaskedValue]="true">
+                        <dx-validator>
+                            <dxi-validation-rule
+                              type="pattern"
+                              [pattern]="'^[^0-9]'"
+                              message="Kod pocztowy musi mie� odpowiedni format"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                    <dx-text-box
+                        [(value)]="registerDTO.addressLine2"
+                        placeholder="..."
+                        label="Adres c.d."
+                        labelMode="static"
+                        [showClearButton]="true"
+                        width="100%"
+                        >
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                    <dx-text-box
+                        [mode]="passwordMode"
+                        placeholder="..."
+                        label="Has�o"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="registerDTO.password"
+                        width="49%"
+                    >
+                        <dxi-button
+                            name="passwordVisibilityBtn"
+                            location="after"
+                            [options]="passwordButton"
+                        ></dxi-button>
+                        <dx-validator>
+                            <dxi-validation-rule
+                                type="required"
+                                message="Has�o jest wymagane"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                    <dx-text-box
+                        [mode]="passwordRepeatMode"
+                        placeholder="..."
+                        label="Powt�rz has�o"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="registerDTO.passwordRepeat"
+                        width="49%">
+                        <dxi-button
+                            name="passwordRepeatVisibilityBtn"
+                            location="after"
+                            [options]="passwordRepeatButton"
+                        ></dxi-button>
+                        <dx-validator>
+                            <dxi-validation-rule
+                                type="required"
+                                message="Potwierd� has�o wprowadzaj�c je ponownie!"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center mt-4">
+                    <dx-button id="login-btn"
+                        stylingMode="outlined"
+                        text="Zarejestruj"
+                        type="default"
+                        width="30%"
+                        [useSubmitBehavior]="true"
+                    >
+                  </dx-button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
