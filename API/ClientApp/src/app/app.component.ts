@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { locale, loadMessages, formatMessage } from 'devextreme/localization';
+import * as plMessages from '../assets/pl.json';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,15 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-  title = 'ClientApp';
+
+  constructor() {
+    this.initMessages();
+    locale("pl");
+  }
+
+  
+  initMessages() {
+    loadMessages(plMessages);
+  }
+
 }

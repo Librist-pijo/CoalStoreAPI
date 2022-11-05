@@ -10,7 +10,9 @@ import { NavComponent } from './layout/nav/nav.component';
 import { HomeComponent } from './layout/home/home.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { LoginComponent } from './layout/login/login.component';
-import { DxButtonModule } from 'devextreme-angular';
+import { DxButtonModule, DxDateBoxModule, DxTextBoxModule, DxValidatorModule } from 'devextreme-angular';
+import { EmailValidationService } from './services/email-validation.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,13 +24,18 @@ import { DxButtonModule } from 'devextreme-angular';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    DxButtonModule
+    DxButtonModule,
+    DxTextBoxModule,
+    DxDateBoxModule,
+    DxValidatorModule
   ],
   providers: [
     Connection, 
-    DatabaseService
+    DatabaseService,
+    EmailValidationService
   ],
   bootstrap: [AppComponent]
 })
