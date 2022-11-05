@@ -29,5 +29,10 @@ namespace API.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task CheckIfEmailExists(string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

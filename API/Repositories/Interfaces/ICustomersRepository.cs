@@ -9,5 +9,6 @@ namespace API.Repositories.Interfaces
         Task DeleteCustomer(Customers customer);
         Task GetCustomers();
         Task GetCustomerByLogin(string customerName);
+        Task CheckIfEmailExists(string email);
     }
 }
