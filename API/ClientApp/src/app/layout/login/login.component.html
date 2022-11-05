@@ -2,7 +2,7 @@
     <div class="col-6">
         <div class="row registration-form p-4">
             <div class="col-12 d-flex justify-content-center align-items-center">
-                <h4>Zaloguj się</h4>
+                <h4>Zaloguj si�</h4>
             </div>
             <form action="login-user" (submit)="login($event)">
                 <div class="col-12 d-flex justify-content-center align-items-center mt-4">
@@ -21,7 +21,7 @@
                             ></dxi-validation-rule>
                             <dxi-validation-rule
                               type="email"
-                              message="Adres e-mail jest nieprawidłowy"
+                              message="Adres e-mail jest nieprawid�owy"
                             ></dxi-validation-rule>
                             <dxi-validation-rule
                               type="async"
@@ -35,7 +35,7 @@
                     <dx-text-box
                         mode="password"
                         placeholder="..."
-                        label="Hasło"
+                        label="Has�o"
                         labelMode="static"
                         [showClearButton]="true"
                         [(value)]="loginDTO.password"
@@ -43,7 +43,7 @@
                         <dx-validator>
                             <dxi-validation-rule
                                 type="required"
-                                message="Hasło jest wymagane"
+                                message="Has�o jest wymagane"
                             ></dxi-validation-rule>
                         </dx-validator>
                     </dx-text-box>
@@ -100,7 +100,7 @@
                         </dx-validator>
                     </dx-text-box>
                 </div>
-                <div class="col-12 d-flex justify-content-between align-items-center mt-4">
+                <div class="col-12 d-flex justify-content-between align-items-center mt-2">
                     <dx-text-box
                         mode="email"
                         placeholder="..."
@@ -116,7 +116,7 @@
                             ></dxi-validation-rule>
                             <dxi-validation-rule
                               type="email"
-                              message="Adres e-mail jest nieprawidłowy"
+                              message="Adres e-mail jest nieprawid�owy"
                             ></dxi-validation-rule>
                             <dxi-validation-rule
                               type="async"
@@ -143,11 +143,50 @@
                         </dx-validator>
                     </dx-date-box>
                 </div>
-                <div class="col-12 d-flex justify-content-between align-items-center mt-4">
+                <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                    <dx-text-box
+                        [(value)]="registerDTO.addressLine1"
+                        placeholder="..."
+                        label="Adres"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        width="78%"
+                        >
+                    </dx-text-box>
+                    <dx-text-box
+                        [(value)]="registerDTO.postCode"
+                        placeholder="..."
+                        label="Kod pocztowy"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        width="20%"
+                        mask="00-000"
+                        [useMaskedValue]="true">
+                        <dx-validator>
+                            <dxi-validation-rule
+                              type="pattern"
+                              [pattern]="'^[^0-9]'"
+                              message="Kod pocztowy musi mie� odpowiedni format"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                    <dx-text-box
+                        [(value)]="registerDTO.addressLine2"
+                        placeholder="..."
+                        label="Adres c.d."
+                        labelMode="static"
+                        [showClearButton]="true"
+                        width="100%"
+                        >
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-between align-items-center mt-2">
                     <dx-text-box
                         [mode]="passwordMode"
                         placeholder="..."
-                        label="Hasło"
+                        label="Has�o"
                         labelMode="static"
                         [showClearButton]="true"
                         [(value)]="registerDTO.password"
@@ -161,14 +200,14 @@
                         <dx-validator>
                             <dxi-validation-rule
                                 type="required"
-                                message="Hasło jest wymagane"
+                                message="Has�o jest wymagane"
                             ></dxi-validation-rule>
                         </dx-validator>
                     </dx-text-box>
                     <dx-text-box
                         [mode]="passwordRepeatMode"
                         placeholder="..."
-                        label="Powtórz hasło"
+                        label="Powt�rz has�o"
                         labelMode="static"
                         [showClearButton]="true"
                         [(value)]="registerDTO.passwordRepeat"
@@ -181,7 +220,7 @@
                         <dx-validator>
                             <dxi-validation-rule
                                 type="required"
-                                message="Potwierdź hasło wprowadzając je ponownie!"
+                                message="Potwierd� has�o wprowadzaj�c je ponownie!"
                             ></dxi-validation-rule>
                         </dx-validator>
                     </dx-text-box>

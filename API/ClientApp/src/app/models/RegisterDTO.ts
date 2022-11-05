@@ -7,6 +7,9 @@ export class RegisterDTO {
         this.password = "";
         this.passwordRepeat = "";
         this.birthdate = new Date();
+        this.addressLine1 = "";
+        this.addressLine2 = "";
+        this.postCode = "";
     }
 
     firstname: string;
@@ -15,4 +18,7 @@ export class RegisterDTO {
     password: string;
     passwordRepeat: string;
     birthdate: any;
+    addressLine1: string;
+    addressLine2: string;
+    postCode: string;
 }
