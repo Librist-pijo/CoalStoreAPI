@@ -1,0 +1,13 @@
+.home-bg {
+    /* background-image: url('../../../assets/img/home-background.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center; */
+    height: 100%;
+}
+
+.home-bg-wrapper {
+    background-color: rgba(211, 210, 210, 0.589) !important;
+    height: 100%;
+    width: 100%;
+}

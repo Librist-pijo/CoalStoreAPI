@@ -3,3 +3,34 @@
     color: white;
     height: 7vh;
 }
+
+::ng-deep dx-button.nav-button {
+    background-color: transparent !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    border: none !important;
+}
+
+::ng-deep dx-button.home-button {
+    border-radius: 50% !important;
+}
+
+::ng-deep dx-button.nav-button:hover {
+    background-color: rgba(248, 241, 241, 0.356) !important;
+    color: rgba(255, 255, 255) !important;
+}
+
+::ng-deep dx-button.nav-button:hover .dx-icon {
+    color: rgba(255, 255, 255) !important;
+    fill: rgba(255, 255, 255) !important;
+}
+
+.nav-line {
+    height: 60%;
+    border-left: 0.05rem solid rgba(255, 255, 255, 0.75) !important;
+    margin: 0 4px;
+}
+
+::ng-deep dx-button.nav-button .dx-icon {
+    color: rgba(255, 255, 255, 0.8) !important;
+    fill: rgba(255, 255, 255, 0.8) !important;
+}

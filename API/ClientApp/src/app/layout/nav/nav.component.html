@@ -1,6 +1,23 @@
-<div class="nav container-fluid">
-    <div class="row">
-        <div class="col-6 d-flex align-items-center justify-content-start"></div>
-        <div class="col-6 d-flex align-items-center justify-content-end"></div>
+<div class="nav container-fluid px-4">
+    <div class="row col-12 d-flex flex-row justify-content-between">
+        <div class="col-6 d-flex flex-row align-items-center justify-content-start">
+            <dx-button class="nav-button home-button" 
+                icon="home" (onClick)="navigate($event, './')"></dx-button>
+        </div>
+        <div class="col-6 d-flex flex-row align-items-center justify-content-end">
+            <div class="nav-line"></div>
+            <dx-button class="nav-button" icon="product" text="Produkty" (onClick)="navigate($event, './products')"></dx-button>
+            <div class="nav-line"></div>
+            <dx-button class="nav-button" icon="cart" text="Koszyk" (onClick)="navigate($event, './shopping-cart')"></dx-button>
+            <div class="nav-line"></div>
+            <ng-container *ngIf="isLoggedIn">
+                <dx-button class="nav-button" icon="user" text="Moje konto" (onClick)="navigate($event, './my-account')"></dx-button>
+            </ng-container>
+            <ng-container *ngIf="!isLoggedIn">
+                <dx-button class="nav-button" 
+                icon="group" text="Logowanie / Rejestracja" (onClick)="navigate($event, './login')"></dx-button>
+            </ng-container>
+            <div class="nav-line"></div>
+        </div>
     </div>
 </div>

@@ -10,6 +10,7 @@ import { NavComponent } from './layout/nav/nav.component';
 import { HomeComponent } from './layout/home/home.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { LoginComponent } from './layout/login/login.component';
+import { DxButtonModule } from 'devextreme-angular';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LoginComponent } from './layout/login/login.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    DxButtonModule
   ],
   providers: [
     Connection, 

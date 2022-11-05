@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>9021f62f-2970-4ac8-a8db-74734802ed4c</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	  <SpaRoot>ClientApp</SpaRoot>
+	  <SpaProxyServerUrl>http://localhost:5001</SpaProxyServerUrl>
   </PropertyGroup>
 
   <ItemGroup>
