@@ -1,0 +1,36 @@
+.registration-form {
+    border-radius: 5px;
+    border: none;
+    background-color: #e9e9e9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-body {
+    width: 80vw;
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+::ng-deep dx-button#login-btn,
+::ng-deep dx-button#register-btn {
+    background: #fff !important;
+}
+
+::ng-deep dx-button#login-btn:hover {
+    background: #a9d0f098 !important;
+}
+
+::ng-deep dx-button#register-btn:hover {
+    background: #9cc49c94 !important;
+}
+
+::ng-deep .dx-icon-visibility {
+    background-image: url('../../../assets/icons/visibility_FILL0_wght400_GRAD0_opsz24.svg');
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+}
