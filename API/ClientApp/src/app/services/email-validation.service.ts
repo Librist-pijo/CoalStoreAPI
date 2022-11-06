@@ -7,7 +7,7 @@ import { DatabaseService } from "./database.service";
 export class EmailValidationService {
 
     constructor(
-        public dbService: DatabaseService
+        private dbService: DatabaseService
     ) {
 
     }
@@ -15,7 +15,7 @@ export class EmailValidationService {
     validateEmail(email: string): boolean {
         var result = false;
 
-        this.dbService.SetRoute(`validate-email?email=${email}`);
+        this.dbService.SetRoute(`customers/validate-email?email=${email}`);
         this.dbService.Get<boolean>().subscribe((result) => {
             result = result.valueOf();
         }, (err) => {

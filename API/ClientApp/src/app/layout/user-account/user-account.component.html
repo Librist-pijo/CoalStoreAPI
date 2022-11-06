@@ -1,82 +1,24 @@
 <div class="container-fluid p-0 card-body">
     <div class="col-6">
-        <div class="row registration-form p-4">
+        <dx-tabs [dataSource]="userAccountTabs" width="100%" 
+            [scrollByContent]="true" [showNavButtons]="true"
+            (onSelectionChanged)="onSelectionChanged($event)"
+            [selectedIndex]="0">
+        </dx-tabs>
+    </div>
+    <div class="col-6 user-account-wrapper p-4 mt-4">
+        <ng-container *ngIf="selectedItemId == 1">
             <div class="col-12 d-flex justify-content-center align-items-center">
-                <h4>Zaloguj się</h4>
+                <h4>Moje dane</h4>
             </div>
-            <form action="login-user" (submit)="login($event)">
-                <div class="col-12 d-flex justify-content-center align-items-center mt-4">
-                    <dx-text-box
-                        mode="email"
-                        placeholder="..."
-                        label="E-mail"
-                        labelMode="static"
-                        [showClearButton]="true"
-                        [(value)]="loginDTO.email"
-                        width="70%">
-                        <dx-validator>
-                            <dxi-validation-rule
-                              type="required"
-                              message="Adres e-mail jest wymagany"
-                            ></dxi-validation-rule>
-                            <dxi-validation-rule
-                              type="email"
-                              message="Adres e-mail jest nieprawidłowy"
-                            ></dxi-validation-rule>
-                            <dxi-validation-rule
-                              type="async"
-                              message="Email is already registered"
-                              [validationCallback]="asyncValidation"
-                            ></dxi-validation-rule>
-                        </dx-validator>
-                    </dx-text-box>
-                </div>
-                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
-                    <dx-text-box
-                        mode="password"
-                        placeholder="..."
-                        label="Hasło"
-                        labelMode="static"
-                        [showClearButton]="true"
-                        [(value)]="loginDTO.password"
-                        width="70%">
-                        <dx-validator>
-                            <dxi-validation-rule
-                                type="required"
-                                message="Hasło jest wymagane"
-                            ></dxi-validation-rule>
-                        </dx-validator>
-                    </dx-text-box>
-                </div>
-                <div class="col-12 d-flex justify-content-center align-items-center my-4">
-                    <dx-button id="login-btn"
-                        stylingMode="outlined"
-                        text="Zaloguj"
-                        type="default"
-                        width="30%"
-                        [useSubmitBehavior]="true"
-                    >
-                  </dx-button>
-                </div>
-            </form>
-        </div>
-        <div class="row d-flex justify-content-center my-4">
-            <div class="col-12 d-flex justify-content-center align-items-center">
-                lub
-            </div>
-        </div>
-        <div class="row registration-form p-2">
-            <div class="col-12 d-flex justify-content-center align-items-center">
-                <h4>Utwórz konto</h4>
-            </div>
-            <form action="register-user" (submit)="register($event)">
+            <form action="customer-personal-data" (submit)="saveCustomerPersonalData($event)" style="width: 100%;">
                 <div class="col-12 d-flex justify-content-between align-items-center mt-4">
                     <dx-text-box
                         placeholder="..."
                         label="Imię"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="registerDTO.firstname"
+                        [(value)]="customer.firstname"
                         width="49%">
                         <dx-validator>
                             <dxi-validation-rule
@@ -90,7 +32,7 @@
                         label="Nazwisko"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="registerDTO.lastname"
+                        [(value)]="customer.lastname"
                         width="49%">
                         <dx-validator>
                             <dxi-validation-rule
@@ -107,30 +49,16 @@
                         label="Email"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="registerDTO.email"
-                        width="49%">
-                        <dx-validator>
-                            <dxi-validation-rule
-                              type="required"
-                              message="Adres e-mail jest wymagany"
-                            ></dxi-validation-rule>
-                            <dxi-validation-rule
-                              type="email"
-                              message="Adres e-mail jest nieprawidłowy"
-                            ></dxi-validation-rule>
-                            <dxi-validation-rule
-                              type="async"
-                              message="Istnieje konto w systemie dla podanego adresu e-mail"
-                              [validationCallback]="asyncValidation"
-                            ></dxi-validation-rule>
-                        </dx-validator>
+                        [(value)]="customer.login"
+                        width="49%"
+                        [disabled]="true">
                     </dx-text-box>
                     <dx-date-box
                         placeholder="..."
                         label="Data urodzenia"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="registerDTO.birthdate"
+                        [(value)]="customer.birthdate"
                         width="49%"
                         type="date"
                         [max]="now"
@@ -145,7 +73,7 @@
                 </div>
                 <div class="col-12 d-flex justify-content-between align-items-center mt-2">
                     <dx-text-box
-                        [(value)]="registerDTO.addressLine1"
+                        [(value)]="customer.addressLine1"
                         placeholder="..."
                         label="Adres"
                         labelMode="static"
@@ -154,7 +82,7 @@
                         >
                     </dx-text-box>
                     <dx-text-box
-                        [(value)]="registerDTO.postCode"
+                        [(value)]="customer.postCode"
                         placeholder="..."
                         label="Kod pocztowy"
                         labelMode="static"
@@ -173,7 +101,7 @@
                 </div>
                 <div class="col-12 d-flex justify-content-center align-items-center mt-2">
                     <dx-text-box
-                        [(value)]="registerDTO.addressLine2"
+                        [(value)]="customer.addressLine2"
                         placeholder="..."
                         label="Adres c.d."
                         labelMode="static"
@@ -182,15 +110,73 @@
                         >
                     </dx-text-box>
                 </div>
-                <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                <div class="col-12 d-flex justify-content-center align-items-center my-4">
+                    <dx-button id="login-btn"
+                        stylingMode="outlined"
+                        text="Zapisz zmiany"
+                        type="default"
+                        width="49%"
+                        [useSubmitBehavior]="true"
+                    >
+                  </dx-button>
+                </div>
+            </form> 
+        </ng-container>
+        <ng-container *ngIf="selectedItemId == 2">
+            <div class="col-12 table-responsive">
+                <dx-data-grid id="customerOrdersGrid" [dataSource]="customersOrders" 
+                    [remoteOperations]="false" [allowColumnReordering]="true"
+                    [rowAlternationEnabled]="true" [showBorders]="true">
+                    <dxo-paging [pageSize]="10"></dxo-paging>
+                    <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[5, 10, 25, 50]"></dxo-pager>
+                    <dxo-filter-row [visible]="true"></dxo-filter-row>
+                    <dxo-header-filter [visible]="true"></dxo-header-filter>
+                    <dxi-column dataField="orderNumber" caption="Numer zamówienia"></dxi-column>
+                    <dxi-column dataField="orderedDate" caption="Data zamówienia" dataType="date" format="dd.MM.yyyy HH:mm"></dxi-column>
+                    <dxi-column dataField="state" caption="Status">
+                        <dxo-lookup [dataSource]="ordersStates" valueExpr="value" displayExpr="description">
+                        </dxo-lookup>
+                    </dxi-column>
+                </dx-data-grid>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="selectedItemId == 3">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+                <h4>Zmień hasło</h4>
+            </div>
+            <form action="password-change" (submit)="changeCustomerPassword($event)" style="width: 100%;">
+                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                    <dx-text-box
+                        [mode]="oldPasswordMode"
+                        placeholder="..."
+                        label="Podaj aktualne hasło"
+                        labelMode="static"
+                        [showClearButton]="true"
+                        [(value)]="passwordChange.oldPassword"
+                        width="70%"
+                    >
+                        <dxi-button
+                            name="oldPasswordVisibilityBtn"
+                            location="after"
+                            [options]="oldPasswordButton"
+                        ></dxi-button>
+                        <dx-validator>
+                            <dxi-validation-rule
+                                type="required"
+                                message="Podanie aktualnego hasła jest wymagane"
+                            ></dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
                     <dx-text-box
                         [mode]="passwordMode"
                         placeholder="..."
-                        label="Hasło"
+                        label="Podaj nowe hasło"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="registerDTO.password"
-                        width="49%"
+                        [(value)]="passwordChange.newPassword"
+                        width="70%"
                     >
                         <dxi-button
                             name="passwordVisibilityBtn"
@@ -200,18 +186,20 @@
                         <dx-validator>
                             <dxi-validation-rule
                                 type="required"
-                                message="Hasło jest wymagane"
+                                message="Podanie nowego hasła jest wymagane"
                             ></dxi-validation-rule>
                         </dx-validator>
                     </dx-text-box>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
                     <dx-text-box
                         [mode]="passwordRepeatMode"
                         placeholder="..."
-                        label="Powtórz hasło"
+                        label="Powtórz nowe hasło"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="registerDTO.passwordRepeat"
-                        width="49%">
+                        [(value)]="passwordChange.newPasswordRepeat"
+                        width="70%">
                         <dxi-button
                             name="passwordRepeatVisibilityBtn"
                             location="after"
@@ -236,6 +224,6 @@
                   </dx-button>
                 </div>
             </form>
-        </div>
+        </ng-container>
     </div>
 </div>
