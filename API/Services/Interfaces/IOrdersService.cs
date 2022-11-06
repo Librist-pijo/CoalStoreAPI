@@ -1,4 +1,7 @@
-﻿namespace API.Services.Interfaces
+﻿using API.Enums;
+using API.ModelsDTO;
+
+namespace API.Services.Interfaces
 {
     public interface IOrdersService
     {
