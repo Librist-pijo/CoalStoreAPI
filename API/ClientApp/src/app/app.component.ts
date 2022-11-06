@@ -9,6 +9,7 @@ import * as plMessages from '../assets/pl.json';
 })
 
 export class AppComponent {
+  title: string = "ClientApp";
 
   constructor() {
     this.initMessages();
