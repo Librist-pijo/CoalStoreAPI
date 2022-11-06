@@ -10,5 +10,7 @@ namespace API.Repositories.Models
         public string ShippingAddress { get; set; }
         public DateTime? ShippingDate { get; set; }
         public OrderState State { get; set; }
+        //
+        public string OrderNumber { get; set; }
     }
 }

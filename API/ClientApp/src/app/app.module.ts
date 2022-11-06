@@ -10,9 +10,12 @@ import { NavComponent } from './layout/nav/nav.component';
 import { HomeComponent } from './layout/home/home.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { LoginComponent } from './layout/login/login.component';
-import { DxButtonModule, DxDateBoxModule, DxTextBoxModule, DxValidatorModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxDateBoxModule, DxTabsModule, DxTextBoxModule, DxValidatorModule } from 'devextreme-angular';
 import { EmailValidationService } from './services/email-validation.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { UserAccountComponent } from './layout/user-account/user-account.component';
+import { ProductsComponent } from './layout/products/products.component';
+import { OrdersService } from './services/orders.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     NavComponent,
     FooterComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    UserAccountComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -30,12 +35,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     DxButtonModule,
     DxTextBoxModule,
     DxDateBoxModule,
-    DxValidatorModule
+    DxValidatorModule,
+    DxTabsModule,
+    DxDataGridModule
   ],
   providers: [
     Connection, 
     DatabaseService,
-    EmailValidationService
+    EmailValidationService,
+    OrdersService
   ],
   bootstrap: [AppComponent]
 })
