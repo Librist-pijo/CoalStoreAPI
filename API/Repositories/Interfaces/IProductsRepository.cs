@@ -4,10 +4,10 @@ namespace API.Repositories.Interfaces
 {
     public interface IProductsRepository
     {
-        Task CreatProduct(Products product);
+        Task CreateProduct(Products product);
         Task UpdateProduct(Products product);
         Task DeleteProduct(Products product);
-        Task GetProducts();
-        Task GetProductByName(int productName);
+        Task<List<Products>> GetProducts();
+        Task<Products> GetProductByName(string productName);
     }
 }
