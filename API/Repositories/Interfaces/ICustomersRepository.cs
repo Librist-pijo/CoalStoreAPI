@@ -7,8 +7,8 @@ namespace API.Repositories.Interfaces
         Task CreateCustomer(Customers customer);
         Task UpdateCustomer(Customers customer);
         Task DeleteCustomer(Customers customer);
-        Task GetCustomers();
-        Task GetCustomerByLogin(string customerName);
-        Task CheckIfEmailExists(string email);
+        Task<List<Customers>> GetCustomers();
+        Task<Customers> GetCustomerByLogin(string customerLogin);
+        //Task CheckIfEmailExists(string email);
     }
 }
