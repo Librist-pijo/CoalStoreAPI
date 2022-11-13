@@ -41,7 +41,7 @@ namespace API.Repositories
         public async Task<Orders> GetOrderById(int orderId)
         {
             var order = await _dataAccess.LoadData<Orders, dynamic>
-                ("dbo.spGetProductByName",
+                ("dbo.spGetOrderById",
                 new
                 {
                     Id = orderId
@@ -54,7 +54,7 @@ namespace API.Repositories
         public async Task<List<Orders>> GetOrders()
         {
             return await _dataAccess.LoadData<Orders, dynamic>
-             ("dbo.spGetProducts",
+             ("dbo.spGetOrders",
              new
              { },
              "SQLDB");
