@@ -15,9 +15,9 @@ BEGIN
 
         INSERT INTO dbo.[Customers] (Login, Password, FirstName, LastName, AddressLine1, AddressLine2, PostCode)
         VALUES(@Login, HASHBYTES('SHA2_512', @Password), @FirstName, @LastName, @AddressLine1, @AddressLine2, @PostCode)
-		set @id = SCOPE_IDENTITY()
+		set @Id = SCOPE_IDENTITY()
 
-		return @id
+		return @Id
     END TRY
     BEGIN CATCH
         return ERROR_MESSAGE() 

@@ -11,6 +11,9 @@ namespace API.Repositories.Models
         public DateTime? ShippingDate { get; set; }
         public OrderState State { get; set; }
         //
-        public string OrderNumber { get; set; }
+        public string OrderNumber
+        {
+            get { return $"{Id}/{CustomerId}/{OrderDate.Date}"; }
+        }
     }
 }

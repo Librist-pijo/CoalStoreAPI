@@ -7,7 +7,7 @@ namespace API.Repositories.Interfaces
         Task CreatOrder(Orders order);
         Task UpdateOrder(Orders order);
         Task DeleteOrder(Orders order);
-        Task GetOrders();
-        Task GetOrderById(int orderId);
+        Task<List<Orders>> GetOrders();
+        Task<Orders> GetOrderById(int orderId);
     }
 }
