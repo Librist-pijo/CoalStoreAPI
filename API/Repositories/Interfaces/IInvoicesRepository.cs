@@ -7,7 +7,7 @@ namespace API.Repositories.Interfaces
         Task CreateInvoice(Invoices invoice);
         Task UpdateInvoice(Invoices invoice);
         Task DeleteInvoice(Invoices invoice);
-        Task GetInvoices();
-        Task GetInvoiceById(int invoiceId);
+        Task<List<Invoices>> GetInvoices();
+        Task<Invoices> GetInvoiceById(int invoiceId);
     }
 }
