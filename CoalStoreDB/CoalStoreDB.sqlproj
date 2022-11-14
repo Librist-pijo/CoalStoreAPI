@@ -63,6 +63,8 @@
     <Folder Include="Stored Procedures\Invoices" />
     <Folder Include="Stored Procedures\Orders" />
     <Folder Include="Stored Procedures\Products" />
+    <Folder Include="Stored Procedures\OrdersProducts" />
+    <Folder Include="Stored Procedures\ProductsCategories" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Categories.sql" />
@@ -97,6 +99,17 @@
     <Build Include="Stored Procedures\Orders\spGetOrders.sql" />
     <Build Include="Stored Procedures\Orders\spGetOrderById.sql" />
     <Build Include="Stored Procedures\Orders\spUpdateOrder.sql" />
+    <Build Include="Stored Procedures\OrdersProducts\spCreateOrdersProducts.sql" />
+    <Build Include="Stored Procedures\OrdersProducts\spDeleteOrdersProducts.sql" />
+    <Build Include="Stored Procedures\OrdersProducts\spGetOrdersProductsByOrderId.sql" />
+    <Build Include="Stored Procedures\OrdersProducts\spGetOrdersProducts.sql" />
+    <Build Include="Stored Procedures\OrdersProducts\spUpdateOrdersProducts.sql" />
+    <Build Include="Stored Procedures\ProductsCategories\spGetProductsCategories.sql" />
+    <Build Include="Stored Procedures\ProductsCategories\spCreateProductsCategories.sql" />
+    <Build Include="Stored Procedures\ProductsCategories\spDeleteProductsCategories.sql" />
+    <Build Include="Stored Procedures\ProductsCategories\spUpdateProductsCategories.sql" />
+    <Build Include="Stored Procedures\ProductsCategories\spGetProductsCategoriesByCategoryId.sql" />
+    <Build Include="Stored Procedures\ProductsCategories\spGetProductsCategoriesByProductId.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CoalStoreDB.refactorlog" />
