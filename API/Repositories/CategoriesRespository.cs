@@ -1,33 +1,69 @@
 ﻿using API.Repositories.Interfaces;
 using API.Repositories.Models;
+using Dapper;
+using DataLibrary.DataAccess.Interfaces;
+using System.Data;
 
 namespace API.Repositories
 {
     public class CategoriesRespository : ICategoriesRepository
     {
-        public Task CreateCategory(Categories category)
+        private readonly IDataAccess _dataAccess;
+
+        public CategoriesRespository(IDataAccess dataAccess)
         {
-            throw new NotImplementedException();
+            _dataAccess = dataAccess;
+        }
+
+        public async Task CreateCategory(Categories category)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("Name", category.Name);
+            parameters.Add("Id", DbType.Int32, direction: ParameterDirection.Output);
+
+            await _dataAccess.SaveData("dbo.spCreateCategory", parameters, "SQLDB");
         }
 
         public Task DeleteCategory(Categories category)
         {
-            throw new NotImplementedException();
+            DynamicParameters parameter = new DynamicParameters();
+
+            parameter.Add("Id", category.Id);
+
+            return _dataAccess.SaveData("dbo.spDeleteCategory", parameter, "SQLDB");
         }
 
-        public Task GetCategories()
+        public async Task<List<Categories>> GetCategories()
         {
-            throw new NotImplementedException();
+            return await _dataAccess.LoadData<Categories, dynamic>
+                 ("dbo.spGetCategories",
+                 new
+                 { },
+                 "SQLDB");
         }
 
-        public Task GetCategoryByName(string categoryName)
+        public async Task<Categories> GetCategoryByName(string categoryName)
         {
-            throw new NotImplementedException();
+            var category = await _dataAccess.LoadData<Categories, dynamic>
+                ("dbo.spGetCategoryByName",
+                new
+                {
+                    Name = categoryName
+                },
+                "SQLDB");
+
+            return category.FirstOrDefault();
         }
 
-        public Task UpdateCategory(Categories category)
+        public async Task UpdateCategory(Categories category)
         {
-            throw new NotImplementedException();
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("Name", category.Name);
+            parameters.Add("Id", category.Id);
+
+            await _dataAccess.SaveData("dbo.spCreateCategory", parameters, "SQLDB");
         }
     }
 }
