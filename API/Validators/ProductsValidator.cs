@@ -44,9 +44,14 @@ namespace API.Validators
             }
 
             bool StockValidationTask = await ValidateStock(products);
+            bool NameValidationTask = await ValidateName(products);
             bool PriceValidationTask = await ValidatePrice(products);
 
             if (!StockValidationTask)
+            {
+                return false;
+            }
+            if (!NameValidationTask)
             {
                 return false;
             }
