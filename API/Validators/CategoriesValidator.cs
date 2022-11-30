@@ -57,13 +57,10 @@ namespace API.Validators
 
         private async Task<bool> ValidateName(Categories categories)
         {
-            var category = await _categoriesRepository.GetCategoryByName(categories.Name);
-
-            if (category == null || category == default)
+            if (categories.Name.Length > 3)
             {
                 return true;
             }
-
             return false;
         }
 
