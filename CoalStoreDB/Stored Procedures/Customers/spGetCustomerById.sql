@@ -1,6 +1,6 @@
-﻿CREATE PROCEDURE [dbo].[spGetCustomerByLogin]
-	@Login NVARCHAR(255)
-AS
+﻿CREATE PROCEDURE [dbo].[spGetCustomerById]
+	@Id Int
+	AS
 BEGIN
 	SELECT 
 		Id,
@@ -12,6 +12,5 @@ BEGIN
 		AddressLine2,
 		PostCode
 		FROM Customers
-		WHERE Login = @Login
+		WHERE Id = @Id
 END
-
