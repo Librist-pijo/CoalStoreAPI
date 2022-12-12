@@ -9,7 +9,7 @@ namespace API.Repositories.Models
         public DateTime OrderDate { get; set; }
         public string ShippingAddress { get; set; }
         public DateTime? ShippingDate { get; set; }
-        public OrderState State { get; set; }
+        public int State { get; set; }
         //
         public string OrderNumber
         {
