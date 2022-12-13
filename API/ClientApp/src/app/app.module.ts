@@ -12,10 +12,14 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { LoginComponent } from './layout/login/login.component';
 import { DxButtonModule, DxDataGridModule, DxDateBoxModule, DxTabsModule, DxTextBoxModule, DxValidatorModule } from 'devextreme-angular';
 import { EmailValidationService } from './services/email-validation.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserAccountComponent } from './layout/user-account/user-account.component';
 import { ProductsComponent } from './layout/products/products.component';
 import { OrdersService } from './services/orders.service';
+import { AuthService } from './services/auth.service';
+import { TokenService } from './services/token.service';
+import { AuthInterceptor } from './auth.interceptor';
+import { NotFoundComponent } from './layout/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,8 @@ import { OrdersService } from './services/orders.service';
     HomeComponent,
     LoginComponent,
     UserAccountComponent,
-    ProductsComponent
+    ProductsComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,14 @@ import { OrdersService } from './services/orders.service';
     Connection, 
     DatabaseService,
     EmailValidationService,
-    OrdersService
+    OrdersService,
+    AuthService,
+    TokenService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

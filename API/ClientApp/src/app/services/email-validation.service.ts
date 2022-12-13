@@ -15,13 +15,13 @@ export class EmailValidationService {
     validateEmail(email: string): boolean {
         var result = false;
 
-        this.dbService.SetRoute(`customers/validate-email?email=${email}`);
-        this.dbService.Get<boolean>().subscribe((result) => {
-            result = result.valueOf();
+        this.dbService.SetRoute(`auth/validate-email?email=${email}`);
+        this.dbService.Get<boolean>().subscribe((data: boolean) => {
+            result = data;
         }, (err) => {
             console.log(err);
         });
 
-        return result;
+        return !result;
     }
 }

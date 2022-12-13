@@ -19,7 +19,7 @@ body {
 }
 
 ::ng-deep .dx-icon-visibility {
-    background-image: url('../../../assets/icons/visibility_FILL0_wght400_GRAD0_opsz24.svg');
+    background-image: url('../src/assets/icons/visibility_FILL0_wght400_GRAD0_opsz24.svg');
     background-repeat: no-repeat;
     background-position: 0px 0px;
 }

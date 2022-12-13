@@ -19,7 +19,7 @@ namespace API.Repositories
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("Name", customer.Login);
+            parameters.Add("Login", customer.Login);
             parameters.Add("Password", customer.Password);
             parameters.Add("FirstName", customer.FirstName);
             parameters.Add("LastName", customer.LastName);
@@ -46,7 +46,7 @@ namespace API.Repositories
                 ("dbo.spGetCustomerByLogin",
                 new
                 {
-                    Name = customerLogin
+                    Login = customerLogin
                 },
                 "SQLDB");
 
@@ -79,7 +79,7 @@ namespace API.Repositories
         {
             DynamicParameters parameters = new DynamicParameters();
 
-            parameters.Add("Name", customer.Login);
+            parameters.Add("Login", customer.Login);
             parameters.Add("Password", customer.Password);
             parameters.Add("FirstName", customer.FirstName);
             parameters.Add("LastName", customer.LastName);
@@ -91,9 +91,18 @@ namespace API.Repositories
             await _dataAccess.SaveData("dbo.spUpdateCustomer", parameters, "SQLDB");
         }
 
-        //public Task CheckIfEmailExists(string email)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<Customers> GetCustomerByLoginAndPassword(string customerLogin, string password)
+        {
+            var Customer = await _dataAccess.LoadData<Customers, dynamic>
+                ("dbo.spGetCustomerByLoginAndPassword",
+                new
+                {
+                    Login = customerLogin,
+                    Password = password
+                },
+                "SQLDB");
+
+            return Customer.FirstOrDefault();
+        }
     }
 }
