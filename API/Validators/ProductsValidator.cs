@@ -19,15 +19,9 @@ namespace API.Validators
             bool StockValidationTask = await ValidateStock(products);
             bool PriceValidationTask = await ValidatePrice(products);
 
-            if (!StockValidationTask)
-            {
-                return false;
-            }
-            if (!NameValidationTask)
-            {
-                return false;
-            }
-            if (!PriceValidationTask)
+            if (!StockValidationTask
+                || !NameValidationTask
+                || !PriceValidationTask)
             {
                 return false;
             }
@@ -47,15 +41,9 @@ namespace API.Validators
             bool NameValidationTask = await ValidateName(products);
             bool PriceValidationTask = await ValidatePrice(products);
 
-            if (!StockValidationTask)
-            {
-                return false;
-            }
-            if (!NameValidationTask)
-            {
-                return false;
-            }
-            if (!PriceValidationTask)
+            if (!StockValidationTask
+                || !NameValidationTask
+                || !PriceValidationTask)
             {
                 return false;
             }

@@ -29,31 +29,13 @@ namespace API.Validators
             bool AddressLine1Validation = await ValidateAddressLine1(customers);
             bool AddressLine2Validation = await ValidateAddressLine2(customers);
             bool PostCodeValidation = await ValidatePostCode(customers);
-            if (!LoginValidation)
-            {
-                return false;
-            }
-            if (!PasswordValidation)
-            {
-                return false;
-            }
-            if (!FirstNameValidation)
-            {
-                return false;
-            }
-            if (!LastNameValidation)
-            {
-                return false;
-            }
-            if (!AddressLine1Validation)
-            {
-                return false;
-            }
-            if (!AddressLine2Validation)
-            {
-                return false;
-            }
-            if (!PostCodeValidation)
+            if (!LoginValidation
+                || !PasswordValidation
+                || !FirstNameValidation
+                || !LastNameValidation
+                || !AddressLine1Validation
+                || !AddressLine2Validation
+                || !PostCodeValidation)
             {
                 return false;
             }
@@ -84,31 +66,13 @@ namespace API.Validators
             bool AddressLine1Validation = await ValidateAddressLine1(customers);
             bool AddressLine2Validation = await ValidateAddressLine2(customers);
             bool PostCodeValidation = await ValidatePostCode(customers);
-            if (!LoginValidation)
-            {
-                return false;
-            }
-            if (!PasswordValidation)
-            {
-                return false;
-            }
-            if (!FirstNameValidation)
-            {
-                return false;
-            }
-            if (!LastNameValidation)
-            {
-                return false;
-            }
-            if (!AddressLine1Validation)
-            {
-                return false;
-            }
-            if (!AddressLine2Validation)
-            {
-                return false;
-            }
-            if (!PostCodeValidation)
+            if (!LoginValidation
+                || !PasswordValidation
+                || !FirstNameValidation
+                || !LastNameValidation
+                || !AddressLine1Validation
+                || !AddressLine2Validation
+                || !PostCodeValidation)
             {
                 return false;
             }
