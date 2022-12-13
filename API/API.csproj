@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Controllers\Interfaces\" />
     <Folder Include="Repositories\Factories\" />
-    <Folder Include="Validators\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

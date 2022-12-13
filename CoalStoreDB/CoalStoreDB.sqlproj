@@ -110,6 +110,7 @@
     <Build Include="Stored Procedures\ProductsCategories\spUpdateProductsCategories.sql" />
     <Build Include="Stored Procedures\ProductsCategories\spGetProductsCategoriesByCategoryId.sql" />
     <Build Include="Stored Procedures\ProductsCategories\spGetProductsCategoriesByProductId.sql" />
+    <Build Include="Stored Procedures\Customers\spGetCustomerById.sql" />
     <Build Include="Stored Procedures\Customers\spGetCustomerByLoginAndPassword.sql" />
   </ItemGroup>
   <ItemGroup>

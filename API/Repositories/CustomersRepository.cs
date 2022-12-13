@@ -53,6 +53,19 @@ namespace API.Repositories
             return Customer.FirstOrDefault();
         }
 
+        public async Task<Customers> GetCustomerById(int customerId)
+        {
+            var Customer = await _dataAccess.LoadData<Customers, dynamic>
+                ("dbo.spGetCustomerById",
+                new
+                {
+                    Id = customerId
+                },
+                "SQLDB");
+
+            return Customer.FirstOrDefault();
+        }
+
         public async Task<List<Customers>> GetCustomers()
         {
             return await _dataAccess.LoadData<Customers, dynamic>

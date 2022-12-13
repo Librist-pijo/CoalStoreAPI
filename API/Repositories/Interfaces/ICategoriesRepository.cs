@@ -7,7 +7,7 @@ namespace API.Repositories.Interfaces
         Task CreateCategory(Categories category);
         Task UpdateCategory(Categories category);
         Task DeleteCategory(Categories category);
-        Task GetCategories();
-        Task GetCategoryByName(string categoryName);
+        Task<List<Categories>> GetCategories();
+        Task<Categories> GetCategoryByName(string categoryName);
     }
 }
