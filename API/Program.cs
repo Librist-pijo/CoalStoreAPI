@@ -19,6 +19,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "ClientApp/dist")),
+    RequestPath = "/ClientApp/dist"
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
