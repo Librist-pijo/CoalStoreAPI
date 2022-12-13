@@ -35,9 +35,10 @@ namespace DataLibrary.DataAccess
         public async Task SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
         {
             string connectionString = _config.GetConnectionString(connectionStringName);
-
+                
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
+                //connection.Execute(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
                 await connection.ExecuteAsync(storedProcedure, parameters,
                     commandType: CommandType.StoredProcedure);
             }

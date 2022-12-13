@@ -4,15 +4,17 @@
             <div class="col-12 d-flex justify-content-center align-items-center">
                 <h4>Zaloguj się</h4>
             </div>
-            <form action="login-user" (submit)="login($event)">
+            <form id="loginForm" name="loginForm" action="">
                 <div class="col-12 d-flex justify-content-center align-items-center mt-4">
                     <dx-text-box
+                        id="loginEmail"
+                        name="loginEmail"
                         mode="email"
                         placeholder="..."
                         label="E-mail"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="loginDTO.email"
+                        [(value)]="loginDTO.login"
                         width="70%">
                         <dx-validator>
                             <dxi-validation-rule
@@ -23,16 +25,13 @@
                               type="email"
                               message="Adres e-mail jest nieprawidłowy"
                             ></dxi-validation-rule>
-                            <dxi-validation-rule
-                              type="async"
-                              message="Email is already registered"
-                              [validationCallback]="asyncValidation"
-                            ></dxi-validation-rule>
                         </dx-validator>
                     </dx-text-box>
                 </div>
                 <div class="col-12 d-flex justify-content-center align-items-center mt-2">
                     <dx-text-box
+                        id="loginPassword"
+                        name="loginPassword"
                         mode="password"
                         placeholder="..."
                         label="Hasło"
@@ -49,12 +48,12 @@
                     </dx-text-box>
                 </div>
                 <div class="col-12 d-flex justify-content-center align-items-center my-4">
-                    <dx-button id="login-btn"
+                    <dx-button id="login-btn" name="login-btn"
                         stylingMode="outlined"
                         text="Zaloguj"
                         type="default"
                         width="30%"
-                        [useSubmitBehavior]="true"
+                        (onClick)="login($event)"
                     >
                   </dx-button>
                 </div>
@@ -69,9 +68,11 @@
             <div class="col-12 d-flex justify-content-center align-items-center">
                 <h4>Utwórz konto</h4>
             </div>
-            <form action="register-user" (submit)="register($event)">
+            <form id="registerForm" name="registerForm" action="">
                 <div class="col-12 d-flex justify-content-between align-items-center mt-4">
                     <dx-text-box
+                        id="firstname"
+                        name="firstname"
                         placeholder="..."
                         label="Imię"
                         labelMode="static"
@@ -86,6 +87,8 @@
                         </dx-validator>
                     </dx-text-box>
                     <dx-text-box
+                        id="lastname"
+                        name="lastname"
                         placeholder="..."
                         label="Nazwisko"
                         labelMode="static"
@@ -102,6 +105,8 @@
                 </div>
                 <div class="col-12 d-flex justify-content-between align-items-center mt-2">
                     <dx-text-box
+                        id="email"
+                        name="email"
                         mode="email"
                         placeholder="..."
                         label="Email"
@@ -118,14 +123,16 @@
                               type="email"
                               message="Adres e-mail jest nieprawidłowy"
                             ></dxi-validation-rule>
-                            <dxi-validation-rule
+                            <!-- <dxi-validation-rule
                               type="async"
                               message="Istnieje konto w systemie dla podanego adresu e-mail"
                               [validationCallback]="asyncValidation"
-                            ></dxi-validation-rule>
+                            ></dxi-validation-rule> -->
                         </dx-validator>
                     </dx-text-box>
                     <dx-date-box
+                        id="birthdate"
+                        name="birthdate"
                         placeholder="..."
                         label="Data urodzenia"
                         labelMode="static"
@@ -145,6 +152,8 @@
                 </div>
                 <div class="col-12 d-flex justify-content-between align-items-center mt-2">
                     <dx-text-box
+                        id="addressLine1"
+                        name="addressLine1"
                         [(value)]="registerDTO.addressLine1"
                         placeholder="..."
                         label="Adres"
@@ -153,7 +162,9 @@
                         width="78%"
                         >
                     </dx-text-box>
-                    <dx-text-box
+                    <dx-text-box    
+                        id="postCode"
+                        name="postCode"
                         [(value)]="registerDTO.postCode"
                         placeholder="..."
                         label="Kod pocztowy"
@@ -162,17 +173,12 @@
                         width="20%"
                         mask="00-000"
                         [useMaskedValue]="true">
-                        <dx-validator>
-                            <dxi-validation-rule
-                              type="pattern"
-                              [pattern]="'^[^0-9]'"
-                              message="Kod pocztowy musi mieć odpowiedni format"
-                            ></dxi-validation-rule>
-                        </dx-validator>
                     </dx-text-box>
                 </div>
                 <div class="col-12 d-flex justify-content-center align-items-center mt-2">
                     <dx-text-box
+                        id="addressLine2"
+                        name="addressLine2"
                         [(value)]="registerDTO.addressLine2"
                         placeholder="..."
                         label="Adres c.d."
@@ -184,6 +190,8 @@
                 </div>
                 <div class="col-12 d-flex justify-content-between align-items-center mt-2">
                     <dx-text-box
+                        id="password"
+                        name="password"
                         [mode]="passwordMode"
                         placeholder="..."
                         label="Hasło"
@@ -203,8 +211,15 @@
                                 message="Hasło jest wymagane"
                             ></dxi-validation-rule>
                         </dx-validator>
+                        <dxi-validation-rule
+                          type="async"
+                          message="Hasła różnią się od siebie"
+                          [validationCallback]="passwordValidation"
+                        ></dxi-validation-rule>
                     </dx-text-box>
                     <dx-text-box
+                        id="passwordRepeat"
+                        name="passwordRepeat"
                         [mode]="passwordRepeatMode"
                         placeholder="..."
                         label="Powtórz hasło"
@@ -223,15 +238,20 @@
                                 message="Potwierdź hasło wprowadzając je ponownie!"
                             ></dxi-validation-rule>
                         </dx-validator>
+                        <dxi-validation-rule
+                          type="async"
+                          message="Hasła różnią się od siebie"
+                          [validationCallback]="passwordValidation"
+                        ></dxi-validation-rule>
                     </dx-text-box>
                 </div>
                 <div class="col-12 d-flex justify-content-center align-items-center my-4">
-                    <dx-button id="login-btn"
+                    <dx-button id="register-btn" name="register-btn"
                         stylingMode="outlined"
                         text="Zarejestruj"
                         type="default"
-                        width="30%"
-                        [useSubmitBehavior]="true"
+                        width="30%" 
+                        (onClick)="register($event)"
                     >
                   </dx-button>
                 </div>

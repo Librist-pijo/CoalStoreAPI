@@ -10,21 +10,12 @@ export class HomeComponent implements OnInit {
     
 
     constructor(
-        private dbService: DatabaseService
-    ) {
+
+        ) {
 
     }
 
     ngOnInit(): void {
-        this.test();
-    }
 
-    test() {
-        this.dbService.SetRoute('products');
-        this.dbService.Get().subscribe((data) => {
-            console.log('test', data);
-        }, (err) => {
-            console.log(err);
-        });
     }
 }

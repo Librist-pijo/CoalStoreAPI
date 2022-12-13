@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:7197'
+  apiUrl: 'http://localhost:7197',
+  EncryptKey: '1203199320052021'
 };
 
 /*

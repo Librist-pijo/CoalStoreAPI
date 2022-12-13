@@ -9,6 +9,6 @@ namespace API.Repositories.Interfaces
         Task DeleteCustomer(Customers customer);
         Task<List<Customers>> GetCustomers();
         Task<Customers> GetCustomerByLogin(string customerLogin);
-        //Task CheckIfEmailExists(string email);
+        Task<Customers> GetCustomerByLoginAndPassword(string customerLogin, string password);
     }
 }
