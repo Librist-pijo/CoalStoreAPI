@@ -9,5 +9,6 @@ namespace API.Repositories.Interfaces
         Task DeleteCategory(Categories category);
         Task<List<Categories>> GetCategories();
         Task<Categories> GetCategoryByName(string categoryName);
+        Task<Categories> GetCategoryById(int categoryId);
     }
 }
