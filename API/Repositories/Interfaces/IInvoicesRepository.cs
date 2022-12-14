@@ -4,10 +4,10 @@ namespace API.Repositories.Interfaces
 {
     public interface IInvoicesRepository
     {
-        Task CreateInvoice(Invoices invoice);
-        Task UpdateInvoice(Invoices invoice);
-        Task DeleteInvoice(Invoices invoice);
-        Task<List<Invoices>> GetInvoices();
-        Task<Invoices> GetInvoiceById(int invoiceId);
+        Task Create(Invoices invoice);
+        Task Update(Invoices invoice);
+        Task Delete(Invoices invoice);
+        Task<List<Invoices>> Get();
+        Task<Invoices> GetById(int invoiceId);
     }
 }

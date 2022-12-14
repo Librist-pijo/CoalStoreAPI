@@ -1,0 +1,6 @@
+﻿CREATE PROCEDURE [dbo].[spGetProductById]
+@Id NVARCHAR(255)
+AS
+BEGIN
+	SELECT * FROM Products WHERE Id = @Id
+END

@@ -15,13 +15,15 @@ namespace API.Validators
 
         public async Task<bool> ValidateCreateAsync(Products products)
         {
-            bool NameValidationTask = await ValidateName(products);
-            bool StockValidationTask = await ValidateStock(products);
-            bool PriceValidationTask = await ValidatePrice(products);
+            bool nameExistsValidationTask = await ValidateProductNameExists(products);
+            bool nameValidationTask = await ValidateName(products);
+            bool stockValidationTask = await ValidateStock(products);
+            bool priceValidationTask = await ValidatePrice(products);
 
-            if (!StockValidationTask
-                || !NameValidationTask
-                || !PriceValidationTask)
+            if (!stockValidationTask
+                || !nameValidationTask
+                || !priceValidationTask
+                || nameExistsValidationTask)
             {
                 return false;
             }
@@ -31,19 +33,17 @@ namespace API.Validators
 
         public async Task<bool> ValidateUpdateAsync(Products products)
         {
-            bool ExistsValidationTask = await ValidateProductExists(products);
-            if (!ExistsValidationTask)
-            {
-                return false;
-            }
-
-            bool StockValidationTask = await ValidateStock(products);
+            bool idExistsValidationTask = await ValidateProductIdExists(products);
+            bool nameExistsValidationTask = await ValidateProductNameExists(products);
+            bool stockValidationTask = await ValidateStock(products);
             bool NameValidationTask = await ValidateName(products);
-            bool PriceValidationTask = await ValidatePrice(products);
+            bool priceValidationTask = await ValidatePrice(products);
 
-            if (!StockValidationTask
+            if (!stockValidationTask
                 || !NameValidationTask
-                || !PriceValidationTask)
+                || !priceValidationTask
+                || !idExistsValidationTask
+                || nameExistsValidationTask)
             {
                 return false;
             }
@@ -52,8 +52,8 @@ namespace API.Validators
 
         public async Task<bool> ValidateDeleteAsync(Products products)
         {
-            bool ExistsValidationTask = await ValidateProductExists(products);
-            if (!ExistsValidationTask)
+            bool idExistsValidationTask = await ValidateProductIdExists(products);
+            if (!idExistsValidationTask)
             {
                 return false;
             }
@@ -62,19 +62,29 @@ namespace API.Validators
 
         private async Task<bool> ValidateName(Products products)
         {
-            var product = await _productsRepository.GetProductByName(products.Name);
+            if (products.Name.Length > 255)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task<bool> ValidateProductNameExists(Products products)
+        {
+            var product = await _productsRepository.GetByName(products.Name);
 
             if (product == null || product == default)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
-        private async Task<bool> ValidateProductExists(Products products)
+        private async Task<bool> ValidateProductIdExists(Products products)
         {
-            var product = await _productsRepository.GetProductByName(products.Name);
+            var product = await _productsRepository.GetById(products.Id);
 
             if (product == null || product == default)
             {
@@ -86,9 +96,7 @@ namespace API.Validators
 
         private async Task<bool> ValidateStock(Products products)
         {
-            var product = await _productsRepository.GetProductByName(products.Name);
-
-            if (product.Stock > 0)
+            if (products.Stock >= 0)
             {
                 return true;
             }
@@ -98,9 +106,7 @@ namespace API.Validators
 
         private async Task<bool> ValidatePrice(Products products)
         {
-            var product = await _productsRepository.GetProductByName(products.Name);
-
-            if (product.Price > 0)
+            if (products.Price > 0)
             {
                 return true;
             }

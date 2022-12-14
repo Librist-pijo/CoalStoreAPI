@@ -18,17 +18,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IDataAccess, SqlDataAccess>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
-builder.Services.AddScoped<ICategoriesValidator, CategoriesValidator>();
-builder.Services.AddScoped<ICategoriesService, CategoriesService>();
-
 builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
 builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
-builder.Services.AddScoped<IOrdersProducts, OrdersProductsRepository>();
+builder.Services.AddScoped<IOrdersProductsRepository, OrdersProductsRepository>();
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
-builder.Services.AddScoped<IProductsCategories, ProductsCategoriesRepository>();
+builder.Services.AddScoped<IProductsValidator, ProductsValidator>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddScoped<IProductsCategoriesRepository, ProductsCategoriesRepository>();
 
 builder.Services.AddCors(options =>
 {
