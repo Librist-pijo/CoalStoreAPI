@@ -22,7 +22,6 @@ namespace API.Repositories
             parameters.Add("OrderId", invoice.OrderId);
             parameters.Add("PaymentMethodId", invoice.PaymentMethodId);
             parameters.Add("Amount", invoice.Amount);
-            parameters.Add("Price", invoice.Price);
             parameters.Add("State", invoice.State);
             parameters.Add("Id", DbType.Int32, direction: ParameterDirection.Output);
 
@@ -67,7 +66,6 @@ namespace API.Repositories
             parameters.Add("OrderId", invoice.OrderId);
             parameters.Add("PaymentMethodId", invoice.PaymentMethodId);
             parameters.Add("Amount", invoice.Amount);
-            parameters.Add("Price", invoice.Price);
             parameters.Add("State", invoice.State);
             parameters.Add("Id", invoice.Id);
 

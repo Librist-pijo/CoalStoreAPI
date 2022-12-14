@@ -16,13 +16,10 @@ namespace API.Validators
 
         public async Task<bool> ValidateCreateAsync(Categories categories)
         {
-            bool ExistsValidationTask = await ValidateCategoryExists(categories);
-            if (!ExistsValidationTask)
-            {
-                return false;
-            }
+            bool ExistsValidationTask = await ValidateCategoryNameExists(categories);
             bool NameValidationTask = await ValidateName(categories);
-            if (!NameValidationTask)
+            if (!NameValidationTask
+                || ExistsValidationTask)
             {
                 return false;
             }
@@ -31,7 +28,7 @@ namespace API.Validators
 
         public async Task<bool> ValidateDeleteAsync(Categories categories)
         {
-            bool ExistsValidationTask = await ValidateCategoryExists(categories);
+            bool ExistsValidationTask = await ValidateCategoryIdExists(categories);
             if (!ExistsValidationTask)
             {
                 return false;
@@ -42,13 +39,12 @@ namespace API.Validators
 
         public async Task<bool> ValidateUpdateAsync(Categories categories)
         {
-            bool ExistsValidationTask = await ValidateCategoryExists(categories);
-            if (!ExistsValidationTask)
-            {
-                return false;
-            }
+            bool idExistsValidationTask = await ValidateCategoryIdExists(categories);
+            bool nameExistsValidationTask = await ValidateCategoryNameExists(categories);
             bool NameValidationTask = await ValidateName(categories);
-            if (!NameValidationTask)
+            if (!NameValidationTask
+                || !idExistsValidationTask
+                || nameExistsValidationTask)
             {
                 return false;
             }
@@ -64,10 +60,19 @@ namespace API.Validators
             return false;
         }
 
-        private async Task<bool> ValidateCategoryExists(Categories categories)
+        private async Task<bool> ValidateCategoryNameExists(Categories categories)
         {
             var category = await _categoriesRepository.GetCategoryByName(categories.Name);
+            if (category == null || category == default)
+            {
+                return false;
+            }
 
+            return true;
+        }
+        private async Task<bool> ValidateCategoryIdExists(Categories categories)
+        {
+            var category = await _categoriesRepository.GetCategoryById(categories.Id);
             if (category == null || category == default)
             {
                 return false;

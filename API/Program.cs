@@ -2,6 +2,8 @@ using API.Repositories;
 using API.Repositories.Interfaces;
 using API.Services;
 using API.Services.Interfaces;
+using API.Validators;
+using API.Validators.Interfaces;
 using DataLibrary.DataAccess;
 using DataLibrary.DataAccess.Interfaces;
 using Microsoft.Extensions.FileProviders;
@@ -16,7 +18,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IDataAccess, SqlDataAccess>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<ICategoriesRepository, CategoriesRespository>();
+
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+builder.Services.AddScoped<ICategoriesValidator, CategoriesValidator>();
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
+
 builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
 builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();

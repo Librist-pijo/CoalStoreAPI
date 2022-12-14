@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Interfaces\" />
-    <Folder Include="Repositories\Factories\" />
   </ItemGroup>
 
   <ItemGroup>
