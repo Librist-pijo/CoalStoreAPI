@@ -15,7 +15,7 @@ namespace API.Repositories
             _dataAccess = dataAccess;
         }
 
-        public async Task CreateInvoice(Invoices invoice)
+        public async Task Create(Invoices invoice)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -28,7 +28,7 @@ namespace API.Repositories
             await _dataAccess.SaveData("dbo.spCreateInvoice", parameters, "SQLDB");
         }
 
-        public Task DeleteInvoice(Invoices invoice)
+        public Task Delete(Invoices invoice)
         {
             DynamicParameters parameter = new DynamicParameters();
 
@@ -37,7 +37,7 @@ namespace API.Repositories
             return _dataAccess.SaveData("dbo.spDeleteInvoice", parameter, "SQLDB");
         }
 
-        public async Task<Invoices> GetInvoiceById(int invoiceId)
+        public async Task<Invoices> GetById(int invoiceId)
         {
             var invoice = await _dataAccess.LoadData<Invoices, dynamic>
                 ("dbo.spGetInvoiceById",
@@ -50,7 +50,7 @@ namespace API.Repositories
             return invoice.FirstOrDefault();
         }
 
-        public async Task<List<Invoices>> GetInvoices()
+        public async Task<List<Invoices>> Get()
         {
             return await _dataAccess.LoadData<Invoices, dynamic>
              ("dbo.spGetInvoices",
@@ -59,7 +59,7 @@ namespace API.Repositories
              "SQLDB");
         }
 
-        public async Task UpdateInvoice(Invoices invoice)
+        public async Task Update(Invoices invoice)
         {
             DynamicParameters parameters = new DynamicParameters();
 

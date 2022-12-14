@@ -17,7 +17,7 @@ namespace API.Repositories
             _dataAccess = dataAccess;
         }
 
-        public async Task CreateProduct(Products product)
+        public async Task Create(Products product)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -29,7 +29,7 @@ namespace API.Repositories
             await _dataAccess.SaveData("dbo.spCreateProduct", parameters, "SQLDB");
         }
 
-        public Task DeleteProduct(Products product)
+        public Task Delete(Products product)
         {
             DynamicParameters parameter = new DynamicParameters();
 
@@ -38,7 +38,7 @@ namespace API.Repositories
             return _dataAccess.SaveData("dbo.spDeleteProduct", parameter, "SQLDB");
         }
 
-        public async Task<Products> GetProductByName(string productName)
+        public async Task<Products> GetByName(string productName)
         {
             var product = await _dataAccess.LoadData<Products, dynamic>
                 ("dbo.spGetProductByName",
@@ -51,7 +51,7 @@ namespace API.Repositories
             return product.FirstOrDefault();
         }
 
-        public async Task<List<Products>> GetProducts()
+        public async Task<List<Products>> Get()
         {
            return await _dataAccess.LoadData<Products, dynamic>
                 ("dbo.spGetProducts",
@@ -60,7 +60,7 @@ namespace API.Repositories
                 "SQLDB");
         }
 
-        public Task UpdateProduct(Products product)
+        public Task Update(Products product)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -70,6 +70,19 @@ namespace API.Repositories
             parameters.Add("Id", product.Id);
 
             return _dataAccess.SaveData("dbo.spUpdateProduct", parameters, "SQLDB");
+        }
+
+        public async Task<Products> GetById(int productId)
+        {
+            var product = await _dataAccess.LoadData<Products, dynamic>
+                ("dbo.spGetProductById",
+                new
+                {
+                    Id = productId
+                },
+                "SQLDB");
+
+            return product.FirstOrDefault();
         }
     }
 }

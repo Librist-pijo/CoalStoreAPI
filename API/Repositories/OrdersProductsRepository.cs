@@ -6,7 +6,7 @@ using System.Data;
 
 namespace API.Repositories
 {
-    public class OrdersProductsRepository : IOrdersProducts
+    public class OrdersProductsRepository : IOrdersProductsRepository
     {
         private readonly IDataAccess _dataAccess;
 

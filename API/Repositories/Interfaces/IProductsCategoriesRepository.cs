@@ -2,7 +2,7 @@
 
 namespace API.Repositories.Interfaces
 {
-    public interface IProductsCategories
+    public interface IProductsCategoriesRepository
     {
         Task Create(ProductsCategories productCategories);
         Task Update(ProductsCategories productCategories);
