@@ -22,13 +22,5 @@ namespace API.Repositories.Factories
             };
             return newCategory;
         }
-        public Categories DeleteCategories(DeleteCategoriesDTO categoriesDTO)
-        {
-            Categories newCategory = new Categories
-            {
-                Id = categoriesDTO.Id
-            };
-            return newCategory;
-        }
     }
 }

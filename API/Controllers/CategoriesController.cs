@@ -33,9 +33,9 @@ namespace API.Controllers
             return Json(value);
         }
         [HttpDelete("delete-category")]
-        public IActionResult DeleteCategories([FromBody] DeleteCategoriesDTO categoriesDTO)
+        public IActionResult DeleteCategories([FromBody] int categoryId)
         {
-            var value = _categoriesService.DeleteCategories(categoriesDTO);
+            var value = _categoriesService.DeleteCategories(categoryId);
             return Json(value);
         }
         [HttpGet("get-categories")]

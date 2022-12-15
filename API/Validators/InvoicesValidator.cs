@@ -63,7 +63,7 @@ namespace API.Validators
         }
         private async Task<bool> ValidateOrderExists(Invoices invoices)
         {
-            var order = await _ordersRepository.GetOrderById(invoices.OrderId);
+            var order = await _ordersRepository.GetById(invoices.OrderId);
 
             if (order == null || order == default)
             {

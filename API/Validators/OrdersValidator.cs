@@ -21,19 +21,15 @@ namespace API.Validators
         public async Task<bool> ValidateCreateAsync(Orders orders)
         {
             bool customerValidation = await ValidateCustomer(orders);
-            if (customerValidation)
-            {
-                var customer = await _customersRepository.GetCustomerById(orders.CustomerId);
-                orders.ShippingAddress = $"{customer.AddressLine1}" +
-                    $" {customer.AddressLine2}" +
-                    $" {customer.PostCode}";
-            }
             bool orderDateValidation = await ValidateOrderDate(orders);
-            bool shippingDateValidation = await ValidateShippingAddress(orders);
+            bool shippingDateValidation = await ValidateShippingDate(orders,true);
+            bool shippingAdressValidation = await ValidateShippingAddress(orders);
             bool stateValidation = await ValidateState(orders);
             if (!orderDateValidation
                 || !shippingDateValidation
-                || !stateValidation)
+                || !stateValidation
+                || !customerValidation
+                || !shippingAdressValidation)
             {
                 return false;
             }
@@ -42,8 +38,8 @@ namespace API.Validators
 
         public async Task<bool> ValidateDeleteAsync(Orders orders)
         {
-            bool existValidation = await ValidateIfExists(orders);
-            if (existValidation)
+            bool orderExistsValidation = await ValidateIfExists(orders);
+            if (orderExistsValidation)
             {
                 return true;
             }
@@ -53,21 +49,15 @@ namespace API.Validators
         public async Task<bool> ValidateUpdateAsync(Orders orders)
         {
             bool customerValidation = await ValidateCustomer(orders);
-            if (customerValidation)
-            {
-                var customer = await _customersRepository.GetCustomerById(orders.CustomerId);
-                orders.ShippingAddress = $"{customer.AddressLine1}" +
-                    $" {customer.AddressLine2}" +
-                    $" {customer.PostCode}";
-            }
             bool orderDateValidation = await ValidateOrderDate(orders);
-            bool shippingDateValidation = await ValidateShippingDate(orders);
+            bool shippingDateValidation = await ValidateShippingDate(orders,false);
             bool shippingAdressValidation = await ValidateShippingAddress(orders);
             bool stateValidation = await ValidateState(orders);
             if (!orderDateValidation
                 || !shippingDateValidation
                 || !shippingAdressValidation
-                || !stateValidation)
+                || !stateValidation
+                || !customerValidation)
             {
                 return false;
             }
@@ -109,9 +99,9 @@ namespace API.Validators
             }
             return false;
         }
-        private async Task<bool> ValidateShippingDate(Orders orders)
+        private async Task<bool> ValidateShippingDate(Orders orders, bool creation)
         {
-            if (orders.ShippingDate == null)
+            if (orders.ShippingDate == null && !creation)
             {
                 return false;
             }
@@ -132,7 +122,7 @@ namespace API.Validators
         }
         private async Task<bool> ValidateIfExists(Orders orders)
         {
-            var order = _ordersRepository.GetOrderById(orders.Id);
+            var order = _ordersRepository.GetById(orders.Id);
             if (order == null || order == default)
             {
                 return false;

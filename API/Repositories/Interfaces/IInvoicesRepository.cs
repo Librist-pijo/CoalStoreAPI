@@ -6,7 +6,7 @@ namespace API.Repositories.Interfaces
     {
         Task Create(Invoices invoice);
         Task Update(Invoices invoice);
-        Task Delete(Invoices invoice);
+        Task Delete(int invoiceId);
         Task<List<Invoices>> Get();
         Task<Invoices> GetById(int invoiceId);
     }

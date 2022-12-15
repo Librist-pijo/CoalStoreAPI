@@ -1,5 +1,5 @@
 ﻿using API.ModelsDTO;
-using API.ModelsDTO.Products;
+using API.ModelsDTO.ProductsDTO;
 using API.Repositories.Factories;
 using API.Repositories.Interfaces;
 using API.Repositories.Models;
@@ -47,20 +47,19 @@ namespace API.Services
             return result;
         }
 
-        public ResultData DeleteProducts(DeleteProductsDTO deleteProductsDTO)
+        public ResultData DeleteProducts(int productId)
         {
             ResultData result = new();
 
             try
             {
-                Products products = _productsFactory.DeleteProducts(deleteProductsDTO);
-                var validation = _productsValidator.ValidateDeleteAsync(products).GetAwaiter().GetResult();
+                var validation = _productsValidator.ValidateDeleteAsync(productId).GetAwaiter().GetResult();
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _productsRepository.Delete(products);
+                _productsRepository.Delete(productId);
                 result.Success = true;
             }
             catch (Exception ex)

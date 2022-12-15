@@ -15,7 +15,7 @@ namespace API.Repositories
             _dataAccess = dataAccess;
         }
 
-        public async Task CreatOrder(Orders order)
+        public async Task Creat(Orders order)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -29,16 +29,16 @@ namespace API.Repositories
             await _dataAccess.SaveData("dbo.spCreateOrder", parameters, "SQLDB");
         }
 
-        public Task DeleteOrder(Orders order)
+        public Task Delete(int orderId)
         {
             DynamicParameters parameter = new DynamicParameters();
 
-            parameter.Add("Id", order.Id);
+            parameter.Add("Id", orderId);
 
             return _dataAccess.SaveData("dbo.spDeleteOrder", parameter, "SQLDB");
         }
 
-        public async Task<Orders> GetOrderById(int orderId)
+        public async Task<Orders> GetById(int orderId)
         {
             var order = await _dataAccess.LoadData<Orders, dynamic>
                 ("dbo.spGetOrderById",
@@ -51,7 +51,7 @@ namespace API.Repositories
             return order.FirstOrDefault();
         }
 
-        public async Task<List<Orders>> GetOrders()
+        public async Task<List<Orders>> Get()
         {
             return await _dataAccess.LoadData<Orders, dynamic>
              ("dbo.spGetOrders",
@@ -60,7 +60,7 @@ namespace API.Repositories
              "SQLDB");
         }
 
-        public async Task UpdateOrder(Orders order)
+        public async Task Update(Orders order)
         {
             DynamicParameters parameters = new DynamicParameters();
 

@@ -8,7 +8,7 @@ namespace API.Services.Interfaces
     {
         public ResultData CreateCategories(CreateCategoriesDTO categoriesDTO);
         public ResultData UpdateCategories(UpdateCategoriesDTO categoriesDTO);
-        public ResultData DeleteCategories(DeleteCategoriesDTO deleteCategoriesDTO);
+        public ResultData DeleteCategories(int categoryId);
         public Categories GetCategoryByName(string categoryName);
         public List<Categories> GetCategories();
     }

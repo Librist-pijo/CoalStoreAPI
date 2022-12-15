@@ -1,6 +1,6 @@
 ﻿using API.Enums;
 using API.ModelsDTO;
-using API.ModelsDTO.Products;
+using API.ModelsDTO.ProductsDTO;
 using API.Services;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +33,9 @@ namespace API.Controllers
             return Json(value);
         }
         [HttpDelete("delete-product")]
-        public IActionResult DeleteProducts([FromBody] DeleteProductsDTO ProductsDTO)
+        public IActionResult DeleteProducts([FromBody] int productId)
         {
-            var value = _ProductsService.DeleteProducts(ProductsDTO);
+            var value = _ProductsService.DeleteProducts(productId);
             return Json(value);
         }
         [HttpGet("get-products")]

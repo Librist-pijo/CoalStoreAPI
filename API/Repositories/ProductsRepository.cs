@@ -29,11 +29,11 @@ namespace API.Repositories
             await _dataAccess.SaveData("dbo.spCreateProduct", parameters, "SQLDB");
         }
 
-        public Task Delete(Products product)
+        public Task Delete(int productId)
         {
             DynamicParameters parameter = new DynamicParameters();
 
-            parameter.Add("Id", product.Id);
+            parameter.Add("Id", productId);
 
             return _dataAccess.SaveData("dbo.spDeleteProduct", parameter, "SQLDB");
         }

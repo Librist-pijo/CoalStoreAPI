@@ -33,7 +33,7 @@ namespace API.Validators
 
         public async Task<bool> ValidateUpdateAsync(Products products)
         {
-            bool idExistsValidationTask = await ValidateProductIdExists(products);
+            bool idExistsValidationTask = await ValidateProductIdExists(products.Id);
             bool nameExistsValidationTask = await ValidateProductNameExists(products);
             bool stockValidationTask = await ValidateStock(products);
             bool NameValidationTask = await ValidateName(products);
@@ -50,9 +50,9 @@ namespace API.Validators
             return true;
         }
 
-        public async Task<bool> ValidateDeleteAsync(Products products)
+        public async Task<bool> ValidateDeleteAsync(int productsId)
         {
-            bool idExistsValidationTask = await ValidateProductIdExists(products);
+            bool idExistsValidationTask = await ValidateProductIdExists(productsId);
             if (!idExistsValidationTask)
             {
                 return false;
@@ -82,9 +82,9 @@ namespace API.Validators
             return true;
         }
 
-        private async Task<bool> ValidateProductIdExists(Products products)
+        private async Task<bool> ValidateProductIdExists(int productsId)
         {
-            var product = await _productsRepository.GetById(products.Id);
+            var product = await _productsRepository.GetById(productsId);
 
             if (product == null || product == default)
             {

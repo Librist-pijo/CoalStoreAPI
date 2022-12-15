@@ -27,4 +27,9 @@
     <ProjectReference Include="..\DataLibrary\DataLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ModelsDTO\InvoicesDTO\" />
+    <Folder Include="ModelsDTO\ProductsCategoriesDTO\" />
+  </ItemGroup>
+
 </Project>
