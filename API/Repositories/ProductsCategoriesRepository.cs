@@ -3,6 +3,7 @@ using API.Repositories.Models;
 using Dapper;
 using DataLibrary.DataAccess.Interfaces;
 using System.Data;
+using System.Reflection.Metadata;
 
 namespace API.Repositories
 {
@@ -21,16 +22,16 @@ namespace API.Repositories
 
             parameters.Add("CategoryId", productCategories.CategoryId);
             parameters.Add("ProductId", productCategories.ProductId);
+            parameters.Add("Id", DbType.Int32, direction: ParameterDirection.Output);
 
             await _dataAccess.SaveData("dbo.spCreateProductsCategories", parameters, "SQLDB");
         }
 
-        public Task Delete(ProductsCategories productCategories)
+        public Task Delete(int Id)
         {
             DynamicParameters parameter = new DynamicParameters();
 
-            parameter.Add("ProductId", productCategories.ProductId);
-            parameter.Add("CategoryId", productCategories.CategoryId);
+            parameter.Add("Id", Id);
 
             return _dataAccess.SaveData("dbo.spDeleteProductsCategories", parameter, "SQLDB");
         }
@@ -47,7 +48,7 @@ namespace API.Repositories
         public async Task<List<ProductsCategories>> GetByByCategoryId(int categoryId)
         {
             return await _dataAccess.LoadData<ProductsCategories, dynamic>
-             ("dbo.spGetProductsCategories",
+             ("dbo.spGetProductsCategoriesByCategoryId",
              new
              { CategoryId = categoryId },
              "SQLDB");
@@ -56,10 +57,36 @@ namespace API.Repositories
         public async Task<List<ProductsCategories>> GetByByProductId(int productId)
         {
             return await _dataAccess.LoadData<ProductsCategories, dynamic>
-             ("dbo.spGetProductsCategories",
+             ("dbo.spGetProductsCategoriesByProductId",
              new
              { ProductId = productId },
              "SQLDB");
+        }
+
+        public async Task<ProductsCategories> GetPair(int productId, int categoryId)
+        {
+            var product = await _dataAccess.LoadData<ProductsCategories, dynamic>
+                ("dbo.spGetProductsCategoriesPair",
+                new
+                {
+                    ProductId = productId,
+                    CategoryId = categoryId
+                },
+                "SQLDB");
+
+            return product.FirstOrDefault();
+        }
+        public async Task<ProductsCategories> GetById(int Id)
+        {
+            var product = await _dataAccess.LoadData<ProductsCategories, dynamic>
+                ("dbo.spGetProductsCategoriesById",
+                new
+                {
+                    Id = Id
+                },
+                "SQLDB");
+
+            return product.FirstOrDefault();
         }
 
         public async Task Update(ProductsCategories productCategories)
@@ -68,6 +95,7 @@ namespace API.Repositories
 
             parameters.Add("CategoryId", productCategories.CategoryId);
             parameters.Add("ProductId", productCategories.ProductId);
+            parameters.Add("Id", productCategories.Id);
 
             await _dataAccess.SaveData("dbo.spUpdateProductsCategories", parameters, "SQLDB");
         }

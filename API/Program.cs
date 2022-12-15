@@ -36,6 +36,8 @@ builder.Services.AddScoped<IProductsValidator, ProductsValidator>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 
 builder.Services.AddScoped<IProductsCategoriesRepository, ProductsCategoriesRepository>();
+builder.Services.AddScoped<IProductsCategoriesValidator, ProductsCategoriesValidator>();
+builder.Services.AddScoped<IProductsCategoriesService, ProductsCategoriesService>();
 
 builder.Services.AddCors(options =>
 {
