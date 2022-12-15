@@ -4,11 +4,11 @@ namespace API.Repositories.Interfaces
 {
     public interface ICategoriesRepository
     {
-        Task CreateCategory(Categories category);
-        Task UpdateCategory(Categories category);
-        Task DeleteCategory(Categories category);
-        Task<List<Categories>> GetCategories();
-        Task<Categories> GetCategoryByName(string categoryName);
-        Task<Categories> GetCategoryById(int categoryId);
+        Task Create(Categories category);
+        Task Update(Categories category);
+        Task Delete(int categoryId);
+        Task<List<Categories>> Get();
+        Task<Categories> GetByName(string categoryName);
+        Task<Categories> GetById(int categoryId);
     }
 }

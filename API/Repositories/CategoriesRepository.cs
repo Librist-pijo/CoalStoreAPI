@@ -15,7 +15,7 @@ namespace API.Repositories
             _dataAccess = dataAccess;
         }
 
-        public async Task CreateCategory(Categories category)
+        public async Task Create(Categories category)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -25,16 +25,16 @@ namespace API.Repositories
             await _dataAccess.SaveData("dbo.spCreateCategory", parameters, "SQLDB");
         }
 
-        public Task DeleteCategory(Categories category)
+        public Task Delete(int categoryId)
         {
             DynamicParameters parameter = new DynamicParameters();
 
-            parameter.Add("Id", category.Id);
+            parameter.Add("Id", categoryId);
 
             return _dataAccess.SaveData("dbo.spDeleteCategory", parameter, "SQLDB");
         }
 
-        public async Task<List<Categories>> GetCategories()
+        public async Task<List<Categories>> Get()
         {
             return await _dataAccess.LoadData<Categories, dynamic>
                  ("dbo.spGetCategories",
@@ -43,7 +43,7 @@ namespace API.Repositories
                  "SQLDB");
         }
 
-        public async Task<Categories> GetCategoryById(int categoryId)
+        public async Task<Categories> GetById(int categoryId)
         {
             var category = await _dataAccess.LoadData<Categories, dynamic>
                 ("dbo.spGetCategoryById",
@@ -56,7 +56,7 @@ namespace API.Repositories
             return category.FirstOrDefault();
         }
 
-        public async Task<Categories> GetCategoryByName(string categoryName)
+        public async Task<Categories> GetByName(string categoryName)
         {
             var category = await _dataAccess.LoadData<Categories, dynamic>
                 ("dbo.spGetCategoryByName",
@@ -69,7 +69,7 @@ namespace API.Repositories
             return category.FirstOrDefault();
         }
 
-        public async Task UpdateCategory(Categories category)
+        public async Task Update(Categories category)
         {
             DynamicParameters parameters = new DynamicParameters();
 

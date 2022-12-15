@@ -1,4 +1,4 @@
-﻿using API.ModelsDTO.Products;
+﻿using API.ModelsDTO.ProductsDTO;
 using API.Repositories.Models;
 
 namespace API.Repositories.Factories
@@ -23,14 +23,6 @@ namespace API.Repositories.Factories
                 Name = ProductsDTO.Name,
                 Stock= ProductsDTO.Stock,
                 Price= ProductsDTO.Price
-            };
-            return newProduct;
-        }
-        public Products DeleteProducts(DeleteProductsDTO ProductsDTO)
-        {
-            Products newProduct = new Products
-            {
-                Id = ProductsDTO.Id
             };
             return newProduct;
         }

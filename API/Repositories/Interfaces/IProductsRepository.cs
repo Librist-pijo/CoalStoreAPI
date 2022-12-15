@@ -6,7 +6,7 @@ namespace API.Repositories.Interfaces
     {
         Task Create(Products product);
         Task Update(Products product);
-        Task Delete(Products product);
+        Task Delete(int productId);
         Task<List<Products>> Get();
         Task<Products> GetByName(string productName);
         Task<Products> GetById(int productId);

@@ -35,7 +35,7 @@ namespace API.Services
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _categoriesRepository.CreateCategory(categories);
+                _categoriesRepository.Create(categories);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -58,7 +58,7 @@ namespace API.Services
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _categoriesRepository.UpdateCategory(categories);
+                _categoriesRepository.Update(categories);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -69,20 +69,19 @@ namespace API.Services
             return result;
         }
 
-        public ResultData DeleteCategories(DeleteCategoriesDTO categoriesDTO)
+        public ResultData DeleteCategories(int categoryId)
         {
             ResultData result = new();
 
             try
             {
-                Categories categories = _categoriesFactory.DeleteCategories(categoriesDTO);
-                var validation = _categoriesValidator.ValidateDeleteAsync(categories).GetAwaiter().GetResult();
+                var validation = _categoriesValidator.ValidateDeleteAsync(categoryId).GetAwaiter().GetResult();
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _categoriesRepository.DeleteCategory(categories);
+                _categoriesRepository.Delete(categoryId);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -93,12 +92,12 @@ namespace API.Services
         }
         public Categories GetCategoryByName(string categoryName)
         {
-            var category = _categoriesRepository.GetCategoryByName(categoryName).GetAwaiter().GetResult();
+            var category = _categoriesRepository.GetByName(categoryName).GetAwaiter().GetResult();
             return category;
         }
         public List<Categories> GetCategories()
         {
-            var category = _categoriesRepository.GetCategories().GetAwaiter().GetResult();
+            var category = _categoriesRepository.Get().GetAwaiter().GetResult();
             return category;
         }
     }

@@ -26,9 +26,9 @@ namespace API.Validators
             return true;
         }
 
-        public async Task<bool> ValidateDeleteAsync(Categories categories)
+        public async Task<bool> ValidateDeleteAsync(int categoryId)
         {
-            bool ExistsValidationTask = await ValidateCategoryIdExists(categories);
+            bool ExistsValidationTask = await ValidateCategoryIdExists(categoryId);
             if (!ExistsValidationTask)
             {
                 return false;
@@ -39,7 +39,7 @@ namespace API.Validators
 
         public async Task<bool> ValidateUpdateAsync(Categories categories)
         {
-            bool idExistsValidationTask = await ValidateCategoryIdExists(categories);
+            bool idExistsValidationTask = await ValidateCategoryIdExists(categories.Id);
             bool nameExistsValidationTask = await ValidateCategoryNameExists(categories);
             bool NameValidationTask = await ValidateName(categories);
             if (!NameValidationTask
@@ -62,7 +62,7 @@ namespace API.Validators
 
         private async Task<bool> ValidateCategoryNameExists(Categories categories)
         {
-            var category = await _categoriesRepository.GetCategoryByName(categories.Name);
+            var category = await _categoriesRepository.GetByName(categories.Name);
             if (category == null || category == default)
             {
                 return false;
@@ -70,9 +70,9 @@ namespace API.Validators
 
             return true;
         }
-        private async Task<bool> ValidateCategoryIdExists(Categories categories)
+        private async Task<bool> ValidateCategoryIdExists(int categoryId)
         {
-            var category = await _categoriesRepository.GetCategoryById(categories.Id);
+            var category = await _categoriesRepository.GetById(categoryId);
             if (category == null || category == default)
             {
                 return false;
