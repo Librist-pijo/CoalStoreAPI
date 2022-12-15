@@ -1,7 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spDeleteProductsCategories]
-	@ProductId int = 0,
-	@CategoryId int
+	@Id INT
 AS
 BEGIN
-    	DELETE ProductsCategories WHERE ProductId = @ProductId AND CategoryId = @CategoryId
+    	DELETE ProductsCategories WHERE Id = @Id
 END

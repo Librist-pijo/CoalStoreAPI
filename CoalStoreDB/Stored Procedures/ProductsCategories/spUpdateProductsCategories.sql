@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spUpdateProductsCategories]
 	@ProductId INT,
-	@CategoryId INT
+	@CategoryId INT,
+	@Id INT
 AS
 BEGIN
 	UPDATE ProductsCategories
@@ -8,5 +9,5 @@ BEGIN
 		ProductId = @ProductId,
 		CategoryId = @CategoryId
 	WHERE
-		ProductId = @ProductId AND CategoryId = @CategoryId
+		Id = @Id 
 END
