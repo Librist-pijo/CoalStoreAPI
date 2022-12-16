@@ -3,14 +3,14 @@
     @OrderDate DATETIME2(7),
     @ShippingAddress NVARCHAR(255),
     @ShippingDate DATETIME2(7) = NULL,
-    @Status INT,
+    @State INT,
     @Id INT OUTPUT
 AS
 BEGIN
     SET NOCOUNT ON
 
     BEGIN TRY
-        INSERT INTO Orders(CustomerId,OrderDate,ShippingAddress,ShippingDate,Status) VALUES (@CustomerId, @OrderDate, @ShippingAddress, @ShippingDate, @Status) 
+        INSERT INTO Orders(CustomerId,OrderDate,ShippingAddress,ShippingDate,State) VALUES (@CustomerId, @OrderDate, @ShippingAddress, @ShippingDate, @State) 
         
         SET @Id = SCOPE_IDENTITY()
 

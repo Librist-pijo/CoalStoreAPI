@@ -22,23 +22,19 @@ namespace API.Validators
         {
             bool customerValidation = await ValidateCustomer(orders);
             bool orderDateValidation = await ValidateOrderDate(orders);
-            bool shippingDateValidation = await ValidateShippingDate(orders,true);
-            bool shippingAdressValidation = await ValidateShippingAddress(orders);
             bool stateValidation = await ValidateState(orders);
             if (!orderDateValidation
-                || !shippingDateValidation
                 || !stateValidation
-                || !customerValidation
-                || !shippingAdressValidation)
+                || !customerValidation)
             {
                 return false;
             }
             return true;
         }
 
-        public async Task<bool> ValidateDeleteAsync(Orders orders)
+        public async Task<bool> ValidateDeleteAsync(int orderId)
         {
-            bool orderExistsValidation = await ValidateIfExists(orders);
+            bool orderExistsValidation = await ValidateIfExists(orderId);
             if (orderExistsValidation)
             {
                 return true;
@@ -48,12 +44,14 @@ namespace API.Validators
 
         public async Task<bool> ValidateUpdateAsync(Orders orders)
         {
+            bool orderExistsValidation = await ValidateIfExists(orders.Id);
             bool customerValidation = await ValidateCustomer(orders);
             bool orderDateValidation = await ValidateOrderDate(orders);
             bool shippingDateValidation = await ValidateShippingDate(orders,false);
             bool shippingAdressValidation = await ValidateShippingAddress(orders);
             bool stateValidation = await ValidateState(orders);
-            if (!orderDateValidation
+            if (!orderExistsValidation
+                || !orderDateValidation
                 || !shippingDateValidation
                 || !shippingAdressValidation
                 || !stateValidation
@@ -81,7 +79,7 @@ namespace API.Validators
             {
                 return false;
             }
-            if (orders.OrderDate > DateTimeOffset.UtcNow)
+            if (orders.OrderDate > DateTimeOffset.UtcNow.AddMinutes(-1))
             {
                 return true;
             }
@@ -120,9 +118,9 @@ namespace API.Validators
             }
             return false;
         }
-        private async Task<bool> ValidateIfExists(Orders orders)
+        private async Task<bool> ValidateIfExists(int ordersId)
         {
-            var order = _ordersRepository.GetById(orders.Id);
+            var order = _ordersRepository.GetById(ordersId);
             if (order == null || order == default)
             {
                 return false;

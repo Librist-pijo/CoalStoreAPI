@@ -5,7 +5,7 @@ BEGIN
 	SELECT 
 		Id,
 		Login,
-		Password,
+		--Password,
 		FirstName,
 		LastName,
 		AddressLine1,

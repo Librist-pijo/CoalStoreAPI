@@ -24,12 +24,20 @@ builder.Services.AddScoped<ICategoriesValidator, CategoriesValidator>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
 builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
+builder.Services.AddScoped<ICustomersValidator, CustomersValidator>();
 
 builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
+builder.Services.AddScoped<IInvoicesValidator, InvoicesValidator>();
+builder.Services.AddScoped<IInvoicesService, InvoicesService>();
 
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+builder.Services.AddScoped<IOrdersValidator, OrdersValidator>();
+builder.Services.AddScoped<IOrdersService, OrdersService>();
+
 
 builder.Services.AddScoped<IOrdersProductsRepository, OrdersProductsRepository>();
+builder.Services.AddScoped<IOrdersProductsValidator, OrdersProductsValidator>();
+builder.Services.AddScoped<IOrdersProductsService, OrdersProductsService>();
 
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 builder.Services.AddScoped<IProductsValidator, ProductsValidator>();

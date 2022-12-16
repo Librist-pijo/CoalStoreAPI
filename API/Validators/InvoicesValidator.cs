@@ -1,5 +1,6 @@
 ﻿using API.Enums;
 using API.Repositories;
+using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using API.Validators.Interfaces;
 
@@ -7,10 +8,10 @@ namespace API.Validators
 {
     public class InvoicesValidator : IInvoicesValidator
     {
-        protected readonly InvoicesRepository _invoicesRepository;
-        protected readonly OrdersRepository _ordersRepository;
-        public InvoicesValidator(InvoicesRepository invoicesRepository,
-                                 OrdersRepository ordersRepository)
+        protected readonly IInvoicesRepository _invoicesRepository;
+        protected readonly IOrdersRepository _ordersRepository;
+        public InvoicesValidator(IInvoicesRepository invoicesRepository,
+                                 IOrdersRepository ordersRepository)
         {
             _invoicesRepository = invoicesRepository;
             _ordersRepository = ordersRepository;

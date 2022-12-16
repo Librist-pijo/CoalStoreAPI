@@ -116,6 +116,7 @@
     <Build Include="Stored Procedures\Products\spGetProductById.sql" />
     <Build Include="Stored Procedures\ProductsCategories\spGetProductsCategoriesPair.sql" />
     <Build Include="Stored Procedures\ProductsCategories\spGetProductsCategoriesById.sql" />
+    <Build Include="Stored Procedures\OrdersProducts\spGetOrdersProductsPair.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="CoalStoreDB.refactorlog" />

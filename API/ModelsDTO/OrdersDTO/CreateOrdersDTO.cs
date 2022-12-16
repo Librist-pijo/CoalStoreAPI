@@ -7,7 +7,6 @@ namespace API.ModelsDTO.Orders
     {
         public int CustomerId { get; set; }
         public List<CreateOrdersProductsDTO> Products{ get; set;}
-        public int Amount { get; set; }
         public string ShippingAddress { get; set; }
         public int State { get; set; }
     }

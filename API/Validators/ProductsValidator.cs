@@ -43,7 +43,7 @@ namespace API.Validators
                 || !NameValidationTask
                 || !priceValidationTask
                 || !idExistsValidationTask
-                || nameExistsValidationTask)
+                || !nameExistsValidationTask)
             {
                 return false;
             }
