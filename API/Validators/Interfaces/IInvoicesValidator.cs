@@ -6,6 +6,6 @@ namespace API.Validators.Interfaces
     {
         public Task<bool> ValidateCreateAsync(Invoices invoices);
         public Task<bool> ValidateUpdateAsync(Invoices invoices);
-        public Task<bool> ValidateDeleteAsync(Invoices invoices);
+        public Task<bool> ValidateDeleteAsync(int invoicesId);
     }
 }

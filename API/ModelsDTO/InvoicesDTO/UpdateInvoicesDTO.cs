@@ -1,8 +1,6 @@
-﻿using API.Enums;
-
-namespace API.Repositories.Models
+﻿namespace API.ModelsDTO.InvoicesDTO
 {
-    public class Invoices
+    public class UpdateInvoicesDTO
     {
         public int Id { get; set; }
         public int OrderId { get; set; }

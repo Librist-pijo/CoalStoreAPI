@@ -35,9 +35,9 @@ namespace API.Validators
             }
             return true;
         }
-        public async Task<bool> ValidateDeleteAsync(Invoices invoices)
+        public async Task<bool> ValidateDeleteAsync(int invoicesId)
         {
-            bool invoiceValidation = await ValidateInvoiceExists(invoices);
+            bool invoiceValidation = await ValidateInvoiceExists(invoicesId);
             if (!invoiceValidation)
             {
                 return false;
@@ -73,9 +73,9 @@ namespace API.Validators
 
             return true;
         }
-        private async Task<bool> ValidateInvoiceExists(Invoices invoices)
+        private async Task<bool> ValidateInvoiceExists(int invoicesId)
         {
-            var invoice = await _invoicesRepository.GetById(invoices.Id);
+            var invoice = await _invoicesRepository.GetById(invoicesId);
 
             if (invoice == null || invoice == default)
             {
@@ -87,7 +87,7 @@ namespace API.Validators
         private async Task<bool> ValidatePaymentMethod(Invoices invoices)
         {
             HashSet<int> validVals = new HashSet<int>((int[])Enum.GetValues(typeof(PaymentMethod)));
-            if (validVals.Contains(invoices.PaymentMethodId))
+            if (validVals.Contains(invoices.PaymentMethod))
             {
                 return true;
             }

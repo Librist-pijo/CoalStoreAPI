@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[spCreateInvoice]
 	@OrderId INT,
     @PaymentMethod NVARCHAR(255),
-    @Status INT,
+    @State INT,
     @Amount MONEY,
     @Id INT OUTPUT
 AS
@@ -9,7 +9,7 @@ BEGIN
     SET NOCOUNT ON
 
     BEGIN TRY
-        INSERT INTO Invoices(OrderId,PaymentMethod,Status,Amount) VALUES (@OrderId,@PaymentMethod,@Status,@Amount)
+        INSERT INTO Invoices(OrderId,PaymentMethod,State,Amount) VALUES (@OrderId,@PaymentMethod,@State,@Amount)
         
         SET @Id = SCOPE_IDENTITY()
 

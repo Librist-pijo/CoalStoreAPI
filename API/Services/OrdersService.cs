@@ -1,5 +1,6 @@
 ﻿using API.Enums;
 using API.ModelsDTO;
+using API.ModelsDTO.InvoicesDTO;
 using API.ModelsDTO.Orders;
 using API.ModelsDTO.OrdersProductsDTO;
 using API.ModelsDTO.ProductsDTO;
@@ -20,20 +21,25 @@ namespace API.Services
         protected readonly IProductsService _productsService;
         protected readonly ICustomersRepository _customersRepository;
         protected readonly IOrdersProductsService _ordersProductsService;
+        protected readonly IInvoicesService _invoicesService;
+        protected readonly InvoicesFactory _invoicesFactory;
         protected readonly OrdersFactory _ordersFactory;
 
         public OrdersService(IOrdersRepository OrdersRepository,
                              IOrdersValidator OrdersValidator,
                              IProductsService productsService,
                              ICustomersRepository customersRepository,
-                             IOrdersProductsService ordersProductsService)
+                             IOrdersProductsService ordersProductsService,
+                             IInvoicesService invoicesService)
         {
             _ordersRepository = OrdersRepository;
             _ordersValidator = OrdersValidator;
             _ordersFactory = new OrdersFactory();
+            _invoicesFactory= new InvoicesFactory();
             _productsService = productsService;
             _customersRepository = customersRepository;
             _ordersProductsService = ordersProductsService;
+            _invoicesService = invoicesService;
         }
 
         public ResultData CreateOrders(CreateOrdersDTO ordersDTO)
@@ -55,9 +61,16 @@ namespace API.Services
                     return result;
                 }
                 var id = _ordersRepository.Create(orders).GetAwaiter().GetResult();
+                var createInvoiceResult = CreateInvoice(ordersDTO.Products, id);
+                if (!createInvoiceResult.Success)
+                {
+                    _ordersRepository.Delete(id);
+                    result.Success = false;
+                    return result;
+                }
 
-                var createResult = CreateOrdersProducts(ordersDTO.Products, id);
-                if (!createResult.Success)
+                var createOPResult = CreateOrdersProducts(ordersDTO.Products, id);
+                if (!createOPResult.Success)
                 {
                     _ordersRepository.Delete(id);
                     result.Success = false;
@@ -185,5 +198,38 @@ namespace API.Services
             }
             return result;
         }
+        private ResultData CreateInvoice(List<CreateOrdersProductsDTO> ordersProductsDTO, int orderId)
+        {
+            ResultData result = new();
+            try
+            {
+                CreateInvoicesDTO createInvoicesDTO = new CreateInvoicesDTO
+                {
+                    OrderId = orderId,
+                    State = 0,
+                    PaymentMethod = 1
+                };
+                foreach (var product in ordersProductsDTO)
+                {
+                    product.OrderId = orderId;
+
+                    Products products = _productsService.GetProductById(product.ProductId);
+                    createInvoicesDTO.Amount += products.Price;
+                }
+                result = _invoicesService.CreateInvoices(createInvoicesDTO);
+                if (!result.Success)
+                {
+                    _invoicesService.DeleteInvoices(orderId);
+                    return result;
+                }
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+            }
+            return result;
+        }
+
     }
 }

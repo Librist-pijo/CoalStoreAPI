@@ -3,7 +3,7 @@
 	@OrderId INT,
 	@PaymentMethod NVARCHAR(255),
 	@Amount MONEY,
-	@Status INT
+	@State INT
 AS
 BEGIN
 	UPDATE Invoices
@@ -11,7 +11,7 @@ BEGIN
 		OrderId = @OrderId,
 		PaymentMethod = @PaymentMethod,
 		Amount = @Amount,
-		Status = @Status
+		State = @State
 	WHERE
 		Id = @Id
 END
