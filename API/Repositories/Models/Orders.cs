@@ -13,7 +13,7 @@ namespace API.Repositories.Models
         //
         public string OrderNumber
         {
-            get { return $"{Id}/{CustomerId}/{OrderDate.Date}"; }
+            get { return $"{Id}/{CustomerId}/{OrderDate.DayOfYear}"; }
         }
     }
 }

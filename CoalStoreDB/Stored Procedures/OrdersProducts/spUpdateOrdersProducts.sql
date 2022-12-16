@@ -1,7 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[spUpdateOrdersProducts]
 	@ProductId INT,
 	@OrderId INT,
-	@Quantity INT
+	@Quantity INT,
+	@Id INT
 AS
 BEGIN
 	UPDATE OrdersProducts
@@ -10,5 +11,5 @@ BEGIN
 		OrderId = @OrderId,
 		Quantity = @Quantity
 	WHERE
-		ProductId = @ProductId AND OrderId = @OrderId
+		Id = 	@Id 
 END

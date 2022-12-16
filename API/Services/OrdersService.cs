@@ -1,11 +1,14 @@
 ﻿using API.Enums;
 using API.ModelsDTO;
 using API.ModelsDTO.Orders;
+using API.ModelsDTO.OrdersProductsDTO;
+using API.ModelsDTO.ProductsDTO;
 using API.Repositories;
 using API.Repositories.Factories;
 using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using API.Services.Interfaces;
+using API.Validators;
 using API.Validators.Interfaces;
 
 namespace API.Services
@@ -14,32 +17,84 @@ namespace API.Services
     {
         protected readonly IOrdersRepository _ordersRepository;
         protected readonly IOrdersValidator _ordersValidator;
-        protected readonly IProductsRepository _productsRepository;
-        protected readonly IOrdersProductsRepository _ordersProductsRepository;
+        protected readonly IProductsService _productsService;
+        protected readonly ICustomersRepository _customersRepository;
+        protected readonly IOrdersProductsService _ordersProductsService;
         protected readonly OrdersFactory _ordersFactory;
-        protected readonly ProductsFactory _productsFactory;
 
         public OrdersService(IOrdersRepository OrdersRepository,
                              IOrdersValidator OrdersValidator,
-                             IProductsRepository productsRepository,
-                             IOrdersProductsRepository ordersProductsRepository)
+                             IProductsService productsService,
+                             ICustomersRepository customersRepository,
+                             IOrdersProductsService ordersProductsService)
         {
             _ordersRepository = OrdersRepository;
             _ordersValidator = OrdersValidator;
             _ordersFactory = new OrdersFactory();
-            _productsFactory = new ProductsFactory();
-            _productsRepository = productsRepository;
-            _ordersProductsRepository = ordersProductsRepository;
+            _productsService = productsService;
+            _customersRepository = customersRepository;
+            _ordersProductsService = ordersProductsService;
         }
 
         public ResultData CreateOrders(CreateOrdersDTO ordersDTO)
         {
-            throw new NotImplementedException();
+            ResultData result = new();
+
+            try
+            {
+                Orders orders = _ordersFactory.CreateOrders(ordersDTO);
+                var customer = _customersRepository.GetCustomerById(ordersDTO.CustomerId).GetAwaiter().GetResult();
+                if (customer.AddressLine1 is not null)
+                {
+                    orders.ShippingAddress = $"{customer.AddressLine1}, {customer.PostCode} {customer.AddressLine2}";
+                }
+                var validation = _ordersValidator.ValidateCreateAsync(orders).GetAwaiter().GetResult();
+                if (!validation)
+                {
+                    result.Error = "Błąd walidacji";
+                    return result;
+                }
+                var id = _ordersRepository.Create(orders).GetAwaiter().GetResult();
+
+                var createResult = CreateOrdersProducts(ordersDTO.Products, id);
+                if (!createResult.Success)
+                {
+                    _ordersRepository.Delete(id);
+                    result.Success = false;
+                    return result;
+                }
+                result.Success = true;
+
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+            }
+
+            return result;
         }
 
         public ResultData DeleteOrders(int orderId)
         {
-            throw new NotImplementedException();
+            ResultData result = new();
+
+            try
+            {
+                var validation = _ordersValidator.ValidateDeleteAsync(orderId).GetAwaiter().GetResult();
+                if (!validation)
+                {
+                    result.Error = "Błąd walidacji";
+                    return result;
+                }
+                _ordersProductsService.DeleteOrdersProducts(orderId);
+                _ordersRepository.Delete(orderId);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+            }
+            return result;
         }
 
         public Orders GetOrderById(int orderId)
@@ -69,7 +124,66 @@ namespace API.Services
 
         public ResultData UpdateOrders(UpdateOrdersDTO ordersDTO)
         {
-            throw new NotImplementedException();
+            ResultData result = new();
+
+            try
+            {
+                Orders orders = _ordersFactory.UpdateOrders(ordersDTO);
+                var validation = _ordersValidator.ValidateUpdateAsync(orders).GetAwaiter().GetResult();
+                if (!validation)
+                {
+                    result.Error = "Błąd walidacji";
+                    return result;
+                }
+                _ordersRepository.Update(orders);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+            }
+
+            return result;
+        }
+
+        private ResultData CreateOrdersProducts(List<CreateOrdersProductsDTO> ordersProductsDTO, int orderId)
+        {
+            ResultData result = new();
+            try
+            {
+                foreach (var product in ordersProductsDTO)
+                {
+                    product.OrderId = orderId;
+                    result = _ordersProductsService.CreateOrdersProducts(product);
+                    if (!result.Success)
+                    {
+                        return result;
+                    }
+
+                    Products products = _productsService.GetProductById(product.ProductId);
+                    products.Stock = products.Stock - product.Quantity;
+                    UpdateProductsDTO updateProductsDTO = new UpdateProductsDTO
+                    {
+                        Id = products.Id,
+                        Name = products.Name,
+                        Stock= products.Stock,
+                        Price= products.Price
+                    };
+                    result = _productsService.UpdateProducts(updateProductsDTO);
+                    if (!result.Success)
+                    {
+                        updateProductsDTO.Stock= products.Stock+product.Quantity;
+                        _productsService.UpdateProducts(updateProductsDTO);
+                        return result;
+                    }
+                    result.Success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+            }
+            return result;
         }
     }
 }

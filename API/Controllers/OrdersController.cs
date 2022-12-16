@@ -34,7 +34,7 @@ namespace API.Controllers
             return Json(value);
         }
         [HttpGet("get-orders-by-id")]
-        public IActionResult GetProductByName(int orderId)
+        public IActionResult GetOrderById(int orderId)
         {
             var value = _ordersService.GetOrderById(orderId);
             return Json(value);
@@ -43,7 +43,20 @@ namespace API.Controllers
         [HttpPost("create-order")]
         public IActionResult CreateProducts([FromBody] CreateOrdersDTO ordersDTO)
         {
-            throw new NotImplementedException();
+            var value = _ordersService.CreateOrders(ordersDTO);
+            return Json(value);
+        }
+        [HttpPut("update-order")]
+        public IActionResult UpdateOrders([FromBody] UpdateOrdersDTO ordersDTO)
+        {
+            var value = _ordersService.UpdateOrders(ordersDTO);
+            return Json(value);
+        }
+        [HttpDelete("delete-order")]
+        public IActionResult DeleteOrders(int orderId)
+        {
+            var value = _ordersService.DeleteOrders(orderId);
+            return Json(value);
         }
     }
 }

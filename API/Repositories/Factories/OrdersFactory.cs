@@ -11,8 +11,7 @@ namespace API.Repositories.Factories
             {
                 CustomerId= ordersDTO.CustomerId,
                 OrderDate = DateTimeOffset.UtcNow,
-                State= ordersDTO.State,
-                ShippingAddress= ordersDTO.ShippingAddress
+                State= ordersDTO.State
             };
             return newOrder;
         }

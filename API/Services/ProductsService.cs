@@ -109,8 +109,14 @@ namespace API.Services
 
         public Products GetProductByName(string productName)
         {
-            var category = _productsRepository.GetByName(productName).GetAwaiter().GetResult();
-            return category;
+            var product = _productsRepository.GetByName(productName).GetAwaiter().GetResult();
+            return product;
+        }
+
+        public Products GetProductById(int productId)
+        {
+            var product = _productsRepository.GetById(productId).GetAwaiter().GetResult();
+            return product;
         }
 
         public List<Products> GetProducts()

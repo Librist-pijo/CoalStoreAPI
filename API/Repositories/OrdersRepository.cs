@@ -15,7 +15,7 @@ namespace API.Repositories
             _dataAccess = dataAccess;
         }
 
-        public async Task Creat(Orders order)
+        public async Task<int> Create(Orders order)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -27,6 +27,7 @@ namespace API.Repositories
             parameters.Add("Id", DbType.Int32, direction: ParameterDirection.Output);
 
             await _dataAccess.SaveData("dbo.spCreateOrder", parameters, "SQLDB");
+            return parameters.Get<int>("Id");
         }
 
         public Task Delete(int orderId)

@@ -10,6 +10,7 @@ namespace API.Services.Interfaces
         public ResultData UpdateProducts(UpdateProductsDTO ProductsDTO);
         public ResultData DeleteProducts(int productsId);
         public Products GetProductByName(string productName);
+        public Products GetProductById(int productId);
         public List<ProductsWithCategory> GetProductsWithCategory();
         public List<Products> GetProducts();
         public ResultData CreateProductsCategoriesMapping(ProductsCategories productsCategories);

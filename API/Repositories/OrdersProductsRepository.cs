@@ -15,7 +15,7 @@ namespace API.Repositories
             _dataAccess = dataAccess;
         }
 
-        public async Task Creat(OrdersProducts ordersProducts)
+        public async Task Create(OrdersProducts ordersProducts)
         {
             DynamicParameters parameters = new DynamicParameters();
 
@@ -26,12 +26,11 @@ namespace API.Repositories
             await _dataAccess.SaveData("dbo.spCreateOrdersProducts", parameters, "SQLDB");
         }
 
-        public Task Delete(OrdersProducts ordersProducts)
+        public Task Delete(int Id)
         {
             DynamicParameters parameter = new DynamicParameters();
 
-            parameter.Add("ProductId", ordersProducts.ProductId);
-            parameter.Add("OrderId", ordersProducts.OrderId);
+            parameter.Add("Id", Id);
 
             return _dataAccess.SaveData("dbo.spDeleteOrdersProducts", parameter, "SQLDB");
         }

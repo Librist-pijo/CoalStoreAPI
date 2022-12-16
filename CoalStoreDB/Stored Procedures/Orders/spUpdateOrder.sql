@@ -4,7 +4,7 @@
 	@OrderDate DATETIME2(7),
 	@ShippingAddress NVARCHAR(255),
 	@ShippingDate DATETIME2(7),
-	@Status INT
+	@State INT
 AS
 BEGIN
 	UPDATE Orders
@@ -13,7 +13,7 @@ BEGIN
 		OrderDate = @OrderDate,
 		ShippingAddress = @ShippingAddress,
 		ShippingDate = @ShippingDate,
-		Status = @Status
+		State = @State
 	WHERE
 		Id = @Id
 END

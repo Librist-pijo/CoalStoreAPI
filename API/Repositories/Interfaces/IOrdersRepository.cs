@@ -4,7 +4,7 @@ namespace API.Repositories.Interfaces
 {
     public interface IOrdersRepository
     {
-        Task Creat(Orders order);
+        Task<int> Create(Orders order);
         Task Update(Orders order);
         Task Delete(int orderId);
         Task<List<Orders>> Get();
