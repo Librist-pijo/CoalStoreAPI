@@ -11,6 +11,7 @@ namespace API.Validators
     {
         protected readonly IOrdersRepository _ordersRepository;
         protected readonly ICustomersRepository _customersRepository;
+        private static int MAXLENGTH = 255;
         public OrdersValidator(IOrdersRepository ordersRepository,
                                ICustomersRepository customersRepository)
         {
@@ -45,17 +46,13 @@ namespace API.Validators
         public async Task<bool> ValidateUpdateAsync(Orders orders)
         {
             bool orderExistsValidation = await ValidateIfExists(orders.Id);
-            bool customerValidation = await ValidateCustomer(orders);
-            bool orderDateValidation = await ValidateOrderDate(orders);
             bool shippingDateValidation = await ValidateShippingDate(orders,false);
             bool shippingAdressValidation = await ValidateShippingAddress(orders);
             bool stateValidation = await ValidateState(orders);
             if (!orderExistsValidation
-                || !orderDateValidation
                 || !shippingDateValidation
                 || !shippingAdressValidation
-                || !stateValidation
-                || !customerValidation)
+                || !stateValidation)
             {
                 return false;
             }
@@ -91,7 +88,7 @@ namespace API.Validators
             {
                 return false;
             }
-            if (orders.ShippingAddress.Length < 255)
+            if (orders.ShippingAddress.Length < MAXLENGTH)
             {
                 return true;
             }
@@ -103,7 +100,11 @@ namespace API.Validators
             {
                 return false;
             }
-            if (orders.ShippingDate > DateTimeOffset.UtcNow)
+            if (orders.ShippingDate == null && creation)
+            {
+                return true;
+            }
+            if (orders.ShippingDate > DateTimeOffset.UtcNow.AddMinutes(-1))
             {
                 return true;
             }

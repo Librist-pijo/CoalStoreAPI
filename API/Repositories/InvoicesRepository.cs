@@ -20,7 +20,7 @@ namespace API.Repositories
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("OrderId", invoice.OrderId);
-            parameters.Add("PaymentMethodId", invoice.PaymentMethodId);
+            parameters.Add("PaymentMethod", invoice.PaymentMethod);
             parameters.Add("Amount", invoice.Amount);
             parameters.Add("State", invoice.State);
             parameters.Add("Id", DbType.Int32, direction: ParameterDirection.Output);
@@ -28,11 +28,11 @@ namespace API.Repositories
             await _dataAccess.SaveData("dbo.spCreateInvoice", parameters, "SQLDB");
         }
 
-        public Task Delete(int invoiceId)
+        public Task Delete(int orderId)
         {
             DynamicParameters parameter = new DynamicParameters();
 
-            parameter.Add("Id", invoiceId);
+            parameter.Add("orderId", orderId);
 
             return _dataAccess.SaveData("dbo.spDeleteInvoice", parameter, "SQLDB");
         }
@@ -64,12 +64,25 @@ namespace API.Repositories
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("OrderId", invoice.OrderId);
-            parameters.Add("PaymentMethodId", invoice.PaymentMethodId);
+            parameters.Add("PaymentMethod", invoice.PaymentMethod);
             parameters.Add("Amount", invoice.Amount);
             parameters.Add("State", invoice.State);
             parameters.Add("Id", invoice.Id);
 
             await _dataAccess.SaveData("dbo.spUpdateInvoice", parameters, "SQLDB");
+        }
+
+        public async Task<Invoices> GetByOrderId(int orderId)
+        {
+            var invoice = await _dataAccess.LoadData<Invoices, dynamic>
+                ("dbo.spGetInvoiceByOrderId",
+                new
+                {
+                    orderId = orderId
+                },
+                "SQLDB");
+
+            return invoice.FirstOrDefault();
         }
     }
 }

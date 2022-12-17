@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spDeleteInvoice]
-	@Id INT
+	@orderId INT
 AS
 BEGIN
-	DELETE Invoices WHERE Id = @Id
+	DELETE Invoices WHERE OrderId = @orderId
 END

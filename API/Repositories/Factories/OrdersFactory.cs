@@ -21,7 +21,8 @@ namespace API.Repositories.Factories
             {
                 Id = ordersDTO.Id,
                 State = ordersDTO.State,
-                ShippingAddress = ordersDTO.ShippingAddress
+                ShippingAddress = ordersDTO.ShippingAddress,
+                ShippingDate= ordersDTO.ShippingDate
             };
             return newOrder;
         }
