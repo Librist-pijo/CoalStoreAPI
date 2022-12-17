@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[spDeleteOrdersProducts]
-    @Id int 
+    @orderId int 
 AS
 BEGIN
-    	DELETE OrdersProducts WHERE Id = @Id
+    	DELETE OrdersProducts WHERE OrderId = @orderId
 END

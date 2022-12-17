@@ -73,9 +73,9 @@ namespace API.Validators
 
             return true;
         }
-        private async Task<bool> ValidateInvoiceExists(int invoicesId)
+        private async Task<bool> ValidateInvoiceExists(int orderId)
         {
-            var invoice = await _invoicesRepository.GetById(invoicesId);
+            var invoice = await _invoicesRepository.GetByOrderId(orderId);
 
             if (invoice == null || invoice == default)
             {

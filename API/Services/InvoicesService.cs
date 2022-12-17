@@ -10,16 +10,16 @@ namespace API.Services
 {
     public class InvoicesService : IInvoicesService
     {
-        protected readonly IInvoicesRepository _InvoicesRepository;
-        protected readonly IInvoicesValidator _InvoicesValidator;
-        protected readonly InvoicesFactory _InvoicesFactory;
+        protected readonly IInvoicesRepository _invoicesRepository;
+        protected readonly IInvoicesValidator _invoicesValidator;
+        protected readonly InvoicesFactory _invoicesFactory;
 
         public InvoicesService(IInvoicesRepository InvoicesRepository,
                                  IInvoicesValidator InvoicesValidator)
         {
-            _InvoicesRepository = InvoicesRepository;
-            _InvoicesValidator = InvoicesValidator;
-            _InvoicesFactory = new InvoicesFactory();
+            _invoicesRepository = InvoicesRepository;
+            _invoicesValidator = InvoicesValidator;
+            _invoicesFactory = new InvoicesFactory();
         }
 
         public ResultData CreateInvoices(CreateInvoicesDTO InvoicesDTO)
@@ -28,14 +28,14 @@ namespace API.Services
 
             try
             {
-                Invoices Invoices = _InvoicesFactory.CreateInvoices(InvoicesDTO);
-                var validation = _InvoicesValidator.ValidateCreateAsync(Invoices).GetAwaiter().GetResult();
+                Invoices Invoices = _invoicesFactory.CreateInvoices(InvoicesDTO);
+                var validation = _invoicesValidator.ValidateCreateAsync(Invoices).GetAwaiter().GetResult();
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _InvoicesRepository.Create(Invoices);
+                _invoicesRepository.Create(Invoices);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -51,14 +51,14 @@ namespace API.Services
 
             try
             {
-                Invoices Invoices = _InvoicesFactory.UpdateInvoices(InvoicesDTO);
-                var validation = _InvoicesValidator.ValidateUpdateAsync(Invoices).GetAwaiter().GetResult();
+                Invoices Invoices = _invoicesFactory.UpdateInvoices(InvoicesDTO);
+                var validation = _invoicesValidator.ValidateUpdateAsync(Invoices).GetAwaiter().GetResult();
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _InvoicesRepository.Update(Invoices);
+                _invoicesRepository.Update(Invoices);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -75,13 +75,13 @@ namespace API.Services
 
             try
             {
-                var validation = _InvoicesValidator.ValidateDeleteAsync(invoiceId).GetAwaiter().GetResult();
+                var validation = _invoicesValidator.ValidateDeleteAsync(invoiceId).GetAwaiter().GetResult();
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _InvoicesRepository.Delete(invoiceId);
+                _invoicesRepository.Delete(invoiceId);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -92,12 +92,17 @@ namespace API.Services
         }
         public Invoices GetById(int invoiceId)
         {
-            var invoice = _InvoicesRepository.GetById(invoiceId).GetAwaiter().GetResult();
+            var invoice = _invoicesRepository.GetById(invoiceId).GetAwaiter().GetResult();
+            return invoice;
+        }
+        public Invoices GetByOrderId(int orderId)
+        {
+            var invoice = _invoicesRepository.GetByOrderId(orderId).GetAwaiter().GetResult();
             return invoice;
         }
         public List<Invoices> Get()
         {
-            var invoice = _InvoicesRepository.Get().GetAwaiter().GetResult();
+            var invoice = _invoicesRepository.Get().GetAwaiter().GetResult();
             return invoice;
         }
     }

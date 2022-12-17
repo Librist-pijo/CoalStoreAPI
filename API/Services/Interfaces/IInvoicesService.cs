@@ -12,5 +12,6 @@ namespace API.Services.Interfaces
         public ResultData DeleteInvoices(int orderId);
         public List<Invoices> Get();
         public Invoices GetById(int invoiceId);
+        public Invoices GetByOrderId(int orderId);
     }
 }

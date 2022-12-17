@@ -64,7 +64,7 @@ namespace API.Services
                 var createInvoiceResult = CreateInvoice(ordersDTO.Products, id);
                 if (!createInvoiceResult.Success)
                 {
-                    _ordersRepository.Delete(id);
+                    DeleteOrders(id);
                     result.Success = false;
                     return result;
                 }
@@ -72,7 +72,7 @@ namespace API.Services
                 var createOPResult = CreateOrdersProducts(ordersDTO.Products, id);
                 if (!createOPResult.Success)
                 {
-                    _ordersRepository.Delete(id);
+                    DeleteOrders(id);
                     result.Success = false;
                     return result;
                 }
@@ -99,6 +99,7 @@ namespace API.Services
                     result.Error = "Błąd walidacji";
                     return result;
                 }
+                _invoicesService.DeleteInvoices(orderId);
                 _ordersProductsService.DeleteOrdersProducts(orderId);
                 _ordersRepository.Delete(orderId);
                 result.Success = true;
@@ -142,6 +143,9 @@ namespace API.Services
             try
             {
                 Orders orders = _ordersFactory.UpdateOrders(ordersDTO);
+                Orders ordersUpdate = GetOrderById(orders.Id);
+                orders.OrderDate = ordersUpdate.OrderDate;
+                orders.CustomerId = ordersUpdate.CustomerId;
                 var validation = _ordersValidator.ValidateUpdateAsync(orders).GetAwaiter().GetResult();
                 if (!validation)
                 {
@@ -214,7 +218,7 @@ namespace API.Services
                     product.OrderId = orderId;
 
                     Products products = _productsService.GetProductById(product.ProductId);
-                    createInvoicesDTO.Amount += products.Price;
+                    createInvoicesDTO.Amount += (products.Price*product.Quantity);
                 }
                 result = _invoicesService.CreateInvoices(createInvoicesDTO);
                 if (!result.Success)
