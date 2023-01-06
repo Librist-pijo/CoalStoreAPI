@@ -10,7 +10,7 @@ import { NavComponent } from './layout/nav/nav.component';
 import { HomeComponent } from './layout/home/home.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { LoginComponent } from './layout/login/login.component';
-import { DxButtonModule, DxDataGridModule, DxDateBoxModule, DxTabsModule, DxTextBoxModule, DxValidatorModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxDateBoxModule, DxListModule, DxNumberBoxModule, DxTabsModule, DxTextBoxModule, DxValidatorModule } from 'devextreme-angular';
 import { EmailValidationService } from './services/email-validation.service';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserAccountComponent } from './layout/user-account/user-account.component';
@@ -20,6 +20,7 @@ import { AuthService } from './services/auth.service';
 import { TokenService } from './services/token.service';
 import { AuthInterceptor } from './auth.interceptor';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
+import { ProductsService } from './services/products.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,9 @@ import { NotFoundComponent } from './layout/not-found/not-found.component';
     DxDateBoxModule,
     DxValidatorModule,
     DxTabsModule,
-    DxDataGridModule
+    DxDataGridModule,
+    DxListModule,
+    DxNumberBoxModule
   ],
   providers: [
     Connection, 
@@ -51,6 +54,7 @@ import { NotFoundComponent } from './layout/not-found/not-found.component';
     OrdersService,
     AuthService,
     TokenService,
+    ProductsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

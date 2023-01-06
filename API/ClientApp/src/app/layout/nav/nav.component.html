@@ -8,10 +8,12 @@
             <div class="nav-line"></div>
             <dx-button class="nav-button" icon="product" text="Produkty" (onClick)="navigate($event, './products')"></dx-button>
             <div class="nav-line"></div>
-            <dx-button class="nav-button" icon="cart" text="Koszyk" (onClick)="navigate($event, './shopping-cart')"></dx-button>
+            <dx-button class="nav-button" icon="cart" [text]="basketButtonLabel" (onClick)="navigate($event, './shopping-cart')"></dx-button>
             <div class="nav-line"></div>
             <ng-container *ngIf="isLoggedIn">
                 <dx-button class="nav-button" icon="user" text="Moje konto" (onClick)="navigate($event, './my-account')"></dx-button>
+                <div class="nav-line"></div>
+                <dx-button class="nav-button" icon="user" text="Wyloguj" (onClick)="logout($event)"></dx-button>
             </ng-container>
             <ng-container *ngIf="!isLoggedIn">
                 <dx-button class="nav-button" 
