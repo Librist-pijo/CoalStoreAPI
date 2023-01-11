@@ -1,0 +1,9 @@
+.card-body {
+    flex-direction: column;
+    justify-content: start;
+}
+
+.add-to-cart-button {
+    color: black;
+    margin-left: 4px;
+}

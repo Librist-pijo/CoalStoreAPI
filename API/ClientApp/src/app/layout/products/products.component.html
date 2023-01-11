@@ -1,0 +1,50 @@
+<div class="container-fluid p-0 card-body">
+    <div class="col-10">
+        <div class="row">
+            <dx-list 
+                [items]="products"
+                [searchEnabled]="true"
+                [focusStateEnabled]="false"
+                [selectionMode]="'none'"
+                height="70vh"
+            >
+                <div *dxTemplate="let product of 'item'">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-8 d-flex align-content-center">
+                            <h5>{{ product.name }}</h5>
+                        </div>
+                        <div class="col-4 d-flex flex-row justify-content-end" *ngIf="product.stock">
+                            <dx-number-box class="mt-0" id="productQuantity_{{product.id}}" name="productQuantity_{{product.id}}"
+                                [(value)]="product.quantity" [max]="product.stock" [min]="1" [showSpinButtons]="true"
+                                label="Ilość zamawiana" labelMode="static" format="#0.00 t">
+                            </dx-number-box>
+                            <dx-button class="add-to-cart-button" icon="plus"
+                                (onClick)="addProductToCart($event, product)"
+                                [disabled]="!product.quantity || product.quantity < 1 || product.quantity > product.stock">
+                            </dx-button>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-8">
+                            <h5>{{ product.price }} zł</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <ng-container *ngIf="product.stock">
+                            <div class="col-9">
+                                <p>Dostępne: {{ product.stock }} t</p>
+                            </div>
+                            <div class="col-3 d-flex flex-row justify-content-end">
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!product.stock">
+                            <div class="col-9">
+                                <p>Brak na stanie</p>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </dx-list>
+        </div>
+    </div>
+</div>
