@@ -14,11 +14,13 @@ export class ProductsService {
 
     }
 
-    getProducts(): Products[] {
+    async getProducts(): Promise<Products[]> {
         var products: Products[] = [];
         this.dbService.SetRoute('products/get-products');
-        this.dbService.Get<Products[]>().subscribe((result: Products[]) => {
-            products = result;
+        await this.dbService.Get<Products[]>().toPromise().then((result) => {
+            if (result != undefined && result != null) {
+                products = result;
+            }
         }, (err) => {
             Swal.fire('Wystąpił błąd pobrania danych', '', 'error');
         });

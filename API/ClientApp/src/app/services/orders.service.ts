@@ -63,4 +63,8 @@ export class OrdersService {
     saveOrdersProducts(ordersProducts: OrdersProducts[]) {
         localStorage.setItem(CURRENT_ORDER_PRODUCTS, JSON.stringify(ordersProducts));
     }
+
+    resetShoppingCart() {
+        localStorage.removeItem(CURRENT_ORDER_PRODUCTS);
+    }
 }

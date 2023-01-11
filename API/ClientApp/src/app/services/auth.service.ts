@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { GrantType } from '../models/Enums/GrantType';
 import { LoginDTO } from '../models/LoginDTO';
 import { ResultData } from '../models/ResultData';
+import { OrdersService } from './orders.service';
 import { TokenService } from './token.service';
 
 const OAUTH_CLIENT = 'express-client';
@@ -26,7 +27,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient, 
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private ordersService: OrdersService
   ) { }
 
   private static handleError(error: HttpErrorResponse): any {
@@ -84,6 +86,7 @@ export class AuthService {
   }
 
   logout(): void {
+    this.ordersService.resetShoppingCart();
     this.tokenService.removeToken();
     this.tokenService.removeRefreshToken();
   }

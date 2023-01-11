@@ -17,8 +17,16 @@ export class ProductsComponent implements OnInit {
         private ordersService: OrdersService
     ) {}
 
-    ngOnInit(): void {
-        this.products = this.productsService.getProducts();
+    async ngOnInit() {
+        this.productsService.getProducts().then((data) => {
+            this.products = data;
+
+            for(var product of this.products) {
+                if (product.stock > 0) {
+                    product.quantity = 1;
+                }
+            }
+        });
     }
 
     addProductToCart(e: any, product: Products) {

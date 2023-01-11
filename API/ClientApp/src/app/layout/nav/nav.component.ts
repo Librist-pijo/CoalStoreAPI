@@ -26,17 +26,14 @@ export class NavComponent implements OnInit, OnDestroy {
         this.token = null;
 
         this.subscription = interval(1000)
-            .subscribe(x => { this.getProductsAmountInCart(); });
+            .subscribe(x => { 
+                this.getProductsAmountInCart();
+                this.checkIfIsLoggedIn();
+            });
     }
 
     ngOnInit(): void {
-        this.token = this.tokenService.getToken();
-
-        if (this.token == null || this.token.trim().length == 0) {
-            this.isLoggedIn = false;
-        } else {
-            this.isLoggedIn = true;
-        }
+        this.checkIfIsLoggedIn();
     }
 
     ngOnDestroy(): void {
@@ -60,5 +57,15 @@ export class NavComponent implements OnInit, OnDestroy {
             this.basketButtonLabel = `Koszyk (${ordersProducts.length})`;
         else
             this.basketButtonLabel = "Koszyk";
+    }
+
+    checkIfIsLoggedIn() {
+        this.token = this.tokenService.getToken();
+
+        if (this.token == null || this.token.trim().length == 0) {
+            this.isLoggedIn = false;
+        } else {
+            this.isLoggedIn = true;
+        }
     }
 }
