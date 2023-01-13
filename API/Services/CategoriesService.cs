@@ -45,14 +45,14 @@ namespace API.Services
 
             return result;
         }
-        public ResultData UpdateCategories(UpdateCategoriesDTO categoriesDTO)
+        public async Task<ResultData> UpdateCategories(UpdateCategoriesDTO categoriesDTO)
         {
             ResultData result = new();
 
             try
             {
                 Categories categories = _categoriesFactory.UpdateCategories(categoriesDTO);
-                var validation = _categoriesValidator.ValidateUpdateAsync(categories).GetAwaiter().GetResult();
+                var validation = await _categoriesValidator.ValidateUpdateAsync(categories);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
@@ -69,13 +69,13 @@ namespace API.Services
             return result;
         }
 
-        public ResultData DeleteCategories(int categoryId)
+        public async Task<ResultData> DeleteCategories(int categoryId)
         {
             ResultData result = new();
 
             try
             {
-                var validation = _categoriesValidator.ValidateDeleteAsync(categoryId).GetAwaiter().GetResult();
+                var validation = await _categoriesValidator.ValidateDeleteAsync(categoryId);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
@@ -90,14 +90,14 @@ namespace API.Services
             }
             return result;
         }
-        public Categories GetCategoryByName(string categoryName)
+        public async Task<Categories> GetCategoryByName(string categoryName)
         {
-            var category = _categoriesRepository.GetByName(categoryName).GetAwaiter().GetResult();
+            var category = await _categoriesRepository.GetByName(categoryName);
             return category;
         }
-        public List<Categories> GetCategories()
+        public async Task<List<Categories>> GetCategories()
         {
-            var category = _categoriesRepository.Get().GetAwaiter().GetResult();
+            var category = await _categoriesRepository.Get();
             return category;
         }
     }

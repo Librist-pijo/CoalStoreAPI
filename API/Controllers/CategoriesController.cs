@@ -26,27 +26,27 @@ namespace API.Controllers
             return Json(value);
         }
         [HttpPut("update-category")]
-        public IActionResult UpdateCategories([FromBody] UpdateCategoriesDTO categoriesDTO)
+        public async Task<IActionResult> UpdateCategories([FromBody] UpdateCategoriesDTO categoriesDTO)
         {
-            var value = _categoriesService.UpdateCategories(categoriesDTO);
+            var value = await _categoriesService.UpdateCategories(categoriesDTO);
             return Json(value);
         }
         [HttpDelete("delete-category")]
-        public IActionResult DeleteCategories([FromBody] int categoryId)
+        public async Task<IActionResult> DeleteCategories([FromBody] int categoryId)
         {
-            var value = _categoriesService.DeleteCategories(categoryId);
+            var value = await _categoriesService.DeleteCategories(categoryId);
             return Json(value);
         }
         [HttpGet("get-categories")]
-        public IActionResult GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            var value = _categoriesService.GetCategories();
+            var value = await _categoriesService.GetCategories();
             return Json(value);
         }
         [HttpGet("get-categories-by-name")]
-        public IActionResult GetCategoryByName(string categoryName)
+        public async Task<IActionResult> GetCategoryByName(string categoryName)
         {
-            var value = _categoriesService.GetCategoryByName(categoryName);
+            var value = await _categoriesService.GetCategoryByName(categoryName);
             return Json(value);
         }
     }
