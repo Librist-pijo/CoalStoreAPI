@@ -4,7 +4,6 @@ using API.ModelsDTO.CategoriesDTO;
 using API.Services;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
 namespace API.Controllers
 {
     [ApiController]
@@ -21,9 +20,9 @@ namespace API.Controllers
         }
 
         [HttpPost("create-category")]
-        public IActionResult CreateCategories([FromBody] CreateCategoriesDTO categoriesDTO)
+        public async Task<IActionResult> CreateCategories([FromBody] CreateCategoriesDTO categoriesDTO)
         {
-            var value = _categoriesService.CreateCategories(categoriesDTO);
+            var value = await _categoriesService.CreateCategories(categoriesDTO);
             return Json(value);
         }
         [HttpPut("update-category")]

@@ -6,7 +6,7 @@ namespace API.Services.Interfaces
 {
     public interface ICategoriesService
     {
-        public ResultData CreateCategories(CreateCategoriesDTO categoriesDTO);
+        public Task<ResultData> CreateCategories(CreateCategoriesDTO categoriesDTO);
         public ResultData UpdateCategories(UpdateCategoriesDTO categoriesDTO);
         public ResultData DeleteCategories(int categoryId);
         public Categories GetCategoryByName(string categoryName);

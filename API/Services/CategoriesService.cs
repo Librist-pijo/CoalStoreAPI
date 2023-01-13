@@ -22,20 +22,20 @@ namespace API.Services
             _categoriesFactory = new CategoriesFactory();
         }
 
-        public ResultData CreateCategories(CreateCategoriesDTO categoriesDTO)
+        public async Task<ResultData> CreateCategories(CreateCategoriesDTO categoriesDTO)
         {
             ResultData result = new();
 
             try
             {
                 Categories categories = _categoriesFactory.CreateCategories(categoriesDTO);
-                var validation = _categoriesValidator.ValidateCreateAsync(categories).GetAwaiter().GetResult();
+                var validation = await _categoriesValidator.ValidateCreateAsync(categories);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _categoriesRepository.Create(categories);
+                await _categoriesRepository.Create(categories);
                 result.Success = true;
             }
             catch (Exception ex)
