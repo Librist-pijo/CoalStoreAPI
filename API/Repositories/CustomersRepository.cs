@@ -1,4 +1,5 @@
-﻿using API.Repositories.Interfaces;
+﻿using API.ModelsDTO.CustomersDTO;
+using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using Dapper;
 using DataLibrary.DataAccess.Interfaces;
@@ -80,7 +81,6 @@ namespace API.Repositories
             DynamicParameters parameters = new DynamicParameters();
 
             parameters.Add("Login", customer.Login);
-            parameters.Add("Password", customer.Password);
             parameters.Add("FirstName", customer.FirstName);
             parameters.Add("LastName", customer.LastName);
             parameters.Add("AddressLine1", customer.AddressLine1);
@@ -103,6 +103,17 @@ namespace API.Repositories
                 "SQLDB");
 
             return Customer.FirstOrDefault();
+        }
+
+        public async Task UpdateCustomerPassword(UpdatePasswordDTO updatePasswordDTO)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+
+            parameters.Add("Id", updatePasswordDTO.CustomerId);
+            parameters.Add("OldPassword", updatePasswordDTO.OldPassword);
+            parameters.Add("NewPassword", updatePasswordDTO.NewPassword);
+
+            await _dataAccess.SaveData("dbo.spUpdateCustomerPassword", parameters, "SQLDB");
         }
     }
 }

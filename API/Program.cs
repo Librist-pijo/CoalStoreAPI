@@ -24,7 +24,8 @@ builder.Services.AddScoped<ICategoriesValidator, CategoriesValidator>();
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
 builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
-builder.Services.AddScoped<ICustomersValidator, CustomersValidator>();
+builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
+builder.Services.AddScoped<ICustomersService, CustomersService>();
 
 builder.Services.AddScoped<IInvoicesRepository, InvoicesRepository>();
 builder.Services.AddScoped<IInvoicesValidator, InvoicesValidator>();

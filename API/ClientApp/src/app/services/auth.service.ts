@@ -11,6 +11,7 @@ import { TokenService } from './token.service';
 const OAUTH_CLIENT = 'express-client';
 const OAUTH_SECRET = 'express-secret';
 const API_URL = 'https://localhost:7197/api/';
+const LOGIN_KEY = 'user_loggin';
 
 const HTTP_OPTIONS = {
   headers: new HttpHeaders({
@@ -63,6 +64,7 @@ export class AuthService {
             if (res.data.refreshToken) {
               this.tokenService.saveRefreshToken(res.data.refreshToken);
             }
+            this.saveLoggedUserLogin(res.data.login);
           } 
         }),
         catchError(AuthService.handleError)
@@ -80,6 +82,7 @@ export class AuthService {
         tap(res => {
           this.tokenService.saveToken(res.access_token);
           this.tokenService.saveRefreshToken(res.refresh_token);
+          this.saveLoggedUserLogin(res.login);
         }),
         catchError(AuthService.handleError)
       );
@@ -89,6 +92,7 @@ export class AuthService {
     this.ordersService.resetShoppingCart();
     this.tokenService.removeToken();
     this.tokenService.removeRefreshToken();
+    this.removeLoggerUserLogin();
   }
 
   register(data: any): Observable<any> {
@@ -99,4 +103,15 @@ export class AuthService {
       );
   }
 
+  saveLoggedUserLogin(login: string) {
+    localStorage.setItem(LOGIN_KEY, login);
+  }
+
+  removeLoggerUserLogin() {
+    localStorage.removeItem(LOGIN_KEY);
+  }
+
+  getLoggedUserLogin(): string {
+    return localStorage.getItem(LOGIN_KEY) ?? '';
+  }
 }

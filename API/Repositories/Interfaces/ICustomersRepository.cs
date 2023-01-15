@@ -1,4 +1,5 @@
-﻿using API.Repositories.Models;
+﻿using API.ModelsDTO.CustomersDTO;
+using API.Repositories.Models;
 
 namespace API.Repositories.Interfaces
 {
@@ -11,5 +12,6 @@ namespace API.Repositories.Interfaces
         Task<Customers> GetCustomerByLogin(string customerLogin);
         Task<Customers> GetCustomerById(int customerId);
         Task<Customers> GetCustomerByLoginAndPassword(string customerLogin, string password);
+        Task UpdateCustomerPassword(UpdatePasswordDTO updatePasswordDTO);
     }
 }

@@ -21,6 +21,7 @@ import { TokenService } from './services/token.service';
 import { AuthInterceptor } from './auth.interceptor';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { ProductsService } from './services/products.service';
+import { CustomersService } from './services/customers.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ProductsService } from './services/products.service';
     AuthService,
     TokenService,
     ProductsService,
+    CustomersService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -11,14 +11,14 @@
             <div class="col-12 d-flex justify-content-center align-items-center">
                 <h4>Moje dane</h4>
             </div>
-            <form action="customer-personal-data" (submit)="saveCustomerPersonalData($event)" style="width: 100%;">
+            <form id="personal-data" name="personal-data" action="" style="width: 100%;">
                 <div class="col-12 d-flex justify-content-between align-items-center mt-4">
                     <dx-text-box
                         placeholder="..."
                         label="Imię"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="customer.firstname"
+                        [(value)]="customer.firstName"
                         width="49%">
                         <dx-validator>
                             <dxi-validation-rule
@@ -32,7 +32,7 @@
                         label="Nazwisko"
                         labelMode="static"
                         [showClearButton]="true"
-                        [(value)]="customer.lastname"
+                        [(value)]="customer.lastName"
                         width="49%">
                         <dx-validator>
                             <dxi-validation-rule
@@ -63,12 +63,12 @@
                         type="date"
                         [max]="now"
                         displayFormat="dd.MM.yyyy">
-                        <dx-validator>
+                        <!-- <dx-validator>
                             <dxi-validation-rule
                                 type="required"
                                 message="Data urodzenia jest wymagana"
                             ></dxi-validation-rule>
-                        </dx-validator>
+                        </dx-validator> -->
                     </dx-date-box>
                 </div>
                 <div class="col-12 d-flex justify-content-between align-items-center mt-2">
@@ -90,13 +90,6 @@
                         width="20%"
                         mask="00-000"
                         [useMaskedValue]="true">
-                        <dx-validator>
-                            <dxi-validation-rule
-                              type="pattern"
-                              [pattern]="'^[^0-9]'"
-                              message="Kod pocztowy musi mieć odpowiedni format"
-                            ></dxi-validation-rule>
-                        </dx-validator>
                     </dx-text-box>
                 </div>
                 <div class="col-12 d-flex justify-content-center align-items-center mt-2">
@@ -116,7 +109,7 @@
                         text="Zapisz zmiany"
                         type="default"
                         width="49%"
-                        [useSubmitBehavior]="true"
+                        (onClick)="saveCustomerPersonalData($event)"
                     >
                   </dx-button>
                 </div>
@@ -144,7 +137,7 @@
             <div class="col-12 d-flex justify-content-center align-items-center">
                 <h4>Zmień hasło</h4>
             </div>
-            <form action="password-change" (submit)="changeCustomerPassword($event)" style="width: 100%;">
+            <form id="password-change" name="password-change" action="" style="width: 100%;">
                 <div class="col-12 d-flex justify-content-center align-items-center mt-2">
                     <dx-text-box
                         [mode]="oldPasswordMode"
@@ -216,10 +209,10 @@
                 <div class="col-12 d-flex justify-content-center align-items-center my-4">
                     <dx-button id="login-btn"
                         stylingMode="outlined"
-                        text="Zarejestruj"
+                        text="Zmień hasło"
                         type="default"
                         width="30%"
-                        [useSubmitBehavior]="true"
+                        (onClick)="changeCustomerPassword($event)"
                     >
                   </dx-button>
                 </div>
