@@ -4,7 +4,10 @@ import { EnumDescriptionDTO } from "src/app/models/EnumDescriptionDTO";
 import { Orders } from "src/app/models/Orders";
 import { OrderState } from "src/app/models/OrderState";
 import { PasswordChangeDTO } from "src/app/models/PasswordChangeDTO";
+import { AuthService } from "src/app/services/auth.service";
+import { CustomersService } from "src/app/services/customers.service";
 import { OrdersService } from "src/app/services/orders.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: 'app-user-account',
@@ -15,7 +18,7 @@ export class UserAccountComponent implements OnInit {
     selectedItemId: number = 1;
     customer: Customers = new Customers();
     now: Date = new Date();
-    passwordChange: PasswordChangeDTO = new PasswordChangeDTO();
+    passwordChange!: PasswordChangeDTO;
     passwordMode = 'password';
     passwordRepeatMode = 'password';
     passwordButton: any;
@@ -32,7 +35,9 @@ export class UserAccountComponent implements OnInit {
     ];
 
     constructor(
-        private ordersService: OrdersService
+        private ordersService: OrdersService,
+        private authService: AuthService,
+        private customersService: CustomersService
     ) {
         this.passwordButton = {
             icon: "visibility",
@@ -73,6 +78,15 @@ export class UserAccountComponent implements OnInit {
 
     ngOnInit(): void {
         this.ordersStates = this.ordersService.getOrdersStates();
+        
+        const login = this.authService.getLoggedUserLogin();
+
+        this.customersService.getCustomerByLogin(login).then((data) => {
+            this.customer = data;
+            this.customer.password = "";
+            
+            this.passwordChange = new PasswordChangeDTO(this.customer.id, this.customer.login);
+        });
     }
 
     onSelectionChanged(e: any) {
@@ -82,10 +96,36 @@ export class UserAccountComponent implements OnInit {
     }
 
     saveCustomerPersonalData(e: any) {
-         
+        this.customersService.updateCustomer(this.customer).then((result) => {
+            if (result && result.success) {
+                Swal.fire('Twoje dane zostały zaktualizowane!', '', 'success');
+
+                if (result.data) {
+                    this.customer = result.data;
+                    this.customer.password = "";
+                }
+            } else {
+                Swal.fire('Aktualizacja danych nie powiodła się', '', 'error');
+            }
+        }, (err) => {
+            Swal.fire('Aktualizacja danych nie powiodła się', '', 'error');
+        });
     }
 
     changeCustomerPassword(e: any) {
-        
+        this.customersService.updateCustomerPassword(this.passwordChange).then((result) => {
+            if (result && result.success) {
+                Swal.fire('Twoje hasło zostało zaktualizowane!', '', 'success');
+
+                if (result.data) {
+                    this.customer = result.data;
+                    this.customer.password = "";
+                }
+            } else {
+                Swal.fire('Aktualizacja hasła nie powiodła się', result.error ?? '', 'error');
+            }
+        }, (err) => {
+            Swal.fire('Aktualizacja hasła nie powiodła się', '', 'error');
+        });
     }
 }

@@ -3,8 +3,9 @@ export class Customers {
     constructor(
         
     ) {
-        this.firstname = "";
-        this.lastname = "";
+        this.id = 0;
+        this.firstName = "";
+        this.lastName = "";
         this.login = "";
         this.password = "";
         this.birthdate = new Date();
@@ -13,11 +14,11 @@ export class Customers {
         this.postCode = "";
     }
 
-    private id?: number;
+    public id: number;
     public login: string;
     public password: string;
-    public firstname: string;
-    public lastname: string;
+    public firstName: string;
+    public lastName: string;
     public addressLine1: string;
     public addressLine2: string;
     public postCode: string;
