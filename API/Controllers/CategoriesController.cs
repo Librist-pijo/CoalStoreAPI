@@ -20,31 +20,31 @@ namespace API.Controllers
             _categoriesService = categoriesService;
         }
 
-        [HttpPost("create-category")]
+        [HttpPost("createcategory")]
         public IActionResult CreateCategories([FromBody] CreateCategoriesDTO categoriesDTO)
         {
             var value = _categoriesService.CreateCategories(categoriesDTO);
             return Json(value);
         }
-        [HttpPut("update-category")]
+        [HttpPut("updatecategory")]
         public IActionResult UpdateCategories([FromBody] UpdateCategoriesDTO categoriesDTO)
         {
             var value = _categoriesService.UpdateCategories(categoriesDTO);
             return Json(value);
         }
-        [HttpDelete("delete-category")]
+        [HttpDelete("deletecategory")]
         public IActionResult DeleteCategories([FromBody] int categoryId)
         {
             var value = _categoriesService.DeleteCategories(categoryId);
             return Json(value);
         }
-        [HttpGet("get-categories")]
+        [HttpGet("getcategories")]
         public IActionResult GetCategories()
         {
             var value = _categoriesService.GetCategories();
             return Json(value);
         }
-        [HttpGet("get-categories-by-name")]
+        [HttpGet("getcategoriesbyname")]
         public IActionResult GetCategoryByName(string categoryName)
         {
             var value = _categoriesService.GetCategoryByName(categoryName);

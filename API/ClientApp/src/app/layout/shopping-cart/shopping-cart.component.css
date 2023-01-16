@@ -1,0 +1,42 @@
+.card-body {
+    width: 60vw;
+}
+
+.products-link {
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.products-link:hover {
+    color: rgb(0, 140, 255)
+}
+
+::ng-deep .dx-button-mode-outlined.dx-button-danger .dx-icon {
+    color: #d43f3a !important;
+}
+
+.remove-from-cart-button {
+    margin-left: 8px;
+}
+
+.font-larger {
+    font-size: larger;
+}
+
+.vr-line {
+    border-left: 1px solid rgba(0, 0, 0, 0.175);
+    min-height: 500px;
+}
+
+.products-in-cart-wrapper {
+    height: 70vh;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.shopping-cart-wrapper {
+    height: 70vh;
+    background-image: url('../../../assets/img/coal.png');
+    background-repeat: no-repeat;
+    background-size: 250px;
+    background-position: left bottom;
+}

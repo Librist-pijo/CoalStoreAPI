@@ -31,6 +31,7 @@ export class ProductsComponent implements OnInit {
 
     addProductToCart(e: any, product: Products) {
         this.ordersService.addProductToOrder(product, product.quantity);
+        product.quantity = 1;
         Swal.fire('Dodano produkt do koszyka!', '', 'success');
     }
 }

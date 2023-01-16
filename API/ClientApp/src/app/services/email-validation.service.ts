@@ -15,7 +15,7 @@ export class EmailValidationService {
     validateEmail(email: string): boolean {
         var result = false;
 
-        this.dbService.SetRoute(`auth/validate-email?email=${email}`);
+        this.dbService.SetRoute(`auth/validateemail?email=${email}`);
         this.dbService.Get<boolean>().subscribe((data: boolean) => {
             result = data;
         }, (err) => {

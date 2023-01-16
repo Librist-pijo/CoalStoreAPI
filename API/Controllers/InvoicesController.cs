@@ -20,19 +20,19 @@ namespace API.Controllers
             _InvoicesService = InvoicesService;
         }
 
-        [HttpGet("get-Invoices")]
+        [HttpGet("getinvoices")]
         public IActionResult GetInvoices()
         {
             var value = _InvoicesService.Get();
             return Json(value);
         }
-        [HttpGet("get-invoice-by-id")]
+        [HttpGet("getinvoicebyid")]
         public IActionResult GetInvoicesById(int invoiceId)
         {
             var value = _InvoicesService.GetById(invoiceId);
             return Json(value);
         }
-        [HttpGet("get-invoices-by-orderid")]
+        [HttpGet("getinvoicesbyorderid")]
         public IActionResult GetCategoryByName(int orderId)
         {
             var value = _InvoicesService.GetByOrderId(orderId);

@@ -21,63 +21,63 @@ namespace API.Controllers
             _ProductsService = ProductsService;
         }
 
-        [HttpPost("create-product")]
+        [HttpPost("createproduct")]
         public IActionResult CreateProducts([FromBody] CreateProductsDTO ProductsDTO)
         {
             var value = _ProductsService.CreateProducts(ProductsDTO);
             return Json(value);
         }
 
-        [HttpPost("create-product-categories-mapping")]
+        [HttpPost("createproductcategoriesmapping")]
         public IActionResult CreateProductsCategoryMapping([FromBody] ProductsCategories productsCategories)
         {
             var value = _ProductsService.CreateProductsCategoriesMapping(productsCategories);
             return Json(value);
         }
 
-        [HttpPut("update-product")]
+        [HttpPut("updateproduct")]
         public IActionResult UpdateProducts([FromBody] UpdateProductsDTO ProductsDTO)
         {
             var value = _ProductsService.UpdateProducts(ProductsDTO);
             return Json(value);
         }
 
-        [HttpPut("update-product-categories-mapping")]
+        [HttpPut("updateproductcategoriesmapping")]
         public IActionResult UpdateCreateProductsCategoryMapping([FromBody] ProductsCategories productsCategories)
         {
             var value = _ProductsService.UpdateProductsCategoriesMapping(productsCategories);
             return Json(value);
         }
 
-        [HttpDelete("delete-product")]
+        [HttpDelete("deleteproduct")]
         public IActionResult DeleteProducts([FromBody] int productId)
         {
             var value = _ProductsService.DeleteProducts(productId);
             return Json(value);
         }
 
-        [HttpDelete("delete-product-categories-mapping")]
+        [HttpDelete("deleteproductcategoriesmapping")]
         public IActionResult DeleteCreateProductsCategoryMapping(int Id)
         {
             var value = _ProductsService.DeleteProductsCategoriesMapping(Id);
             return Json(value);
         }
 
-        [HttpGet("get-products")]
+        [HttpGet("getproducts")]
         public IActionResult GetProducts()
         {
             var value = _ProductsService.GetProducts();
             return Json(value);
         }
 
-        [HttpGet("get-product-by-name")]
+        [HttpGet("getproductbyname")]
         public IActionResult GetProductByName(string productName)
         {
             var value = _ProductsService.GetProductByName(productName);
             return Json(value);
         }
 
-        [HttpGet("get-products-with-category")]
+        [HttpGet("getproductswithcategory")]
         public IActionResult GetProductsWithCategory()
         {
             var value = _ProductsService.GetProductsWithCategory();

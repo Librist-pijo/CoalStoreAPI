@@ -23,38 +23,38 @@ namespace API.Controllers
             _config = config;
             _ordersService = ordersService;
         }
-        [HttpPut("update-order")]
+        [HttpPut("updateorder")]
         public IActionResult UpdateOrders([FromBody] UpdateOrdersDTO ordersDTO)
         {
             var value = _ordersService.UpdateOrders(ordersDTO);
             return Json(value);
         }
-        [HttpDelete("delete-order")]
+        [HttpDelete("deleteorder")]
         public IActionResult DeleteOrders(int orderId)
         {
             var value = _ordersService.DeleteOrders(orderId);
             return Json(value);
         }
-        [HttpGet("get-orders-states")]
+        [HttpGet("getordersstates")]
         public IActionResult GetOrdersStates()
         {
             List<EnumDescriptionDTO<OrderState>> ordersStates = _ordersService.GetOrdersStates();
             return Json(ordersStates);
         }
-        [HttpGet("get-orders")]
+        [HttpGet("getorders")]
         public IActionResult GetOrders()
         {
             var value = _ordersService.GetOrders();
             return Json(value);
         }
-        [HttpGet("get-orders-by-id")]
+        [HttpGet("getordersbyid")]
         public IActionResult GetOrderById(int orderId)
         {
             var value = _ordersService.GetOrderById(orderId);
             return Json(value);
         }
 
-        [HttpPost("create-order")]
+        [HttpPost("createorder")]
         public IActionResult CreateOrders([FromBody] CreateOrdersDTO ordersDTO)
         {
             var value = _ordersService.CreateOrders(ordersDTO);
