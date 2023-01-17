@@ -31,7 +31,7 @@ namespace API.Controllers
             var value = await _categoriesService.UpdateCategories(categoriesDTO);
             return Json(value);
         }
-        [HttpDelete("delete-category")]
+        [HttpDelete("delete-category/{categoryId}")]
         public async Task<IActionResult> DeleteCategories([FromBody] int categoryId)
         {
             var value = await _categoriesService.DeleteCategories(categoryId);
@@ -43,7 +43,7 @@ namespace API.Controllers
             var value = await _categoriesService.GetCategories();
             return Json(value);
         }
-        [HttpGet("get-categories-by-name")]
+        [HttpGet("get-categories-by-name/{categoryName}")]
         public async Task<IActionResult> GetCategoryByName(string categoryName)
         {
             var value = await _categoriesService.GetCategoryByName(categoryName);

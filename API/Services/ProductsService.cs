@@ -128,7 +128,7 @@ namespace API.Services
         public List<ProductsWithCategory> GetProductsWithCategory()
         {
             List<ProductsWithCategory> productsWithCategories = new List<ProductsWithCategory>();
-            var categories = _categoriesService.GetCategories();
+            var categories = _categoriesService.GetCategories().GetAwaiter().GetResult();
             var products = GetProducts();
             foreach (var product in products)
             {
