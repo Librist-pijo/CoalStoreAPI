@@ -8,10 +8,10 @@ namespace API.Services.Interfaces
     public interface IOrdersService
     {
         public List<EnumDescriptionDTO<OrderState>> GetOrdersStates();
-        public ResultData CreateOrders(CreateOrdersDTO ordersDTO);
-        public ResultData UpdateOrders(UpdateOrdersDTO ordersDTO);
-        public ResultData DeleteOrders(int orderId);
-        public Orders GetOrderById(int orderId);
-        public List<Orders> GetOrders();
+        public Task<ResultData> CreateOrders(CreateOrdersDTO ordersDTO);
+        public Task<ResultData> UpdateOrders(UpdateOrdersDTO ordersDTO);
+        public Task<ResultData> DeleteOrders(int orderId);
+        public Task<Orders> GetOrderById(int orderId);
+        public Task<List<Orders>> GetOrders();
     }
 }

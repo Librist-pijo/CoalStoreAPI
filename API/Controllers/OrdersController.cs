@@ -23,43 +23,77 @@ namespace API.Controllers
             _config = config;
             _ordersService = ordersService;
         }
+
+        /// <summary>
+        /// Creates new orders
+        /// </summary>
+        /// <param name="ordersDTO"></param>
+        /// <returns></returns>
+        [HttpPost("create-order")]
+        public async Task<IActionResult> CreateOrders([FromBody] CreateOrdersDTO ordersDTO)
+        {
+            var value = await _ordersService.CreateOrders(ordersDTO);
+            return Json(value);
+        }
+
+        /// <summary>
+        /// Updates orders
+        /// </summary>
+        /// <param name="ordersDTO"></param>
+        /// <returns></returns>
         [HttpPut("update-order")]
-        public IActionResult UpdateOrders([FromBody] UpdateOrdersDTO ordersDTO)
+        public async Task<IActionResult> UpdateOrders([FromBody] UpdateOrdersDTO ordersDTO)
         {
-            var value = _ordersService.UpdateOrders(ordersDTO);
+            var value = await _ordersService.UpdateOrders(ordersDTO);
             return Json(value);
         }
-        [HttpDelete("delete-order")]
-        public IActionResult DeleteOrders(int orderId)
+        /// <summary>
+        /// Deletes orders by id of order
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [HttpDelete("delete-order/{orderId}")]
+        public async Task<IActionResult> DeleteOrders(int orderId)
         {
-            var value = _ordersService.DeleteOrders(orderId);
+            var value = await _ordersService.DeleteOrders(orderId);
             return Json(value);
         }
+
+        /// <summary>
+        /// Gets possible states of orders
+        /// </summary>
+        /// <returns>Enum of order states</returns>
         [HttpGet("get-orders-states")]
         public IActionResult GetOrdersStates()
         {
             List<EnumDescriptionDTO<OrderState>> ordersStates = _ordersService.GetOrdersStates();
             return Json(ordersStates);
         }
+
+        /// <summary>
+        /// Gets all orders
+        /// </summary>
+        /// <returns>List of all orders</returns>
         [HttpGet("get-orders")]
-        public IActionResult GetOrders()
+        public async Task<IActionResult> GetOrders()
         {
-            var value = _ordersService.GetOrders();
-            return Json(value);
-        }
-        [HttpGet("get-orders-by-id")]
-        public IActionResult GetOrderById(int orderId)
-        {
-            var value = _ordersService.GetOrderById(orderId);
+            var value = await _ordersService.GetOrders();
             return Json(value);
         }
 
-        [HttpPost("create-order")]
-        public IActionResult CreateOrders([FromBody] CreateOrdersDTO ordersDTO)
+        /// <summary>
+        /// Get orders by id of order
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns>One order that match order id</returns>
+        [HttpGet("get-orders-by-id/{orderId}")]
+        public async Task<IActionResult> GetOrderById(int orderId)
         {
-            var value = _ordersService.CreateOrders(ordersDTO);
+            var value = await _ordersService.GetOrderById(orderId);
             return Json(value);
         }
+
+
 
     }
 }

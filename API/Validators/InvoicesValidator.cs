@@ -10,6 +10,8 @@ namespace API.Validators
     {
         protected readonly IInvoicesRepository _invoicesRepository;
         protected readonly IOrdersRepository _ordersRepository;
+
+        const int MinAmountNumber = 0;
         public InvoicesValidator(IInvoicesRepository invoicesRepository,
                                  IOrdersRepository ordersRepository)
         {
@@ -104,7 +106,7 @@ namespace API.Validators
         }
         private async Task<bool> ValidateAmount(Invoices invoices)
         {
-            if (invoices.Amount > 0)
+            if (invoices.Amount > MinAmountNumber)
             {
                 return true;
             }
