@@ -6,6 +6,10 @@ namespace API.Validators
 {
     public class ProductsValidator : IProductsValidator
     {
+        const int MinPrice = 0;
+        const int MinStock = 0;
+        const int MaxStringLength = 255;
+
         protected readonly IProductsRepository _productsRepository;
 
         public ProductsValidator(IProductsRepository productsRepository)
@@ -62,7 +66,7 @@ namespace API.Validators
 
         private async Task<bool> ValidateName(Products products)
         {
-            if (products.Name.Length > 255)
+            if (products.Name.Length >= MaxStringLength)
             {
                 return false;
             }
@@ -96,7 +100,7 @@ namespace API.Validators
 
         private async Task<bool> ValidateStock(Products products)
         {
-            if (products.Stock >= 0)
+            if (products.Stock >= MinStock)
             {
                 return true;
             }
@@ -106,7 +110,7 @@ namespace API.Validators
 
         private async Task<bool> ValidatePrice(Products products)
         {
-            if (products.Price > 0)
+            if (products.Price > MinPrice)
             {
                 return true;
             }

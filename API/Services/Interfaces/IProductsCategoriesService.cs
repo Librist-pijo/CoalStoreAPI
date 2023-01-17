@@ -6,9 +6,9 @@ namespace API.Services.Interfaces
 {
     public interface IProductsCategoriesService
     {
-        public ResultData CreateProductsCategories(ProductsCategories productCategories);
-        public ResultData UpdateProductsCategories(ProductsCategories productCategories);
-        public ResultData DeleteProductsCategories(int Id);
-        public List<ProductsCategories> GetProductsCategoriesByProductId(int productId);
+        public Task<ResultData> CreateProductsCategories(ProductsCategories productCategories);
+        public Task<ResultData> UpdateProductsCategories(ProductsCategories productCategories);
+        public Task<ResultData> DeleteProductsCategories(int Id);
+        public Task<List<ProductsCategories>> GetProductsCategoriesByProductId(int productId);
     }
 }

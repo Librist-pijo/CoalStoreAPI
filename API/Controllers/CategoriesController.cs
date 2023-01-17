@@ -4,7 +4,6 @@ using API.ModelsDTO.CategoriesDTO;
 using API.Services;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
 namespace API.Controllers
 {
     [ApiController]
@@ -19,35 +18,62 @@ namespace API.Controllers
             _config = config;
             _categoriesService = categoriesService;
         }
-
+        /// <summary>
+        /// Creates new category
+        /// </summary>
+        /// <param name="categoriesDTO"></param>
+        /// <returns></returns>
         [HttpPost("create-category")]
-        public IActionResult CreateCategories([FromBody] CreateCategoriesDTO categoriesDTO)
+        public async Task<IActionResult> CreateCategories([FromBody] CreateCategoriesDTO categoriesDTO)
         {
-            var value = _categoriesService.CreateCategories(categoriesDTO);
+            var value = await _categoriesService.CreateCategories(categoriesDTO);
             return Json(value);
         }
+
+        /// <summary>
+        /// Updates category
+        /// </summary>
+        /// <param name="categoriesDTO"></param>
+        /// <returns></returns>
         [HttpPut("update-category")]
-        public IActionResult UpdateCategories([FromBody] UpdateCategoriesDTO categoriesDTO)
+        public async Task<IActionResult> UpdateCategories([FromBody] UpdateCategoriesDTO categoriesDTO)
         {
-            var value = _categoriesService.UpdateCategories(categoriesDTO);
+            var value = await _categoriesService.UpdateCategories(categoriesDTO);
             return Json(value);
         }
-        [HttpDelete("delete-category")]
-        public IActionResult DeleteCategories([FromBody] int categoryId)
+
+        /// <summary>
+        /// Deletes category by id of category
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        [HttpDelete("delete-category/{categoryId}")]
+        public async Task<IActionResult> DeleteCategories([FromBody] int categoryId)
         {
-            var value = _categoriesService.DeleteCategories(categoryId);
+            var value = await _categoriesService.DeleteCategories(categoryId);
             return Json(value);
         }
+
+        /// <summary>
+        /// Gets all categories
+        /// </summary>
+        /// <returns>List of all categories</returns>
         [HttpGet("get-categories")]
-        public IActionResult GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            var value = _categoriesService.GetCategories();
+            var value = await _categoriesService.GetCategories();
             return Json(value);
         }
-        [HttpGet("get-categories-by-name")]
-        public IActionResult GetCategoryByName(string categoryName)
+
+        /// <summary>
+        /// Gets category by name of category
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns>One category that match category name</returns>
+        [HttpGet("get-categories-by-name/{categoryName}")]
+        public async Task<IActionResult> GetCategoryByName(string categoryName)
         {
-            var value = _categoriesService.GetCategoryByName(categoryName);
+            var value = await _categoriesService.GetCategoryByName(categoryName);
             return Json(value);
         }
     }
