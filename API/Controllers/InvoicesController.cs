@@ -20,22 +20,38 @@ namespace API.Controllers
             _InvoicesService = InvoicesService;
         }
 
+        /// <summary>
+        /// Gets all invoices
+        /// </summary>
+        /// <returns>List of all invoices</returns>
         [HttpGet("getinvoices")]
-        public IActionResult GetInvoices()
+        public async Task<IActionResult> GetInvoices()
         {
-            var value = _InvoicesService.Get();
+            var value = await _InvoicesService.Get();
             return Json(value);
         }
-        [HttpGet("getinvoicebyid")]
-        public IActionResult GetInvoicesById(int invoiceId)
+
+        /// <summary>
+        /// Gets invoice by id of invoice
+        /// </summary>
+        /// <param name="invoiceId"></param>
+        /// <returns>One invoice that match invoice id</returns>
+        [HttpGet("getinvoicebyid/{invoiceId}")]
+        public async Task<IActionResult> GetInvoicesById(int invoiceId)
         {
-            var value = _InvoicesService.GetById(invoiceId);
+            var value = await _InvoicesService.GetById(invoiceId);
             return Json(value);
         }
-        [HttpGet("getinvoicesbyorderid")]
-        public IActionResult GetCategoryByName(int orderId)
+
+        /// <summary>
+        /// Gets inovoice by id of order
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns>One invoice that match order id</returns>
+        [HttpGet("getinvoicesbyorderid/{orderId}")]
+        public async Task<IActionResult> GetCategoryByName(int orderId)
         {
-            var value = _InvoicesService.GetByOrderId(orderId);
+            var value = await _InvoicesService.GetByOrderId(orderId);
             return Json(value);
         }
     }

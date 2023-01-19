@@ -11,7 +11,7 @@ namespace API.Validators
     {
         protected readonly IOrdersRepository _ordersRepository;
         protected readonly ICustomersRepository _customersRepository;
-        private static int MAXLENGTH = 255;
+        private static int MaxLength = 255;
         public OrdersValidator(IOrdersRepository ordersRepository,
                                ICustomersRepository customersRepository)
         {
@@ -88,7 +88,7 @@ namespace API.Validators
             {
                 return false;
             }
-            if (orders.ShippingAddress.Length < MAXLENGTH)
+            if (orders.ShippingAddress.Length <= MaxLength)
             {
                 return true;
             }

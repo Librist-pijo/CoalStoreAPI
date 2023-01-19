@@ -29,20 +29,20 @@ namespace API.Services
         }
 
 
-        public ResultData CreateProducts(CreateProductsDTO ProductsDTO)
+        public async Task<ResultData> CreateProducts(CreateProductsDTO ProductsDTO)
         {
             ResultData result = new();
 
             try
             {
                 Products products = _productsFactory.CreateProducts(ProductsDTO);
-                var validation = _productsValidator.ValidateCreateAsync(products).GetAwaiter().GetResult();
+                var validation = await _productsValidator.ValidateCreateAsync(products);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _productsRepository.Create(products);
+                await _productsRepository.Create(products);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -53,13 +53,13 @@ namespace API.Services
             return result;
         }
 
-        public ResultData CreateProductsCategoriesMapping(ProductsCategories productsCategories)
+        public async Task<ResultData> CreateProductsCategoriesMapping(ProductsCategories productsCategories)
         {
             ResultData result = new();
 
             try
             {
-                result = _productsCategoriesService.CreateProductsCategories(productsCategories);  
+                result = await _productsCategoriesService.CreateProductsCategories(productsCategories);  
             }
             catch (Exception ex)
             {
@@ -69,19 +69,19 @@ namespace API.Services
             return result;
         }
 
-        public ResultData DeleteProducts(int productId)
+        public async Task<ResultData> DeleteProducts(int productId)
         {
             ResultData result = new();
 
             try
             {
-                var validation = _productsValidator.ValidateDeleteAsync(productId).GetAwaiter().GetResult();
+                var validation = await _productsValidator.ValidateDeleteAsync(productId);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _productsRepository.Delete(productId);
+                await _productsRepository.Delete(productId);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -91,13 +91,13 @@ namespace API.Services
             return result;
         }
 
-        public ResultData DeleteProductsCategoriesMapping(int Id)
+        public async Task<ResultData> DeleteProductsCategoriesMapping(int Id)
         {
             ResultData result = new();
 
             try
             {
-                result = _productsCategoriesService.DeleteProductsCategories(Id);
+                result = await _productsCategoriesService.DeleteProductsCategories(Id);
             }
             catch (Exception ex)
             {
@@ -107,32 +107,32 @@ namespace API.Services
             return result;
         }
 
-        public Products GetProductByName(string productName)
+        public async Task<Products> GetProductByName(string productName)
         {
-            var product = _productsRepository.GetByName(productName).GetAwaiter().GetResult();
+            var product = await _productsRepository.GetByName(productName);
             return product;
         }
 
-        public Products GetProductById(int productId)
+        public async Task<Products> GetProductById(int productId)
         {
-            var product = _productsRepository.GetById(productId).GetAwaiter().GetResult();
+            var product = await _productsRepository.GetById(productId);
             return product;
         }
 
-        public List<Products> GetProducts()
+        public async Task<List<Products>> GetProducts()
         {
-            var category = _productsRepository.Get().GetAwaiter().GetResult();
+            var category = await _productsRepository.Get();
             return category;
         }
 
-        public List<ProductsWithCategory> GetProductsWithCategory()
+        public async Task<List<ProductsWithCategory>> GetProductsWithCategory()
         {
             List<ProductsWithCategory> productsWithCategories = new List<ProductsWithCategory>();
-            var categories = _categoriesService.GetCategories();
-            var products = GetProducts();
+            var categories = await _categoriesService.GetCategories();
+            var products = await GetProducts();
             foreach (var product in products)
             {
-                var productsCategories = _productsCategoriesService.GetProductsCategoriesByProductId(product.Id);
+                var productsCategories = await _productsCategoriesService.GetProductsCategoriesByProductId(product.Id);
                 foreach (var category in productsCategories)
                 {
                     productsWithCategories.Add(MapProductsToCategory(product.Name,
@@ -143,14 +143,14 @@ namespace API.Services
             return productsWithCategories;
         }
 
-        public ResultData UpdateProducts(UpdateProductsDTO ProductsDTO)
+        public async Task<ResultData> UpdateProducts(UpdateProductsDTO ProductsDTO)
         {
             ResultData result = new();
 
             try
             {
                 Products products = _productsFactory.UpdateProducts(ProductsDTO);
-                var validation = _productsValidator.ValidateUpdateAsync(products).GetAwaiter().GetResult();
+                var validation = await _productsValidator.ValidateUpdateAsync(products);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
@@ -167,13 +167,13 @@ namespace API.Services
             return result;
         }
 
-        public ResultData UpdateProductsCategoriesMapping(ProductsCategories productsCategories)
+        public async Task<ResultData> UpdateProductsCategoriesMapping(ProductsCategories productsCategories)
         {
             ResultData result = new();
 
             try
             {
-                result = _productsCategoriesService.UpdateProductsCategories(productsCategories);
+                result = await _productsCategoriesService.UpdateProductsCategories(productsCategories);
             }
             catch (Exception ex)
             {

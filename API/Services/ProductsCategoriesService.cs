@@ -21,19 +21,19 @@ namespace API.Services
             _productsCategoriesValidator = productsCategoriesValidator;
         }
 
-        public ResultData CreateProductsCategories(ProductsCategories productCategories)
+        public async Task<ResultData> CreateProductsCategories(ProductsCategories productCategories)
         {
             ResultData result = new();
 
             try
             {
-                var validation = _productsCategoriesValidator.ValidateCreateAsync(productCategories).GetAwaiter().GetResult();
+                var validation = await _productsCategoriesValidator.ValidateCreateAsync(productCategories);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _productsCategoriesRepository.Create(productCategories);
+                await _productsCategoriesRepository.Create(productCategories);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -44,19 +44,19 @@ namespace API.Services
             return result;
         }
 
-        public ResultData DeleteProductsCategories(int Id)
+        public async Task<ResultData> DeleteProductsCategories(int Id)
         {
             ResultData result = new();
 
             try
             {
-                var validation = _productsCategoriesValidator.ValidateDeleteAsync(Id).GetAwaiter().GetResult();
+                var validation = await _productsCategoriesValidator.ValidateDeleteAsync(Id);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _productsCategoriesRepository.Delete(Id);
+                await _productsCategoriesRepository.Delete(Id);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -66,25 +66,25 @@ namespace API.Services
             return result;
         }
 
-        public List<ProductsCategories> GetProductsCategoriesByProductId(int productId)
+        public async Task<List<ProductsCategories>> GetProductsCategoriesByProductId(int productId)
         {
-            var category = _productsCategoriesRepository.GetByByProductId(productId).GetAwaiter().GetResult();
+            var category = await _productsCategoriesRepository.GetByByProductId(productId);
             return category;
         }
 
-        public ResultData UpdateProductsCategories(ProductsCategories productCategories)
+        public async Task<ResultData> UpdateProductsCategories(ProductsCategories productCategories)
         {
             ResultData result = new();
 
             try
             {
-                var validation = _productsCategoriesValidator.ValidateUpdateAsync(productCategories).GetAwaiter().GetResult();
+                var validation = await _productsCategoriesValidator.ValidateUpdateAsync(productCategories);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _productsCategoriesRepository.Update(productCategories);
+                await _productsCategoriesRepository.Update(productCategories);
                 result.Success = true;
             }
             catch (Exception ex)

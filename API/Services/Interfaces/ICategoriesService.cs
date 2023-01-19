@@ -6,10 +6,10 @@ namespace API.Services.Interfaces
 {
     public interface ICategoriesService
     {
-        public ResultData CreateCategories(CreateCategoriesDTO categoriesDTO);
-        public ResultData UpdateCategories(UpdateCategoriesDTO categoriesDTO);
-        public ResultData DeleteCategories(int categoryId);
-        public Categories GetCategoryByName(string categoryName);
-        public List<Categories> GetCategories();
+        public Task<ResultData> CreateCategories(CreateCategoriesDTO categoriesDTO);
+        public Task<ResultData> UpdateCategories(UpdateCategoriesDTO categoriesDTO);
+        public Task<ResultData> DeleteCategories(int categoryId);
+        public Task<Categories> GetCategoryByName(string categoryName);
+        public Task<List<Categories>> GetCategories();
     }
 }

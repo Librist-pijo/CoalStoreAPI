@@ -22,14 +22,14 @@ namespace API.Services
             _invoicesFactory = new InvoicesFactory();
         }
 
-        public ResultData CreateInvoices(CreateInvoicesDTO InvoicesDTO)
+        public async Task<ResultData> CreateInvoices(CreateInvoicesDTO InvoicesDTO)
         {
             ResultData result = new();
 
             try
             {
                 Invoices Invoices = _invoicesFactory.CreateInvoices(InvoicesDTO);
-                var validation = _invoicesValidator.ValidateCreateAsync(Invoices).GetAwaiter().GetResult();
+                var validation = await _invoicesValidator.ValidateCreateAsync(Invoices);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
@@ -45,14 +45,14 @@ namespace API.Services
 
             return result;
         }
-        public ResultData UpdateInvoices(UpdateInvoicesDTO InvoicesDTO)
+        public async Task<ResultData> UpdateInvoices(UpdateInvoicesDTO InvoicesDTO)
         {
             ResultData result = new();
 
             try
             {
                 Invoices Invoices = _invoicesFactory.UpdateInvoices(InvoicesDTO);
-                var validation = _invoicesValidator.ValidateUpdateAsync(Invoices).GetAwaiter().GetResult();
+                var validation = await _invoicesValidator.ValidateUpdateAsync(Invoices);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
@@ -69,13 +69,13 @@ namespace API.Services
             return result;
         }
 
-        public ResultData DeleteInvoices(int invoiceId)
+        public async Task<ResultData> DeleteInvoices(int invoiceId)
         {
             ResultData result = new();
 
             try
             {
-                var validation = _invoicesValidator.ValidateDeleteAsync(invoiceId).GetAwaiter().GetResult();
+                var validation = await _invoicesValidator.ValidateDeleteAsync(invoiceId);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
@@ -90,19 +90,19 @@ namespace API.Services
             }
             return result;
         }
-        public Invoices GetById(int invoiceId)
+        public async Task<Invoices> GetById(int invoiceId)
         {
-            var invoice = _invoicesRepository.GetById(invoiceId).GetAwaiter().GetResult();
+            var invoice = await _invoicesRepository.GetById(invoiceId);
             return invoice;
         }
-        public Invoices GetByOrderId(int orderId)
+        public async Task<Invoices> GetByOrderId(int orderId)
         {
-            var invoice = _invoicesRepository.GetByOrderId(orderId).GetAwaiter().GetResult();
+            var invoice = await _invoicesRepository.GetByOrderId(orderId);
             return invoice;
         }
-        public List<Invoices> Get()
+        public async Task<List<Invoices>> Get()
         {
-            var invoice = _invoicesRepository.Get().GetAwaiter().GetResult();
+            var invoice = await _invoicesRepository.Get();
             return invoice;
         }
     }

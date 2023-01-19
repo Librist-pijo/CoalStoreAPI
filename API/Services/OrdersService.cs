@@ -42,26 +42,26 @@ namespace API.Services
             _invoicesService = invoicesService;
         }
 
-        public ResultData CreateOrders(CreateOrdersDTO ordersDTO)
+        public async Task<ResultData> CreateOrders(CreateOrdersDTO ordersDTO)
         {
             ResultData result = new();
 
             try
             {
                 Orders orders = _ordersFactory.CreateOrders(ordersDTO);
-                var customer = _customersRepository.GetCustomerById(ordersDTO.CustomerId).GetAwaiter().GetResult();
+                var customer = await _customersRepository.GetCustomerById(ordersDTO.CustomerId);
                 if (customer.AddressLine1 is not null)
                 {
                     orders.ShippingAddress = $"{customer.AddressLine1}, {customer.PostCode} {customer.AddressLine2}";
                 }
-                var validation = _ordersValidator.ValidateCreateAsync(orders).GetAwaiter().GetResult();
+                var validation = await _ordersValidator.ValidateCreateAsync(orders);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
                 var id = _ordersRepository.Create(orders).GetAwaiter().GetResult();
-                var createInvoiceResult = CreateInvoice(ordersDTO.Products, id);
+                var createInvoiceResult = await CreateInvoice(ordersDTO.Products, id);
                 if (!createInvoiceResult.Success)
                 {
                     DeleteOrders(id);
@@ -69,7 +69,7 @@ namespace API.Services
                     return result;
                 }
 
-                var createOPResult = CreateOrdersProducts(ordersDTO.Products, id);
+                var createOPResult = await CreateOrdersProducts(ordersDTO.Products, id);
                 if (!createOPResult.Success)
                 {
                     DeleteOrders(id);
@@ -87,21 +87,21 @@ namespace API.Services
             return result;
         }
 
-        public ResultData DeleteOrders(int orderId)
+        public async Task<ResultData> DeleteOrders(int orderId)
         {
             ResultData result = new();
 
             try
             {
-                var validation = _ordersValidator.ValidateDeleteAsync(orderId).GetAwaiter().GetResult();
+                var validation = await _ordersValidator.ValidateDeleteAsync(orderId);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _invoicesService.DeleteInvoices(orderId);
-                _ordersProductsService.DeleteOrdersProducts(orderId);
-                _ordersRepository.Delete(orderId);
+                await _invoicesService.DeleteInvoices(orderId);
+                await _ordersProductsService.DeleteOrdersProducts(orderId);
+                await _ordersRepository.Delete(orderId);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -111,15 +111,15 @@ namespace API.Services
             return result;
         }
 
-        public Orders GetOrderById(int orderId)
+        public async Task<Orders> GetOrderById(int orderId)
         {
-            var order = _ordersRepository.GetById(orderId).GetAwaiter().GetResult();
+            var order = await _ordersRepository.GetById(orderId);
             return order;
         }
 
-        public List<Orders> GetOrders()
+        public async Task<List<Orders>> GetOrders()
         {
-            var order = _ordersRepository.Get().GetAwaiter().GetResult();
+            var order = await _ordersRepository.Get();
             return order;
         }
 
@@ -136,23 +136,23 @@ namespace API.Services
             }
         }
 
-        public ResultData UpdateOrders(UpdateOrdersDTO ordersDTO)
+        public async Task<ResultData> UpdateOrders(UpdateOrdersDTO ordersDTO)
         {
             ResultData result = new();
 
             try
             {
                 Orders orders = _ordersFactory.UpdateOrders(ordersDTO);
-                Orders ordersUpdate = GetOrderById(orders.Id);
+                Orders ordersUpdate = await GetOrderById(orders.Id);
                 orders.OrderDate = ordersUpdate.OrderDate;
                 orders.CustomerId = ordersUpdate.CustomerId;
-                var validation = _ordersValidator.ValidateUpdateAsync(orders).GetAwaiter().GetResult();
+                var validation = await _ordersValidator.ValidateUpdateAsync(orders);
                 if (!validation)
                 {
                     result.Error = "Błąd walidacji";
                     return result;
                 }
-                _ordersRepository.Update(orders);
+                await _ordersRepository.Update(orders);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -163,7 +163,7 @@ namespace API.Services
             return result;
         }
 
-        private ResultData CreateOrdersProducts(List<CreateOrdersProductsDTO> ordersProductsDTO, int orderId)
+        private async Task<ResultData> CreateOrdersProducts(List<CreateOrdersProductsDTO> ordersProductsDTO, int orderId)
         {
             ResultData result = new();
             try
@@ -171,13 +171,13 @@ namespace API.Services
                 foreach (var product in ordersProductsDTO)
                 {
                     product.OrderId = orderId;
-                    result = _ordersProductsService.CreateOrdersProducts(product);
+                    result = await _ordersProductsService.CreateOrdersProducts(product);
                     if (!result.Success)
                     {
                         return result;
                     }
 
-                    Products products = _productsService.GetProductById(product.ProductId);
+                    Products products = await _productsService.GetProductById(product.ProductId);
                     products.Stock = products.Stock - product.Quantity;
                     UpdateProductsDTO updateProductsDTO = new UpdateProductsDTO
                     {
@@ -186,11 +186,11 @@ namespace API.Services
                         Stock= products.Stock,
                         Price= products.Price
                     };
-                    result = _productsService.UpdateProducts(updateProductsDTO);
+                    result = await _productsService.UpdateProducts(updateProductsDTO);
                     if (!result.Success)
                     {
                         updateProductsDTO.Stock= products.Stock+product.Quantity;
-                        _productsService.UpdateProducts(updateProductsDTO);
+                        await _productsService.UpdateProducts(updateProductsDTO);
                         return result;
                     }
                     result.Success = true;
@@ -202,7 +202,7 @@ namespace API.Services
             }
             return result;
         }
-        private ResultData CreateInvoice(List<CreateOrdersProductsDTO> ordersProductsDTO, int orderId)
+        private async Task<ResultData> CreateInvoice(List<CreateOrdersProductsDTO> ordersProductsDTO, int orderId)
         {
             ResultData result = new();
             try
@@ -217,13 +217,13 @@ namespace API.Services
                 {
                     product.OrderId = orderId;
 
-                    Products products = _productsService.GetProductById(product.ProductId);
+                    Products products = await _productsService.GetProductById(product.ProductId);
                     createInvoicesDTO.Amount += (products.Price*product.Quantity);
                 }
-                result = _invoicesService.CreateInvoices(createInvoicesDTO);
+                result = await _invoicesService.CreateInvoices(createInvoicesDTO);
                 if (!result.Success)
                 {
-                    _invoicesService.DeleteInvoices(orderId);
+                    await _invoicesService.DeleteInvoices(orderId);
                     return result;
                 }
                 result.Success = true;

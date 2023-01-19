@@ -9,6 +9,9 @@ namespace API.Validators
     {
         protected readonly ICategoriesRepository _categoriesRepository;
 
+        const int MinCategoryNameLength = 3;
+        const int MaxCategoryNameLength= 255;
+
         public CategoriesValidator(ICategoriesRepository categoriesRepository)
         {
             _categoriesRepository = categoriesRepository;
@@ -53,7 +56,8 @@ namespace API.Validators
 
         private async Task<bool> ValidateName(Categories categories)
         {
-            if (categories.Name.Length > 3)
+            if (categories.Name.Length > MinCategoryNameLength || 
+                categories.Name.Length <= MaxCategoryNameLength)
             {
                 return true;
             }

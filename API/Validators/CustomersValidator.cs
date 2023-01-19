@@ -9,6 +9,10 @@ namespace API.Validators
 {
     public class CustomersValidator : ICustomersValidator
     {
+
+        const int MinStringLength = 3;
+        const int MaxStringLength = 255;
+        const int MinPasswordLength = 10;
         protected readonly ICustomersRepository _customersRepository;
         public CustomersValidator(ICustomersRepository customersRepository)
         {
@@ -94,7 +98,7 @@ namespace API.Validators
         }
         private async Task<bool> ValidatePassword(Customers customers) 
         {
-            if (customers.Password.Length > 10)
+            if (customers.Password.Length > MinPasswordLength)
             {
                 return true;
             }
@@ -106,7 +110,8 @@ namespace API.Validators
             {
                 return true;
             }
-            if(customers.FirstName.Length > 3)
+            if(customers.FirstName.Length > MinStringLength ||
+               customers.FirstName.Length <= MaxStringLength)
             {
                 return true;
             }
@@ -118,7 +123,8 @@ namespace API.Validators
             {
                 return true;
             }
-            if (customers.LastName.Length > 3)
+            if (customers.LastName.Length > MinStringLength ||
+                customers.LastName.Length <= MaxStringLength)
             {
                 return true;
             }
@@ -130,7 +136,8 @@ namespace API.Validators
             {
                 return true;
             }
-            if (customers.AddressLine1.Length > 3)
+            if (customers.AddressLine1.Length > MinStringLength ||
+                customers.AddressLine1.Length <= MaxStringLength)
             {
                 return true;
             }
@@ -142,7 +149,8 @@ namespace API.Validators
             {
                 return true;
             }
-            if (customers.AddressLine2.Length > 3)
+            if (customers.AddressLine2.Length > MinStringLength ||
+                customers.AddressLine2.Length <= MaxStringLength)
             {
                 return true;
             }
