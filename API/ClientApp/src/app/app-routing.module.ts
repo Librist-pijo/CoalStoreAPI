@@ -6,6 +6,7 @@ import { LoginComponent } from './layout/login/login.component';
 import { ProductsComponent } from './layout/products/products.component';
 import { UserAccountComponent } from './layout/user-account/user-account.component';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
+import { ShoppingCartComponent } from './layout/shopping-cart/shopping-cart.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,7 +16,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'my-account', component: UserAccountComponent },
-  { path: 'shopping-cart', component: HomeComponent }
+  { path: 'shopping-cart', component: ShoppingCartComponent }
 ];
 
 @NgModule({

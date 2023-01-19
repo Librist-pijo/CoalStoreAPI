@@ -26,7 +26,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="ProductsDTO"></param>
         /// <returns></returns>
-        [HttpPost("create-product")]
+        [HttpPost("createproduct")]
         public async Task<IActionResult> CreateProducts([FromBody] CreateProductsDTO ProductsDTO)
         {
             var value = await _ProductsService.CreateProducts(ProductsDTO);
@@ -38,7 +38,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="productsCategories"></param>
         /// <returns></returns>
-        [HttpPost("create-product-categories-mapping")]
+        [HttpPost("createproductcategoriesmapping")]
         public async Task<IActionResult> CreateProductsCategoryMapping([FromBody] ProductsCategories productsCategories)
         {
             var value = await _ProductsService.CreateProductsCategoriesMapping(productsCategories);
@@ -50,7 +50,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="ProductsDTO"></param>
         /// <returns></returns>
-        [HttpPut("update-product")]
+        [HttpPut("updateproduct")]
         public async Task<IActionResult> UpdateProducts([FromBody] UpdateProductsDTO ProductsDTO)
         {
             var value = await _ProductsService.UpdateProducts(ProductsDTO);
@@ -62,7 +62,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="productsCategories"></param>
         /// <returns></returns>
-        [HttpPut("update-product-categories-mapping")]
+        [HttpPut("updateproductcategoriesmapping")]
         public async Task<IActionResult> UpdateCreateProductsCategoryMapping([FromBody] ProductsCategories productsCategories)
         {
             var value = await _ProductsService.UpdateProductsCategoriesMapping(productsCategories);
@@ -74,7 +74,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        [HttpDelete("delete-product/{productId}")]
+        [HttpDelete("deleteproduct/{productId}")]
         public async Task<IActionResult> DeleteProducts([FromBody] int productId)
         {
             var value = await _ProductsService.DeleteProducts(productId);
@@ -86,7 +86,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpDelete("delete-product-categories-mapping/{Id}")]
+        [HttpDelete("deleteproductcategoriesmapping/{Id}")]
         public async Task<IActionResult> DeleteCreateProductsCategoryMapping(int Id)
         {
             var value = await _ProductsService.DeleteProductsCategoriesMapping(Id);
@@ -97,7 +97,7 @@ namespace API.Controllers
         /// Gets all products
         /// </summary>
         /// <returns>List of all products</returns>
-        [HttpGet("get-products")]
+        [HttpGet("getproducts")]
         public async Task<IActionResult> GetProducts()
         {
             var value = await _ProductsService.GetProducts();
@@ -109,7 +109,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="productName"></param>
         /// <returns>One product that match product name</returns>
-        [HttpGet("get-product-by-name/{productName}")]
+        [HttpGet("getproductbyname/{productName}")]
         public async Task<IActionResult> GetProductByName(string productName)
         {
             var value = await _ProductsService.GetProductByName(productName);
@@ -120,7 +120,7 @@ namespace API.Controllers
         /// Gets all products with categories
         /// </summary>
         /// <returns>List of all products with their categories</returns>
-        [HttpGet("get-products-with-category")]
+        [HttpGet("getproductswithcategory")]
         public async Task<IActionResult> GetProductsWithCategory()
         {
             var value = await _ProductsService.GetProductsWithCategory();

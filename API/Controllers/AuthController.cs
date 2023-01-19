@@ -37,7 +37,7 @@ namespace API.Controllers
             return Json(registerResult);
         }
 
-        [HttpGet("validate-email")]
+        [HttpGet("validateemail")]
         public IActionResult ValidateEmail(string email)
         {
             var isExist = _authService.CheckIfCustomerExistsByLogin(email);
