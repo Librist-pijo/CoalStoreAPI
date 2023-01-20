@@ -19,11 +19,12 @@ namespace API.Controllers
             _config = config;
             _InvoicesService = InvoicesService;
         }
+
         /// <summary>
         /// Gets all invoices
         /// </summary>
         /// <returns>List of all invoices</returns>
-        [HttpGet("get-Invoices")]
+        [HttpGet("getinvoices")]
         public async Task<IActionResult> GetInvoices()
         {
             var value = await _InvoicesService.Get();
@@ -35,18 +36,19 @@ namespace API.Controllers
         /// </summary>
         /// <param name="invoiceId"></param>
         /// <returns>One invoice that match invoice id</returns>
-        [HttpGet("get-invoice-by-id/{invoiceId}")]
+        [HttpGet("getinvoicebyid/{invoiceId}")]
         public async Task<IActionResult> GetInvoicesById(int invoiceId)
         {
             var value = await _InvoicesService.GetById(invoiceId);
             return Json(value);
         }
+
         /// <summary>
         /// Gets inovoice by id of order
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns>One invoice that match order id</returns>
-        [HttpGet("get-invoices-by-orderid/{orderId}")]
+        [HttpGet("getinvoicesbyorderid/{orderId}")]
         public async Task<IActionResult> GetCategoryByName(int orderId)
         {
             var value = await _InvoicesService.GetByOrderId(orderId);

@@ -22,6 +22,7 @@ import { AuthInterceptor } from './auth.interceptor';
 import { NotFoundComponent } from './layout/not-found/not-found.component';
 import { ProductsService } from './services/products.service';
 import { CustomersService } from './services/customers.service';
+import { ShoppingCartComponent } from './layout/shopping-cart/shopping-cart.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CustomersService } from './services/customers.service';
     LoginComponent,
     UserAccountComponent,
     ProductsComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ShoppingCartComponent
   ],
   imports: [
     BrowserModule,

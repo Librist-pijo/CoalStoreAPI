@@ -16,7 +16,7 @@ export class ProductsService {
 
     async getProducts(): Promise<Products[]> {
         var products: Products[] = [];
-        this.dbService.SetRoute('products/get-products');
+        this.dbService.SetRoute('products/getproducts');
         await this.dbService.Get<Products[]>().toPromise().then((result) => {
             if (result != undefined && result != null) {
                 products = result;

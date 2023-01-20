@@ -29,7 +29,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="ordersDTO"></param>
         /// <returns></returns>
-        [HttpPost("create-order")]
+        [HttpPost("createorder")]
         public async Task<IActionResult> CreateOrders([FromBody] CreateOrdersDTO ordersDTO)
         {
             var value = await _ordersService.CreateOrders(ordersDTO);
@@ -41,18 +41,19 @@ namespace API.Controllers
         /// </summary>
         /// <param name="ordersDTO"></param>
         /// <returns></returns>
-        [HttpPut("update-order")]
+        [HttpPut("updateorder")]
         public async Task<IActionResult> UpdateOrders([FromBody] UpdateOrdersDTO ordersDTO)
         {
             var value = await _ordersService.UpdateOrders(ordersDTO);
             return Json(value);
         }
+
         /// <summary>
         /// Deletes orders by id of order
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        [HttpDelete("delete-order/{orderId}")]
+        [HttpDelete("deleteorder/{orderId}")]
         public async Task<IActionResult> DeleteOrders(int orderId)
         {
             var value = await _ordersService.DeleteOrders(orderId);
@@ -63,7 +64,7 @@ namespace API.Controllers
         /// Gets possible states of orders
         /// </summary>
         /// <returns>Enum of order states</returns>
-        [HttpGet("get-orders-states")]
+        [HttpGet("getordersstates")]
         public IActionResult GetOrdersStates()
         {
             List<EnumDescriptionDTO<OrderState>> ordersStates = _ordersService.GetOrdersStates();
@@ -74,7 +75,7 @@ namespace API.Controllers
         /// Gets all orders
         /// </summary>
         /// <returns>List of all orders</returns>
-        [HttpGet("get-orders")]
+        [HttpGet("getorders")]
         public async Task<IActionResult> GetOrders()
         {
             var value = await _ordersService.GetOrders();
@@ -86,14 +87,11 @@ namespace API.Controllers
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns>One order that match order id</returns>
-        [HttpGet("get-orders-by-id/{orderId}")]
+        [HttpGet("getordersbyid/{orderId}")]
         public async Task<IActionResult> GetOrderById(int orderId)
         {
             var value = await _ordersService.GetOrderById(orderId);
             return Json(value);
         }
-
-
-
     }
 }

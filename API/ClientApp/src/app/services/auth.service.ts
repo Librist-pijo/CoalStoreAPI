@@ -77,7 +77,7 @@ export class AuthService {
     const body = new HttpParams()
       .set('refresh_token', refreshData.refresh_token)
       .set('grant_type', GrantType.RefreshToken);
-    return this.http.post<any>(API_URL + 'auth/refresh-token', body, HTTP_OPTIONS)
+    return this.http.post<any>(API_URL + 'auth/refreshtoken', body, HTTP_OPTIONS)
       .pipe(
         tap(res => {
           this.tokenService.saveToken(res.access_token);

@@ -1,0 +1,136 @@
+<div class="card d-flex justify-content-center">
+    <div class="card-body py-4">
+        <div class="container-fluid h-100">
+            <div class="row d-flex justify-content-start align-items-start shopping-cart-wrapper">
+                <ng-container *ngIf="ordersProducts && ordersProducts.length !== 0">
+                    <div class="col-8 d-flex flex-column justify-content-start py-2 products-in-cart-wrapper">
+                        <h4>Produkty w Twoim koszyku:</h4>
+                        <dx-list
+                            [dataSource]="ordersProducts"
+                            keyExpr="productId"
+                            itemTemplate="list-item"
+                        >    
+                            <div *dxTemplate="let data of 'list-item'; let index = index">
+                                <div class="col-12 d-flex justify-content-between">
+                                    <ng-container *ngIf="data.product">
+                                        <div class="col-8 d-flex justify-content-start align-items-center">
+                                            <span class="font-larger"><strong>{{ index + 1 }}. {{ data.product.name }}</strong></span>
+                                            <span class="mx-4 font-larger">|</span>
+                                            <span class="font-larger">{{ data.totalPrice }} zł</span>
+                                        </div>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <dx-number-box class="mt-0" id="productQuantity_{{data.productId}}" name="productQuantity_{{data.productId}}"
+                                                [(value)]="data.quantity" [max]="data.product.stock" [min]="1" [showSpinButtons]="true" label="Ilość"
+                                                labelMode="static" format="#0.00 t" (onValueChanged)="updateProductInCart(data)">
+                                            </dx-number-box>
+                                            <dx-button type="danger" class="remove-from-cart-button" icon="trash" stylingMode="outlined"
+                                                (onClick)="removeProductFromCart(data)">
+                                            </dx-button>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </dx-list>
+                    </div>
+                    <div class="col-1 d-flex justify-content-center">
+                        <div class="vr-line"></div>
+                    </div>
+                    <div class="col-3 d-flex flex-column justify-content-start py-2">
+                        <h4>Dane do wysyłki:</h4>
+                        <form id="personal-data" name="personal-data" action="" style="width: 100%;" class="mb-4">
+                            <div class="col-12 d-flex justify-content-between align-items-center mt-4">
+                                <dx-text-box
+                                    placeholder="..."
+                                    label="Imię"
+                                    labelMode="static"
+                                    [showClearButton]="true"
+                                    [(value)]="customer.firstName"
+                                    width="100%"
+                                    [disabled]="true">
+                                </dx-text-box>
+                            </div>
+                            <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                                <dx-text-box
+                                    placeholder="..."
+                                    label="Nazwisko"
+                                    labelMode="static"
+                                    [showClearButton]="true"
+                                    [(value)]="customer.lastName"
+                                    width="100%"
+                                    [disabled]="true">
+                                </dx-text-box>
+                            </div>
+                            <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                                <dx-text-box
+                                    mode="email"
+                                    placeholder="..."
+                                    label="Email"
+                                    labelMode="static"
+                                    [showClearButton]="true"
+                                    [(value)]="customer.login"
+                                    width="100%"
+                                    [disabled]="true">
+                                </dx-text-box>
+                            </div>
+                            <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                                <dx-text-box
+                                    [(value)]="customer.addressLine1"
+                                    placeholder="..."
+                                    label="Adres"
+                                    labelMode="static"
+                                    [showClearButton]="true"
+                                    width="100%"
+                                    >
+                                </dx-text-box>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                                <dx-text-box
+                                    [(value)]="customer.addressLine2"
+                                    placeholder="..."
+                                    label="Adres c.d."
+                                    labelMode="static"
+                                    [showClearButton]="true"
+                                    width="100%"
+                                    >
+                                </dx-text-box>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                                <dx-text-box
+                                    [(value)]="customer.postCode"
+                                    placeholder="..."
+                                    label="Kod pocztowy"
+                                    labelMode="static"
+                                    [showClearButton]="true"
+                                    width="100%"
+                                    mask="00-000"
+                                    [useMaskedValue]="true">
+                                </dx-text-box>
+                            </div>
+                        </form> 
+                        <hr>
+                        <h4 class="mt-2">Do zapłaty: {{ totalValue }} zł</h4>
+                        <dx-button id="create-order-btn"
+                            stylingMode="outlined"
+                            text="Złóż zamówienie"
+                            type="success"
+                            width="100%"
+                            (onClick)="createOrder()"
+                        >
+                      </dx-button>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!ordersProducts || ordersProducts.length === 0">
+                    <div class="col-12 d-flex flex-column justify-content-center align-items-center mt-4 py-4">
+                        <img class="mt-4" [src]="emptyBasketImgPath" height="300">
+                        <h3 class="mt-2">Twój koszyk jest pusty!</h3>
+                        <span>
+                            Przejdź do 
+                            <span class="products-link" (click)="navigateToProducts()">produktów</span> 
+                            i wybierz coś dla siebie!
+                        </span>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
