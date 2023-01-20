@@ -38,12 +38,14 @@ export class ShoppingCartComponent implements OnInit {
 
         const login = this.authService.getLoggedUserLogin();
 
-        this.customersService.getCustomerByLogin(login).then((data) => {
-            this.customer = data;
-            this.order.customerId = this.customer.id;
-            this.order.state = OrderState.Created;
-            this.customer.password = "";
-        });
+        if (login) {
+            this.customersService.getCustomerByLogin(login).then((data) => {
+                this.customer = data;
+                this.order.customerId = this.customer.id;
+                this.order.state = OrderState.Created;
+                this.customer.password = "";
+            });
+        }
     }
 
     async getOrdersProductsWithStock() {

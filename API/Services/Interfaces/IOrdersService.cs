@@ -13,5 +13,6 @@ namespace API.Services.Interfaces
         public Task<ResultData> DeleteOrders(int orderId);
         public Task<Orders> GetOrderById(int orderId);
         public Task<List<Orders>> GetOrders();
+        public Task<List<Orders>> GetOrdersByCustomerId(int customerId);
     }
 }

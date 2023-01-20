@@ -74,5 +74,15 @@ namespace API.Repositories
 
             await _dataAccess.SaveData("dbo.spUpdateOrder", parameters, "SQLDB");
         }
+        public async Task<List<Orders>> GetOrdersByCustomerId(int customerId)
+        {
+            return await _dataAccess.LoadData<Orders, dynamic>
+                ("dbo.spGetOrdersByCustomerId",
+                new
+                {
+                    CustomerId = customerId
+                },
+                "SQLDB");
+        }
     }
 }

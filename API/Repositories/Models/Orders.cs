@@ -10,7 +10,6 @@ namespace API.Repositories.Models
         public string ShippingAddress { get; set; }
         public DateTimeOffset? ShippingDate { get; set; }
         public int State { get; set; }
-        //
         public string OrderNumber
         {
             get { return $"{Id}/{CustomerId}/{OrderDate.DayOfYear}"; }
