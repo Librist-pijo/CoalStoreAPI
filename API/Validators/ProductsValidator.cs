@@ -1,4 +1,5 @@
-﻿using API.Repositories.Interfaces;
+﻿using API.ModelsDTO;
+using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using API.Validators.Interfaces;
 
@@ -6,9 +7,9 @@ namespace API.Validators
 {
     public class ProductsValidator : IProductsValidator
     {
-        const int MinPrice = 0;
-        const int MinStock = 0;
-        const int MaxStringLength = 255;
+        private const int MinPrice = 0;
+        private const int MinStock = 0;
+        private const int MaxStringLength = 255;
 
         protected readonly IProductsRepository _productsRepository;
 
@@ -17,107 +18,142 @@ namespace API.Validators
             _productsRepository = productsRepository;
         }
 
-        public async Task<bool> ValidateCreateAsync(Products products)
+        public async Task<ResultData> ValidateCreateAsync(Products products)
         {
-            bool nameExistsValidationTask = await ValidateProductNameExists(products);
-            bool nameValidationTask = await ValidateName(products);
-            bool stockValidationTask = await ValidateStock(products);
-            bool priceValidationTask = await ValidatePrice(products);
+            var nameExistsValidationTask = await ValidateProductNameExists(products);
+            var nameValidationTask = await ValidateName(products);
+            var stockValidationTask = await ValidateStock(products);
+            var priceValidationTask = await ValidatePrice(products);
 
-            if (!stockValidationTask
-                || !nameValidationTask
-                || !priceValidationTask
-                || nameExistsValidationTask)
+            if (!nameExistsValidationTask.Success)
             {
-                return false;
+                return nameExistsValidationTask;
             }
-            return true;
-            
+
+            if (!stockValidationTask.Success)
+            {
+                return stockValidationTask;
+            }
+            if (!nameValidationTask.Success)
+            {
+                return nameValidationTask;
+            }
+            if (!priceValidationTask.Success)
+            {
+                return nameValidationTask;
+            }
+            return new ResultData { Success = true };
         }
 
-        public async Task<bool> ValidateUpdateAsync(Products products)
+        public async Task<ResultData> ValidateUpdateAsync(Products products)
         {
-            bool idExistsValidationTask = await ValidateProductIdExists(products.Id);
-            bool nameExistsValidationTask = await ValidateProductNameExists(products);
-            bool stockValidationTask = await ValidateStock(products);
-            bool NameValidationTask = await ValidateName(products);
-            bool priceValidationTask = await ValidatePrice(products);
+            var idExistsValidationTask = await ValidateProductIdExists(products.Id);
+            var nameExistsValidationTask = await ValidateProductNameExists(products);
+            var stockValidationTask = await ValidateStock(products);
+            var nameValidationTask = await ValidateName(products);
+            var priceValidationTask = await ValidatePrice(products);
 
-            if (!stockValidationTask
-                || !NameValidationTask
-                || !priceValidationTask
-                || !idExistsValidationTask
-                || !nameExistsValidationTask)
+            if (!idExistsValidationTask.Success)
             {
-                return false;
+                return idExistsValidationTask;
             }
-            return true;
+
+            if (!nameExistsValidationTask.Success)
+            {
+                nameExistsValidationTask.Success = true;
+                return nameExistsValidationTask;
+            }
+
+            if (!stockValidationTask.Success)
+            {
+                return stockValidationTask;
+            }
+            if (!nameValidationTask.Success)
+            {
+                return nameValidationTask;
+            }
+            if (!priceValidationTask.Success)
+            {
+                return nameValidationTask;
+            }
+            return new ResultData { Success = true };
         }
 
-        public async Task<bool> ValidateDeleteAsync(int productsId)
+        public async Task<ResultData> ValidateDeleteAsync(int productsId)
         {
-            bool idExistsValidationTask = await ValidateProductIdExists(productsId);
-            if (!idExistsValidationTask)
-            {
-                return false;
-            }
-            return true;
+            return await ValidateProductIdExists(productsId);
         }
 
-        private async Task<bool> ValidateName(Products products)
+        private async Task<ResultData> ValidateName(Products products)
         {
+            var validationResult = new ResultData();
             if (products.Name.Length >= MaxStringLength)
             {
-                return false;
+                validationResult.Error = $"Name can have max of: {MaxStringLength} length";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
 
-        private async Task<bool> ValidateProductNameExists(Products products)
+        private async Task<ResultData> ValidateProductNameExists(Products products)
         {
+            var validationResult = new ResultData();
             var product = await _productsRepository.GetByName(products.Name);
 
             if (product == null || product == default)
             {
-                return false;
+                validationResult.Success = true;
+                return validationResult;
             }
-
-            return true;
+            validationResult.Error = $"Product with name: {products.Name} already exist in database";
+            validationResult.Success = false;
+            return validationResult;
         }
 
-        private async Task<bool> ValidateProductIdExists(int productsId)
+        private async Task<ResultData> ValidateProductIdExists(int productsId)
         {
+            var validationResult = new ResultData();
             var product = await _productsRepository.GetById(productsId);
 
             if (product == null || product == default)
             {
-                return false;
+                validationResult.Error = $"Product with id: {productsId} do not exist in database";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
 
-        private async Task<bool> ValidateStock(Products products)
+        private async Task<ResultData> ValidateStock(Products products)
         {
+            var validationResult = new ResultData();
             if (products.Stock >= MinStock)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-
-            return false;
+            validationResult.Error = $"Product stock need to be minimum of: {MinStock}";
+            validationResult.Success = false;
+            return validationResult;
         }
 
-        private async Task<bool> ValidatePrice(Products products)
+        private async Task<ResultData> ValidatePrice(Products products)
         {
+            var validationResult = new ResultData();
             if (products.Price > MinPrice)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
 
-            return false;
+            validationResult.Error = $"Product price need to be minimum of: {MinPrice}";
+            validationResult.Success = false;
+            return validationResult;
         }
-
-
     }
 }

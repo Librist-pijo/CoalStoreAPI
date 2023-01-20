@@ -30,9 +30,9 @@ namespace API.Services
             {
                 Categories categories = _categoriesFactory.CreateCategories(categoriesDTO);
                 var validation = await _categoriesValidator.ValidateCreateAsync(categories);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Success = false;
+                    result = validation;
                     return result;
                 }
                 await _categoriesRepository.Create(categories);
@@ -53,9 +53,9 @@ namespace API.Services
             {
                 Categories categories = _categoriesFactory.UpdateCategories(categoriesDTO);
                 var validation = await _categoriesValidator.ValidateUpdateAsync(categories);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Success = false;
+                    result = validation;
                     return result;
                 }
                 _categoriesRepository.Update(categories);
@@ -76,9 +76,9 @@ namespace API.Services
             try
             {
                 var validation = await _categoriesValidator.ValidateDeleteAsync(categoryId);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Success = false;
+                    result = validation;
                     return result;
                 }
                 _categoriesRepository.Delete(categoryId);

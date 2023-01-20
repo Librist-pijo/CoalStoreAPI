@@ -1,11 +1,12 @@
-﻿using API.Repositories.Models;
+﻿using API.ModelsDTO;
+using API.Repositories.Models;
 
 namespace API.Validators.Interfaces
 {
     public interface IProductsCategoriesValidator
     {
-        public Task<bool> ValidateCreateAsync(ProductsCategories productsCategories);
-        public Task<bool> ValidateUpdateAsync(ProductsCategories productsCategories);
-        public Task<bool> ValidateDeleteAsync(int Id);
+        public Task<ResultData> ValidateCreateAsync(ProductsCategories productsCategories);
+        public Task<ResultData> ValidateUpdateAsync(ProductsCategories productsCategories);
+        public Task<ResultData> ValidateDeleteAsync(int Id);
     }
 }

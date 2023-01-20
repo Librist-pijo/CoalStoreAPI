@@ -49,7 +49,7 @@ namespace API.Controllers
         /// <param name="categoryId"></param>
         /// <returns></returns>
         [HttpDelete("deletecategory/{categoryId}")]
-        public async Task<IActionResult> DeleteCategories([FromBody] int categoryId)
+        public async Task<IActionResult> DeleteCategories(int categoryId)
         {
             var value = await _categoriesService.DeleteCategories(categoryId);
             return Json(value);

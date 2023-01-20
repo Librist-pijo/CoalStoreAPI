@@ -1,6 +1,8 @@
-﻿using API.Repositories.Interfaces;
+﻿using API.ModelsDTO;
+using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using API.Validators.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Validators
 {
@@ -20,97 +22,125 @@ namespace API.Validators
         }
 
 
-        public async Task<bool> ValidateCreateAsync(OrdersProducts ordersProducts)
+        public async Task<ResultData> ValidateCreateAsync(OrdersProducts ordersProducts)
         {
             var productsValidation = await ValidateProductsExists(ordersProducts);
             var ordersValidation = await ValidateOrdersExists(ordersProducts);
             var quantityValidation = await ValidateQuantity(ordersProducts);
 
-            if (!productsValidation
-                || !ordersValidation
-                || !quantityValidation)
+            if (!productsValidation.Success)
             {
-                return false;
+                return productsValidation;
             }
-            return true;
+            if (!ordersValidation.Success)
+            {
+                return ordersValidation;
+            }
+            if (!quantityValidation.Success)
+            {
+                return quantityValidation;
+            }
+            return new ResultData { Success = true };
         }
 
-        public async Task<bool> ValidateDeleteAsync(int Id)
+        public async Task<ResultData> ValidateDeleteAsync(int Id)
         {
             var ordersProductsValidation = await ValidateOrdersProductsExists(Id);
 
-            if (!ordersProductsValidation)
+            if (!ordersProductsValidation.Success)
             {
-                return false;
+                return ordersProductsValidation;
             }
-            return true;
+            return ordersProductsValidation;
         }
 
-        public async Task<bool> ValidateUpdateAsync(OrdersProducts ordersProducts)
+        public async Task<ResultData> ValidateUpdateAsync(OrdersProducts ordersProducts)
         {
             var productsValidation = await ValidateProductsExists(ordersProducts);
             var ordersValidation = await ValidateOrdersExists(ordersProducts);
             var quantityValidation = await ValidateQuantity(ordersProducts);
 
-            if (!productsValidation
-                || !ordersValidation
-                || quantityValidation)
+            if (!productsValidation.Success)
             {
-                return false;
+                return productsValidation;
             }
-            return true;
+            if (!ordersValidation.Success)
+            {
+                return ordersValidation;
+            }
+            if (!quantityValidation.Success)
+            {
+                return quantityValidation;
+            }
+            return new ResultData { Success = true };
         }
 
-        private async Task<bool> ValidateProductsExists(OrdersProducts ordersProducts)
+        private async Task<ResultData> ValidateProductsExists(OrdersProducts ordersProducts)
         {
+            var validationResult = new ResultData();
             var product = await _productsRepository.GetById(ordersProducts.ProductId);
 
             if (product == null || product == default)
             {
-                return false;
+                validationResult.Error = $"Product with id: {ordersProducts.ProductId} do not exists in database";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
 
-        private async Task<bool> ValidateOrdersProductsExists(int orderId)
+        private async Task<ResultData> ValidateOrdersProductsExists(int orderId)
         {
+            var validationResult = new ResultData();
             var product = await _ordersProductsRepository.GetByOrderId(orderId);
 
             if (product == null || product == default)
             {
-                return false;
+                validationResult.Error = $"Order with id: {orderId} do not exists in database";
+                validationResult.Success = false;
+                return validationResult;
             }
-
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
 
-        private async Task<bool> ValidateOrdersExists(OrdersProducts ordersProducts)
+        private async Task<ResultData> ValidateOrdersExists(OrdersProducts ordersProducts)
         {
+            var validationResult = new ResultData();
             var order = await _ordersRepository.GetById(ordersProducts.OrderId);
 
             if (order == null || order == default)
             {
-                return false;
+                validationResult.Error = $"Products on order with id: {ordersProducts.OrderId} do not exists in database";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
-        private async Task<bool> ValidateQuantity(OrdersProducts ordersProducts)
+        private async Task<ResultData> ValidateQuantity(OrdersProducts ordersProducts)
         {
+            var validationResult = new ResultData();
             var product = await _productsRepository.GetById(ordersProducts.ProductId);
 
             if (product == null || product == default)
             {
-                return false;
+                validationResult.Error = $"Quantity cannot be null";
+                validationResult.Success = false;
+                return validationResult;
             }
 
             if(product.Stock < ordersProducts.Quantity) 
             {
-                return false;
+                validationResult.Error = $"Not enough product in stock";
+                validationResult.Success = false;
+                return validationResult;
             }
-
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
 
     }
