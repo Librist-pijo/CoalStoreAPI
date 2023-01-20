@@ -75,7 +75,7 @@ namespace API.Controllers
         /// <param name="productId"></param>
         /// <returns></returns>
         [HttpDelete("delete-product/{productId}")]
-        public async Task<IActionResult> DeleteProducts([FromBody] int productId)
+        public async Task<IActionResult> DeleteProducts(int productId)
         {
             var value = await _ProductsService.DeleteProducts(productId);
             return Json(value);

@@ -1,8 +1,10 @@
 ﻿using API.Enums;
+using API.ModelsDTO;
 using API.Repositories;
 using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using API.Validators.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Validators
 {
@@ -19,98 +21,125 @@ namespace API.Validators
             _ordersRepository = ordersRepository;
         }
 
-        public async Task<bool> ValidateCreateAsync(Invoices invoices)
+        public async Task<ResultData> ValidateCreateAsync(Invoices invoices)
         {
-            bool orderValidation = await ValidateOrderExists(invoices);
-            if (!orderValidation)
+            var orderValidation = await ValidateOrderExists(invoices);
+            if (!orderValidation.Success)
             {
-                return false;
+                return orderValidation;
             }
-            bool paymentMethodValidation = await ValidatePaymentMethod(invoices);
-            bool stateValidation = await ValidateState(invoices);
-            bool amountValidation = await ValidateAmount(invoices);
-            if (!paymentMethodValidation
-                || !stateValidation
-                || !amountValidation)
+            var paymentMethodValidation = await ValidatePaymentMethod(invoices);
+            var stateValidation = await ValidateState(invoices);
+            var amountValidation = await ValidateAmount(invoices);
+            if (!paymentMethodValidation.Success)
             {
-                return false;
+                return paymentMethodValidation;
             }
-            return true;
+            if (!stateValidation.Success)
+            {
+                return stateValidation;
+            }
+            if (!amountValidation.Success)
+            {
+                return amountValidation;
+            }
+            return new ResultData { Success = true };
         }
-        public async Task<bool> ValidateDeleteAsync(int invoicesId)
+        public async Task<ResultData> ValidateDeleteAsync(int invoicesId)
         {
-            bool invoiceValidation = await ValidateInvoiceExists(invoicesId);
-            if (!invoiceValidation)
-            {
-                return false;
-            }
-            return true;
+            return await ValidateInvoiceExists(invoicesId);
         }
-        public async Task<bool> ValidateUpdateAsync(Invoices invoices)
+        public async Task<ResultData> ValidateUpdateAsync(Invoices invoices)
         {
-            bool orderValidation = await ValidateOrderExists(invoices);
-            if (!orderValidation)
+            var orderValidation = await ValidateOrderExists(invoices);
+            if (!orderValidation.Success)
             {
-                return false;
+                return orderValidation;
             }
-            bool paymentMethodValidation = await ValidatePaymentMethod(invoices);
-            bool stateValidation = await ValidateState(invoices);
-            bool amountValidation = await ValidateAmount(invoices);
-            if (!paymentMethodValidation
-                || !stateValidation
-                || !amountValidation)
+            var paymentMethodValidation = await ValidatePaymentMethod(invoices);
+            var stateValidation = await ValidateState(invoices);
+            var amountValidation = await ValidateAmount(invoices);
+            if (!paymentMethodValidation.Success)
             {
-                return false;
+                return paymentMethodValidation;
             }
-            return true;
+            if (!stateValidation.Success)
+            {
+                return stateValidation;
+            }
+            if (!amountValidation.Success)
+            {
+                return amountValidation;
+            }
+            return new ResultData { Success = true };
         }
-        private async Task<bool> ValidateOrderExists(Invoices invoices)
+        private async Task<ResultData> ValidateOrderExists(Invoices invoices)
         {
+            var validationResult = new ResultData();
             var order = await _ordersRepository.GetById(invoices.OrderId);
 
             if (order == null || order == default)
             {
-                return false;
+                validationResult.Error = $"There is no order with id: {invoices.OrderId} in database";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
-        private async Task<bool> ValidateInvoiceExists(int orderId)
+        private async Task<ResultData> ValidateInvoiceExists(int orderId)
         {
+            var validationResult = new ResultData();
             var invoice = await _invoicesRepository.GetByOrderId(orderId);
 
             if (invoice == null || invoice == default)
             {
-                return false;
+                validationResult.Error = $"There is no invoice for order with id: {orderId} in database";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
-        private async Task<bool> ValidatePaymentMethod(Invoices invoices)
+        private async Task<ResultData> ValidatePaymentMethod(Invoices invoices)
         {
+            var validationResult = new ResultData();
             HashSet<int> validVals = new HashSet<int>((int[])Enum.GetValues(typeof(PaymentMethod)));
             if (validVals.Contains(invoices.PaymentMethod))
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Wrong payment method: {invoices.PaymentMethod}";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateState(Invoices invoices)
+        private async Task<ResultData> ValidateState(Invoices invoices)
         {
+            var validationResult = new ResultData();
             HashSet<int> validVals = new HashSet<int>((int[])Enum.GetValues(typeof(InvoiceState)));
             if (validVals.Contains(invoices.State))
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Wrong state: {invoices.State}";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateAmount(Invoices invoices)
+        private async Task<ResultData> ValidateAmount(Invoices invoices)
         {
+            var validationResult = new ResultData();
             if (invoices.Amount > MinAmountNumber)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Amount cannot be less than: {MinAmountNumber}";
+            validationResult.Success = false;
+            return validationResult;
         }
     }
 }
