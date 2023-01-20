@@ -76,16 +76,25 @@ export class UserAccountComponent implements OnInit {
         }
     }
 
-    ngOnInit(): void {
-        this.ordersStates = this.ordersService.getOrdersStates();
+    async ngOnInit() {
+        this.ordersService.getOrdersStates().then((data) => {
+            if (data) {
+                this.ordersStates = data;
+            }
+        });
         
         const login = this.authService.getLoggedUserLogin();
 
-        this.customersService.getCustomerByLogin(login).then((data) => {
+        await this.customersService.getCustomerByLogin(login).then((data) => {
             this.customer = data;
             this.customer.password = "";
             
             this.passwordChange = new PasswordChangeDTO(this.customer.id, this.customer.login);
+        });
+
+        await this.ordersService.getOrdersByCustomerId(this.customer.id).then((data) => {
+            if (data)
+                this.customersOrders = data;
         });
     }
 

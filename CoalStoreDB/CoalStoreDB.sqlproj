@@ -98,6 +98,7 @@
     <Build Include="Stored Procedures\Orders\spDeleteOrder.sql" />
     <Build Include="Stored Procedures\Orders\spGetOrders.sql" />
     <Build Include="Stored Procedures\Orders\spGetOrderById.sql" />
+    <Build Include="Stored Procedures\Orders\spGetOrdersByCustomerId.sql" />
     <Build Include="Stored Procedures\Orders\spUpdateOrder.sql" />
     <Build Include="Stored Procedures\OrdersProducts\spCreateOrdersProducts.sql" />
     <Build Include="Stored Procedures\OrdersProducts\spDeleteOrdersProducts.sql" />

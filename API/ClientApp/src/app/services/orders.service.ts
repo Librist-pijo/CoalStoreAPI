@@ -22,17 +22,9 @@ export class OrdersService {
 
     }
 
-    getOrdersStates(): EnumDescriptionDTO<OrderState>[] {
-        var enumDescriptionDTO: EnumDescriptionDTO<OrderState>[] = [];
-
+    async getOrdersStates(): Promise<EnumDescriptionDTO<OrderState>[] | undefined> {
         this.dbService.SetRoute('orders/getordersstates');
-        this.dbService.Get<EnumDescriptionDTO<OrderState>[]>().subscribe((result) => {
-            enumDescriptionDTO = result;
-        }, (err) => {
-            console.log(err);
-        });
-
-        return enumDescriptionDTO;
+        return await this.dbService.Get<EnumDescriptionDTO<OrderState>[]>().toPromise().finally();
     }
 
     getCurrentOrderProducts(): OrdersProducts[] {
@@ -100,5 +92,10 @@ export class OrdersService {
     async createOrder(order: CreateOrdersDTO): Promise<ResultData | undefined> {
         this.dbService.SetRoute('orders/createorder');
         return await this.dbService.Add<ResultData>(order).toPromise().finally();
+    }
+
+    async getOrdersByCustomerId(customerId: number): Promise<Orders[] | undefined> {
+        this.dbService.SetRoute(`orders/getordersbycustomerid/${customerId}`);
+        return await this.dbService.Get<Orders[]>().toPromise().finally();
     }
 }

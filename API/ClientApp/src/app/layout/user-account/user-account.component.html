@@ -125,7 +125,7 @@
                     <dxo-filter-row [visible]="true"></dxo-filter-row>
                     <dxo-header-filter [visible]="true"></dxo-header-filter>
                     <dxi-column dataField="orderNumber" caption="Numer zamówienia"></dxi-column>
-                    <dxi-column dataField="orderedDate" caption="Data zamówienia" dataType="date" format="dd.MM.yyyy HH:mm"></dxi-column>
+                    <dxi-column dataField="orderDate" caption="Data zamówienia" dataType="date" format="dd.MM.yyyy HH:mm"></dxi-column>
                     <dxi-column dataField="state" caption="Status">
                         <dxo-lookup [dataSource]="ordersStates" valueExpr="value" displayExpr="description">
                         </dxo-lookup>

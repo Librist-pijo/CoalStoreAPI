@@ -235,5 +235,16 @@ namespace API.Services
             return result;
         }
 
+        public Task<List<Orders>> GetOrdersByCustomerId(int customerId)
+        {
+            try
+            {
+                return _ordersRepository.GetOrdersByCustomerId(customerId);
+            }
+            catch(Exception ex)
+            {
+                return Task.FromResult(new List<Orders>());
+            }
+        }
     }
 }

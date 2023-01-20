@@ -9,5 +9,6 @@ namespace API.Repositories.Interfaces
         Task Delete(int orderId);
         Task<List<Orders>> Get();
         Task<Orders> GetById(int orderId);
+        Task<List<Orders>> GetOrdersByCustomerId(int customerId);
     }
 }

@@ -92,6 +92,13 @@ namespace API.Controllers
         {
             var value = await _ordersService.GetOrderById(orderId);
             return Json(value);
+        }      
+        
+        [HttpGet("getordersbycustomerid/{customerId}")]
+        public async Task<IActionResult> GetOrdersByCustomerId(int customerId)
+        {
+            var value = await _ordersService.GetOrdersByCustomerId(customerId);
+            return Json(value);
         }
     }
 }
