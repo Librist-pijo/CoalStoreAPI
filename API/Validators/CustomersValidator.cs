@@ -1,7 +1,9 @@
-﻿using API.Repositories;
+﻿using API.ModelsDTO;
+using API.Repositories;
 using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using API.Validators.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
@@ -19,167 +21,241 @@ namespace API.Validators
             _customersRepository = customersRepository;
         }
 
-        public async Task<bool> ValidateCreateAsync(Customers customers)
+        public async Task<ResultData> ValidateCreateAsync(Customers customers)
         {
-            bool CustomerExistsValidation = await ValidateCustomerExists(customers);
-            if (!CustomerExistsValidation)
+            var CustomerExistsValidation = await ValidateCustomerExists(customers);
+            if (CustomerExistsValidation.Success)
             {
-                return false;
+                CustomerExistsValidation.Success = false;
+                CustomerExistsValidation.Error = "Customer exists in database";
+                return CustomerExistsValidation;
             }
-            bool LoginValidation = await ValidateLogin(customers);
-            bool PasswordValidation = await ValidatePassword(customers);
-            bool FirstNameValidation = await ValidateFirstName(customers);
-            bool LastNameValidation = await ValidateLastName(customers);
-            bool AddressLine1Validation = await ValidateAddressLine1(customers);
-            bool AddressLine2Validation = await ValidateAddressLine2(customers);
-            bool PostCodeValidation = await ValidatePostCode(customers);
-            if (!LoginValidation
-                || !PasswordValidation
-                || !FirstNameValidation
-                || !LastNameValidation
-                || !AddressLine1Validation
-                || !AddressLine2Validation
-                || !PostCodeValidation)
+            var LoginValidation = await ValidateLogin(customers);
+            var PasswordValidation = await ValidatePassword(customers);
+            var FirstNameValidation = await ValidateFirstName(customers);
+            var LastNameValidation = await ValidateLastName(customers);
+            var AddressLine1Validation = await ValidateAddressLine1(customers);
+            var AddressLine2Validation = await ValidateAddressLine2(customers);
+            var PostCodeValidation = await ValidatePostCode(customers);
+            if (!LoginValidation.Success)
             {
-                return false;
+                return LoginValidation;
             }
-            return true;
+            if (!PasswordValidation.Success)
+            {
+                return PasswordValidation;
+            }
+            if (!FirstNameValidation.Success)
+            {
+                return FirstNameValidation;
+            }
+
+            if (!LastNameValidation.Success)
+            {
+                return LastNameValidation;
+            }
+
+            if (!AddressLine1Validation.Success)
+            {
+                return AddressLine1Validation;
+            }
+
+            if (!AddressLine2Validation.Success)
+            {
+                return AddressLine2Validation;
+            }
+            if (!PostCodeValidation.Success)
+            {
+                return PostCodeValidation;
+            }
+            return new ResultData { Success = true };
         }
 
-        public async Task<bool> ValidateDeleteAsync(Customers customers)
+        public async Task<ResultData> ValidateDeleteAsync(Customers customers)
         {
-            bool CustomerExistsValidation = await ValidateCustomerExists(customers);
-            if (!CustomerExistsValidation)
-            {
-                return true;
-            }
-            return false;
+            return await ValidateCustomerExists(customers);
         }
 
-        public async Task<bool> ValidateUpdateAsync(Customers customers)
+        public async Task<ResultData> ValidateUpdateAsync(Customers customers)
         {
-            bool CustomerExistsValidation = await ValidateCustomerExists(customers);
-            if (!CustomerExistsValidation)
+            var CustomerExistsValidation = await ValidateCustomerExists(customers);
+            if (!CustomerExistsValidation.Success)
             {
-                return false;
+                return CustomerExistsValidation;
             }
-            bool LoginValidation = await ValidateLogin(customers);
-            bool PasswordValidation = await ValidatePassword(customers);
-            bool FirstNameValidation = await ValidateFirstName(customers);
-            bool LastNameValidation = await ValidateLastName(customers);
-            bool AddressLine1Validation = await ValidateAddressLine1(customers);
-            bool AddressLine2Validation = await ValidateAddressLine2(customers);
-            bool PostCodeValidation = await ValidatePostCode(customers);
-            if (!LoginValidation
-                || !PasswordValidation
-                || !FirstNameValidation
-                || !LastNameValidation
-                || !AddressLine1Validation
-                || !AddressLine2Validation
-                || !PostCodeValidation)
+            var LoginValidation = await ValidateLogin(customers);
+            var PasswordValidation = await ValidatePassword(customers);
+            var FirstNameValidation = await ValidateFirstName(customers);
+            var LastNameValidation = await ValidateLastName(customers);
+            var AddressLine1Validation = await ValidateAddressLine1(customers);
+            var AddressLine2Validation = await ValidateAddressLine2(customers);
+            var PostCodeValidation = await ValidatePostCode(customers);
+            if (!LoginValidation.Success)
             {
-                return false;
+                return LoginValidation;
             }
-            return true;
+            if(!PasswordValidation.Success)
+            {
+                return PasswordValidation;
+            }
+            if (!FirstNameValidation.Success)
+            {
+                return FirstNameValidation;
+            }
+
+            if (!LastNameValidation.Success)
+            {
+                return LastNameValidation;
+            }
+
+            if (!AddressLine1Validation.Success)
+            {
+                return AddressLine1Validation;
+            }
+
+            if (!AddressLine2Validation.Success)
+            {
+                return AddressLine2Validation;
+            }
+            if (!PostCodeValidation.Success)
+            {
+                return PostCodeValidation;
+            }
+            return new ResultData { Success = true };
         }
 
-        private async Task<bool> ValidateLogin(Customers customers)
+        private async Task<ResultData> ValidateLogin(Customers customers)
         {
+            var validationResult = new ResultData();
             try
             {
                 MailAddress m = new MailAddress(customers.Login);
-
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
             catch (FormatException)
             {
-                return false;
+                validationResult.Error = $"Wrong email format: {customers.Login}";
+                validationResult.Success = false;
+                return validationResult;
             }
         }
-        private async Task<bool> ValidatePassword(Customers customers) 
+        private async Task<ResultData> ValidatePassword(Customers customers) 
         {
+            var validationResult = new ResultData();
             if (customers.Password.Length > MinPasswordLength)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Password not matching minimum length: {MinPasswordLength}";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateFirstName(Customers customers) 
+        private async Task<ResultData> ValidateFirstName(Customers customers) 
         {
+            var validationResult = new ResultData();
             if (customers.FirstName == null)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            if(customers.FirstName.Length > MinStringLength ||
+            if(customers.FirstName.Length > MinStringLength &&
                customers.FirstName.Length <= MaxStringLength)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Incorrect {customers.FirstName}, should be between {MinStringLength} and {MaxStringLength} characters";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateLastName(Customers customers)
+        private async Task<ResultData> ValidateLastName(Customers customers)
         {
+            var validationResult = new ResultData();
             if (customers.LastName == null)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            if (customers.LastName.Length > MinStringLength ||
+            if (customers.LastName.Length > MinStringLength &&
                 customers.LastName.Length <= MaxStringLength)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Incorrect {customers.LastName}, should be between {MinStringLength} and {MaxStringLength} characters";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateAddressLine1(Customers customers)
+        private async Task<ResultData> ValidateAddressLine1(Customers customers)
         {
+            var validationResult = new ResultData();
             if (customers.AddressLine1 == null)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            if (customers.AddressLine1.Length > MinStringLength ||
+            if (customers.AddressLine1.Length > MinStringLength &&
                 customers.AddressLine1.Length <= MaxStringLength)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Incorrect {customers.AddressLine1}, should be between {MinStringLength} and {MaxStringLength} characters";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateAddressLine2(Customers customers)
+        private async Task<ResultData> ValidateAddressLine2(Customers customers)
         {
+            var validationResult = new ResultData();
             if (customers.AddressLine2 == null)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            if (customers.AddressLine2.Length > MinStringLength ||
+            if (customers.AddressLine2.Length > MinStringLength &&
                 customers.AddressLine2.Length <= MaxStringLength)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Incorrect {customers.AddressLine2}, should be between {MinStringLength} and {MaxStringLength} characters";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidatePostCode(Customers customers)
+        private async Task<ResultData> ValidatePostCode(Customers customers)
         {
+            var validationResult = new ResultData();
             string pattern = @"^[0-9]{2}-[0-9]{3}";
             Regex regex = new Regex(pattern);
             if (customers.PostCode == null)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
             if (regex.IsMatch(customers.PostCode))
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Incorrect {customers.PostCode}, should be in 00-000 format";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateCustomerExists(Customers customers)
+        private async Task<ResultData> ValidateCustomerExists(Customers customers)
         {
+            var validationResult = new ResultData();
             var customer = await _customersRepository.GetCustomerByLogin(customers.Login);
 
             if (customer == null || customer == default)
             {
-                return false;
+                validationResult.Error = $"Customer with login: {customers.Login} do not exists";
+                validationResult.Success = false;
+                return validationResult;
             }
-
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
     }
 }

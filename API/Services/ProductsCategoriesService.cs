@@ -28,9 +28,9 @@ namespace API.Services
             try
             {
                 var validation = await _productsCategoriesValidator.ValidateCreateAsync(productCategories);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 await _productsCategoriesRepository.Create(productCategories);
@@ -51,9 +51,9 @@ namespace API.Services
             try
             {
                 var validation = await _productsCategoriesValidator.ValidateDeleteAsync(Id);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 await _productsCategoriesRepository.Delete(Id);
@@ -79,9 +79,9 @@ namespace API.Services
             try
             {
                 var validation = await _productsCategoriesValidator.ValidateUpdateAsync(productCategories);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 await _productsCategoriesRepository.Update(productCategories);

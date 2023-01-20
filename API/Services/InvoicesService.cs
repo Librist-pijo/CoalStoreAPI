@@ -30,9 +30,9 @@ namespace API.Services
             {
                 Invoices Invoices = _invoicesFactory.CreateInvoices(InvoicesDTO);
                 var validation = await _invoicesValidator.ValidateCreateAsync(Invoices);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 _invoicesRepository.Create(Invoices);
@@ -53,9 +53,9 @@ namespace API.Services
             {
                 Invoices Invoices = _invoicesFactory.UpdateInvoices(InvoicesDTO);
                 var validation = await _invoicesValidator.ValidateUpdateAsync(Invoices);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 _invoicesRepository.Update(Invoices);
@@ -76,9 +76,9 @@ namespace API.Services
             try
             {
                 var validation = await _invoicesValidator.ValidateDeleteAsync(invoiceId);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 _invoicesRepository.Delete(invoiceId);

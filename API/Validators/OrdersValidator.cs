@@ -1,8 +1,10 @@
 ﻿using API.Enums;
+using API.ModelsDTO;
 using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using API.Validators.Interfaces;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace API.Validators
@@ -19,114 +21,156 @@ namespace API.Validators
             _customersRepository = customersRepository;
         }
 
-        public async Task<bool> ValidateCreateAsync(Orders orders)
+        public async Task<ResultData> ValidateCreateAsync(Orders orders)
         {
-            bool customerValidation = await ValidateCustomer(orders);
-            bool orderDateValidation = await ValidateOrderDate(orders);
-            bool stateValidation = await ValidateState(orders);
-            if (!orderDateValidation
-                || !stateValidation
-                || !customerValidation)
+            var customerValidation = await ValidateCustomer(orders);
+            var orderDateValidation = await ValidateOrderDate(orders);
+            var stateValidation = await ValidateState(orders);
+            if (!orderDateValidation.Success)
             {
-                return false;
+                return orderDateValidation;
             }
-            return true;
+            if (!stateValidation.Success)
+            {
+                return stateValidation;
+            }
+            if (!customerValidation.Success)
+            {
+                return customerValidation;
+            }
+            return new ResultData { Success = true };
         }
 
-        public async Task<bool> ValidateDeleteAsync(int orderId)
+        public async Task<ResultData> ValidateDeleteAsync(int orderId)
         {
-            bool orderExistsValidation = await ValidateIfExists(orderId);
-            if (orderExistsValidation)
-            {
-                return true;
-            }
-            return false;
+            return await ValidateIfExists(orderId);
         }
 
-        public async Task<bool> ValidateUpdateAsync(Orders orders)
+        public async Task<ResultData> ValidateUpdateAsync(Orders orders)
         {
-            bool orderExistsValidation = await ValidateIfExists(orders.Id);
-            bool shippingDateValidation = await ValidateShippingDate(orders,false);
-            bool shippingAdressValidation = await ValidateShippingAddress(orders);
-            bool stateValidation = await ValidateState(orders);
-            if (!orderExistsValidation
-                || !shippingDateValidation
-                || !shippingAdressValidation
-                || !stateValidation)
+            var orderExistsValidation = await ValidateIfExists(orders.Id);
+            var shippingDateValidation = await ValidateShippingDate(orders,false);
+            var shippingAdressValidation = await ValidateShippingAddress(orders);
+            var stateValidation = await ValidateState(orders);
+            if (!orderExistsValidation.Success)
             {
-                return false;
+                return orderExistsValidation;
             }
-            return true;
+            if (!shippingAdressValidation.Success)
+            {
+                return shippingAdressValidation;
+            }  
+            if (!shippingDateValidation.Success)
+            {
+                return shippingDateValidation;
+            }
+            if (!stateValidation.Success)
+            {
+                return stateValidation;
+            }
+
+            return new ResultData { Success = true };
         }
 
-        private async Task<bool> ValidateCustomer(Orders orders)
+        private async Task<ResultData> ValidateCustomer(Orders orders)
         {
+            var validationResult = new ResultData();
             var customer = await _customersRepository.GetCustomerById(orders.CustomerId);
 
             if (customer == null || customer == default)
             {
-                return false;
+                validationResult.Error = $"There is no customer with id: {orders.CustomerId} in database";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
-        private async Task<bool> ValidateOrderDate(Orders orders)
+        private async Task<ResultData> ValidateOrderDate(Orders orders)
         {
+            var validationResult = new ResultData();
             if (orders.OrderDate == null)
             {
-                return false;
+                validationResult.Error = $"Date cannot be null";
+                validationResult.Success = false;
+                return validationResult;
             }
             if (orders.OrderDate > DateTimeOffset.UtcNow.AddMinutes(-1))
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Date need to be current: {orders.OrderDate}";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateShippingAddress(Orders orders)
+        private async Task<ResultData> ValidateShippingAddress(Orders orders)
         {
+            var validationResult = new ResultData();
             if (orders.ShippingAddress == null)
             {
-                return false;
+                validationResult.Error = $"ShippingAddress cannot be null";
+                validationResult.Success = false;
+                return validationResult;
             }
             if (orders.ShippingAddress.Length <= MaxLength)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"ShippingAddress cannot exceed: {MaxLength}";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateShippingDate(Orders orders, bool creation)
+        private async Task<ResultData> ValidateShippingDate(Orders orders, bool creation)
         {
+            var validationResult = new ResultData();
             if (orders.ShippingDate == null && !creation)
             {
-                return false;
+                validationResult.Error = $"ShippingData cannot be null";
+                validationResult.Success = false;
+                return validationResult;
             }
             if (orders.ShippingDate == null && creation)
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
             if (orders.ShippingDate > DateTimeOffset.UtcNow.AddMinutes(-1))
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"ShippingDate need to be current: {orders.ShippingDate}";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateState(Orders orders)
+        private async Task<ResultData> ValidateState(Orders orders)
         {
+            var validationResult = new ResultData();
             HashSet<int> validVals = new HashSet<int>((int[])Enum.GetValues(typeof(OrderState)));
             if (validVals.Contains(orders.State))
             {
-                return true;
+                validationResult.Success = true;
+                return validationResult;
             }
-            return false;
+            validationResult.Error = $"Wrong state: {orders.State}";
+            validationResult.Success = false;
+            return validationResult;
         }
-        private async Task<bool> ValidateIfExists(int ordersId)
+        private async Task<ResultData> ValidateIfExists(int ordersId)
         {
+            var validationResult = new ResultData();
             var order = _ordersRepository.GetById(ordersId);
             if (order == null || order == default)
             {
-                return false;
+                validationResult.Error = $"There is no order with order id: {ordersId} in database";
+                validationResult.Success = false;
+                return validationResult;
             }
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
     }
 }

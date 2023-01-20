@@ -1,7 +1,9 @@
-﻿using API.Repositories;
+﻿using API.ModelsDTO;
+using API.Repositories;
 using API.Repositories.Interfaces;
 using API.Repositories.Models;
 using API.Validators.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Validators
 {
@@ -21,100 +23,131 @@ namespace API.Validators
             _productsRepository = productsRepository;
         }
 
-        public async Task<bool> ValidateCreateAsync(ProductsCategories productsCategories)
+        public async Task<ResultData> ValidateCreateAsync(ProductsCategories productsCategories)
         {
-            bool pairExists = await ValidateProductsCategoriesExists(productsCategories);
-            bool productExists = await ValidateProductsExists(productsCategories);
-            bool categoryExists = await ValidateCategoriesExists(productsCategories);
-            if (pairExists
-                || !productExists
-                || !categoryExists)
+            var pairExists = await ValidateProductsCategoriesExists(productsCategories);
+            var productExists = await ValidateProductsExists(productsCategories);
+            var categoryExists = await ValidateCategoriesExists(productsCategories);
+            if (pairExists.Success)
             {
-                return false;
+                pairExists.Success = false;
+                pairExists.Error = "Pair already exists in database";
+                return pairExists;
             }
-            return true;
+            if (!productExists.Success)
+            {
+                return productExists;
+            }
+            if (!categoryExists.Success)
+            {
+                return categoryExists;
+            }
+            return new ResultData { Success = true };
         }
 
-        public async Task<bool> ValidateDeleteAsync(int Id)
+        public async Task<ResultData> ValidateDeleteAsync(int Id)
         {
-            bool exists = await ValidateProductsCategoriesIdExists(Id);
-            if (exists)
-            {
-                return true;
-            }
-            return false;
+            return await ValidateProductsCategoriesIdExists(Id);
         }
 
-        public async Task<bool> ValidateUpdateAsync(ProductsCategories productsCategories)
+        public async Task<ResultData> ValidateUpdateAsync(ProductsCategories productsCategories)
         {
             
-            bool productExists = await ValidateProductsExists(productsCategories);
-            bool categoryExists = await ValidateCategoriesExists(productsCategories);
-            bool productWithCategoryExists = await ValidateProductWithCategoryExists(productsCategories);
-            if (!productExists
-                || !categoryExists
-                || !productWithCategoryExists)
+            var productExists = await ValidateProductsExists(productsCategories);
+            var categoryExists = await ValidateCategoriesExists(productsCategories);
+            var productWithCategoryExists = await ValidateProductWithCategoryExists(productsCategories);
+            if (!productWithCategoryExists.Success)
             {
-                return false;
+                return productWithCategoryExists;
             }
-            return true;
+            if (!productExists.Success)
+            {
+                return productExists;
+            }
+            if (!categoryExists.Success)
+            {
+                return categoryExists;
+            }
+            return new ResultData { Success = true };
         }
 
-        private async Task<bool> ValidateProductsExists(ProductsCategories productsCategories)
+        private async Task<ResultData> ValidateProductsExists(ProductsCategories productsCategories)
         {
+            var validationResult = new ResultData();
             var product = await _productsRepository.GetById(productsCategories.ProductId);
 
             if (product == null || product == default)
             {
-                return false;
+                validationResult.Error = $"Product with id: {productsCategories.ProductId} do not exist in database";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
-        private async Task<bool> ValidateCategoriesExists(ProductsCategories productsCategories)
+        private async Task<ResultData> ValidateCategoriesExists(ProductsCategories productsCategories)
         {
+            var validationResult = new ResultData();
             var category = await _categoriesRepository.GetById(productsCategories.CategoryId);
 
             if (category == null || category == default)
             {
-                return false;
+                validationResult.Error = $"Category with id: {productsCategories.CategoryId} do not exist in database";
+                validationResult.Success = false;
+                return validationResult;
             }
 
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
-        private async Task<bool> ValidateProductsCategoriesExists(ProductsCategories productsCategories)
+        private async Task<ResultData> ValidateProductsCategoriesExists(ProductsCategories productsCategories)
         {
+            var validationResult = new ResultData();
             var pair = await _productsCategoriesRepository.GetPair(productsCategories.ProductId,
                                                   productsCategories.CategoryId);
             if (pair == null || pair == default)
             {
-                return false;
+                validationResult.Error = $"Pair with categoryid: {productsCategories.CategoryId} and productid: {productsCategories.ProductId} do not exist in database";
+                validationResult.Success = false;
+                return validationResult;
             }
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
 
-        private async Task<bool> ValidateProductsCategoriesIdExists(int Id)
+        private async Task<ResultData> ValidateProductsCategoriesIdExists(int Id)
         {
+            var validationResult = new ResultData();
             var exist = await _productsCategoriesRepository.GetById(Id);
             if (exist == null || exist == default)
             {
-                return false;
+                validationResult.Error = $"ProductCategory with id: {Id} do not exists in database";
+                validationResult.Success = false;
+                return validationResult;
             }
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
 
-        private async Task<bool> ValidateProductWithCategoryExists(ProductsCategories productsCategories)
+        private async Task<ResultData> ValidateProductWithCategoryExists(ProductsCategories productsCategories)
         {
+            var validationResult = new ResultData();
             var product = await _productsCategoriesRepository.GetByByProductId(productsCategories.ProductId);
             if (product == null || !product.Any())
             {
-                return false;
+                validationResult.Error = $"Product with id: {productsCategories.ProductId} do not exists";
+                validationResult.Success = false;
+                return validationResult;
             }
             if (product.Contains(productsCategories))
             {
-                return false;
+                validationResult.Error = $"Product already have this category mapped: {productsCategories.CategoryId}";
+                validationResult.Success = false;
+                return validationResult;
             }
-            return true;
+            validationResult.Success = true;
+            return validationResult;
         }
 
     }

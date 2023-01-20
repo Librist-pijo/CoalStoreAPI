@@ -55,25 +55,25 @@ namespace API.Services
                     orders.ShippingAddress = $"{customer.AddressLine1}, {customer.PostCode} {customer.AddressLine2}";
                 }
                 var validation = await _ordersValidator.ValidateCreateAsync(orders);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
-                var id = _ordersRepository.Create(orders).GetAwaiter().GetResult();
+                var id = await _ordersRepository.Create(orders);
                 var createInvoiceResult = await CreateInvoice(ordersDTO.Products, id);
                 if (!createInvoiceResult.Success)
                 {
-                    DeleteOrders(id);
-                    result.Success = false;
+                    await DeleteOrders(id);
+                    result = createInvoiceResult;
                     return result;
                 }
 
                 var createOPResult = await CreateOrdersProducts(ordersDTO.Products, id);
                 if (!createOPResult.Success)
                 {
-                    DeleteOrders(id);
-                    result.Success = false;
+                    await DeleteOrders(id);
+                    result = createOPResult;
                     return result;
                 }
                 result.Success = true;
@@ -94,9 +94,9 @@ namespace API.Services
             try
             {
                 var validation = await _ordersValidator.ValidateDeleteAsync(orderId);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 await _invoicesService.DeleteInvoices(orderId);
@@ -147,9 +147,9 @@ namespace API.Services
                 orders.OrderDate = ordersUpdate.OrderDate;
                 orders.CustomerId = ordersUpdate.CustomerId;
                 var validation = await _ordersValidator.ValidateUpdateAsync(orders);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 await _ordersRepository.Update(orders);

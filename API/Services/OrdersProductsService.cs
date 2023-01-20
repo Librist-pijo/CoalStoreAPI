@@ -32,9 +32,9 @@ namespace API.Services
             {
                 OrdersProducts ordersProducts = _ordersProductsFactory.CreateOrdersProducts(ordersProductsDTO);
                 var validation = await _ordersProductsValidator.ValidateCreateAsync(ordersProducts);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 await _ordersProductsRepository.Create(ordersProducts);
@@ -55,9 +55,9 @@ namespace API.Services
             try
             {
                 var validation = await _ordersProductsValidator.ValidateDeleteAsync(orderId);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 await _ordersProductsRepository.Delete(orderId);
@@ -88,9 +88,9 @@ namespace API.Services
             {
                 OrdersProducts ordersProducts = _ordersProductsFactory.UpdateOrdersProducts(ordersProductsDTO);
                 var validation = await _ordersProductsValidator.ValidateUpdateAsync(ordersProducts);
-                if (!validation)
+                if (!validation.Success)
                 {
-                    result.Error = "Błąd walidacji";
+                    result = validation;
                     return result;
                 }
                 await _ordersProductsRepository.Update(ordersProducts);
