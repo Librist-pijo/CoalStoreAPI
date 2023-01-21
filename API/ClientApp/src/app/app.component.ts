@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { locale, loadMessages, formatMessage } from 'devextreme/localization';
 import * as plMessages from '../assets/pl.json';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,12 @@ import * as plMessages from '../assets/pl.json';
 export class AppComponent {
   title: string = "ClientApp";
 
-  constructor() {
+  constructor(
+    private authService: AuthService
+  ) {
     this.initMessages();
     locale("pl");
+    this.authService.checkIfTokenIsValid();
   }
 
   
