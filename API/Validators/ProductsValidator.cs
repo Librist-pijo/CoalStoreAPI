@@ -20,6 +20,12 @@ namespace API.Validators
 
         public async Task<ResultData> ValidateCreateAsync(Products products)
         {
+            var productIsNotNull = await ValidateIfNotNull(products);
+            if (!productIsNotNull.Success)
+            {
+                return productIsNotNull;
+            }
+
             var nameExistsValidationTask = await ValidateProductNameExists(products);
             var nameValidationTask = await ValidateName(products);
             var stockValidationTask = await ValidateStock(products);
@@ -47,6 +53,12 @@ namespace API.Validators
 
         public async Task<ResultData> ValidateUpdateAsync(Products products)
         {
+            var productIsNotNull = await ValidateIfNotNull(products);
+            if (!productIsNotNull.Success)
+            {
+                return productIsNotNull;
+            }
+
             var idExistsValidationTask = await ValidateProductIdExists(products.Id);
             var nameExistsValidationTask = await ValidateProductNameExists(products);
             var stockValidationTask = await ValidateStock(products);
@@ -154,6 +166,15 @@ namespace API.Validators
             validationResult.Error = $"Product price need to be minimum of: {MinPrice}";
             validationResult.Success = false;
             return validationResult;
+        }
+
+        public async Task<ResultData> ValidateIfNotNull(Products products)
+        {
+            return new ResultData
+            {
+                Success = products != null && products != default,
+                Error = "Product cannot be null"
+            };
         }
     }
 }
