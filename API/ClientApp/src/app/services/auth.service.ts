@@ -114,4 +114,20 @@ export class AuthService {
   getLoggedUserLogin(): string {
     return localStorage.getItem(LOGIN_KEY) ?? '';
   }
+
+  checkIfTokenIsValid() {
+    var token = this.tokenService.getToken();
+
+    if (token) {
+      const body = new HttpParams()
+        .set('token', token);
+      this.http.get<boolean>(API_URL + 'auth/gettokenvalidation', { params: body }).toPromise().then((data) => {
+        if (data !== true) {
+          this.logout();
+        } 
+      }, (err) => {
+        this.logout();
+      });
+    }
+  }
 }

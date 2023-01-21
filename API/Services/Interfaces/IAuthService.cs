@@ -8,5 +8,6 @@ namespace API.Services.Interfaces
         ResultData Login(LoginDTO login);
         ResultData Register(RegisterDTO register);
         bool CheckIfCustomerExistsByLogin(string login);
+        bool CheckIfTokenIsValid(string token);
     }
 }

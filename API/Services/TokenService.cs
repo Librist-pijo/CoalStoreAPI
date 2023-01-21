@@ -40,8 +40,7 @@ namespace API.Services
         }
         public bool IsTokenValid(string token)
         {
-            var mySecret = Encoding.UTF8.GetBytes(_key);
-            var mySecurityKey = new SymmetricSecurityKey(mySecret);
+            var mySecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
             var tokenHandler = new JwtSecurityTokenHandler();
             try
             {

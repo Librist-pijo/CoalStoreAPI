@@ -92,5 +92,17 @@ namespace API.Services
                 return false;
             }
         }
+
+        public bool CheckIfTokenIsValid(string token)
+        {
+            try
+            {
+                return _tokenService.IsTokenValid(token);
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

@@ -43,5 +43,12 @@ namespace API.Controllers
             var isExist = _authService.CheckIfCustomerExistsByLogin(email);
             return Json(isExist);
         }
+
+        [HttpGet("gettokenvalidation")]
+        public IActionResult GetTokenValidation(string token)
+        {
+            var isValid = _authService.CheckIfTokenIsValid(token);
+            return Json(isValid);
+        }
     }
 }
