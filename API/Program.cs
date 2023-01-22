@@ -6,6 +6,7 @@ using API.Validators;
 using API.Validators.Interfaces;
 using DataLibrary.DataAccess;
 using DataLibrary.DataAccess.Interfaces;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +60,12 @@ builder.Services.AddCors(options =>
       });
 });
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,6 +82,8 @@ app.UseStaticFiles(new StaticFileOptions
            Path.Combine(builder.Environment.ContentRootPath, "ClientApp/dist")),
     RequestPath = "/ClientApp/dist"
 });
+
+app.UseForwardedHeaders();
 
 app.UseHttpsRedirection();
 
